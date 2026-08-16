@@ -7,11 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Strength &amp; Sleep Log">
+<meta name="apple-mobile-web-app-title" content="Physique Log">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
-<title>Strength and Sleep Log</title>
+<title>Physique Log</title>
 <style>
 :root{
   --bg:#131518; --bg-2:#181b1f; --panel:#1c2025; --panel-2:#22262c; --line:#2b3037; --line-2:#363c45;
@@ -256,6 +256,17 @@ input.n[type=time]{font-size:18px}
 .imp .fmt{font-size:10px;color:var(--dimmer);line-height:1.6;margin-top:9px}
 .imp .fmt code{font-family:var(--mono);color:var(--dim)}
 .imp .stat{font-size:11.5px;margin-top:9px;line-height:1.5}
+.wide.w4{background:rgba(224,87,107,.20);border-color:#E0576B;
+  box-shadow:0 10px 0 -1px #8E2F3E,0 11px 0 -1px rgba(255,255,255,.10),
+    0 18px 26px -8px rgba(0,0,0,.8),inset 0 1.5px 0 rgba(255,255,255,.22),
+    inset 0 0 46px -18px rgba(224,87,107,.9)}
+.wide.w4:active{box-shadow:0 0 0 -1px #8E2F3E,0 2px 5px -4px rgba(0,0,0,.9),
+    inset 0 3px 10px -4px rgba(0,0,0,.55),inset 0 0 46px -14px rgba(224,87,107,1)}
+.wide.w4 svg{stroke:#F2889A}
+.slot{display:flex;gap:6px;margin-top:2px}
+.slot button{flex:1;background:var(--panel-2);border:1.5px solid var(--line-2);border-radius:8px;
+  color:var(--dim);font:700 12px var(--sans);padding:10px 0;cursor:pointer}
+.slot button.on{background:#E0576B;border-color:#E0576B;color:#fff}
 .mac{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:13px}
 .mc{background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:12px 4px;text-align:center}
 .mc .v{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1}
@@ -555,6 +566,21 @@ function parseFood(raw,db){
   return out;
 }
 
+function parseBP(raw){
+  const t=" "+raw.toLowerCase().replace(/,/g," ")+" ";
+  let m=t.match(/(\d{2,3})\s*(?:\/|over|on)\s*(\d{2,3})/);
+  if(!m) return null;
+  const sys=+m[1], dia=+m[2];
+  if(sys<70||sys>250||dia<40||dia>150||dia>=sys) return null;
+  let pulse=null;
+  const p=t.match(/(?:pulse|heart\s*rate|hr|bpm)\s*(?:of|was|is|at)?\s*(\d{2,3})/)
+       || t.match(/(\d{2,3})\s*(?:bpm|pulse)/);
+  if(p){const v=+p[1]; if(v>=30&&v<=220) pulse=v;}
+  let slot=null;
+  if(/\b(morning|a\.?m\.?|woke|wake)\b/.test(t)) slot="am";
+  else if(/\b(evening|night|p\.?m\.?|bed)\b/.test(t)) slot="pm";
+  return {sys:sys,dia:dia,pulse:pulse,slot:slot};
+}
 function parseWeight(raw){
   const t=" "+raw.toLowerCase().replace(/,/g," ")+" ";
   let w=null,unit=null,bf=null;
@@ -607,15 +633,16 @@ const VERSIONS=[
  {v:"v11",pdf:"v11.pdf",d:"Jul 27 2026",t:"<b>Injury log added.</b> Four hamstring tweaks documented, return-to-run protocol staged. Garmin dataset refreshed to Jul 21: 654 runs, 3,679 km. Speed-exposure gap identified — habitual pace frozen near 6:00/km for three years."},
  {v:"v12",pdf:"v12.pdf",d:"Aug 5 2026",t:"<b>Jul 28 bloodwork.</b> Hematocrit 0.521, estradiol landed at 113, IGF-1 down to 134, vitamin D deficient at 57.1. Dr Salim's decision log added. First blood pressure reading. Supplement log created after ashwagandha and vitamin C were disclosed. Three-company founding logged as a confounder."},
  {v:"v13",pdf:"v13.pdf",d:"Aug 15 2026",t:"<b>Model re-anchored.</b> The May 18 scan reclassified as a hydration outlier — eVolt derives muscle from body water, and May's water was the highest ever recorded. Only hydration-matched scans compare. Projection rebased: End-2030 target cut from 101.3 to 88.3 lbs."},
- {v:"v14",pdf:"v14.pdf",d:"Aug 15 2026",t:"<b>Run restart logged.</b> Burst sessions tabled against the 163–178 bpm injury band. Return-to-run advanced from Stage 0 to Stage 2. Timeline corrected to mid-May, not late March. Low estradiol ruled out as a cause of the strength plateau.",now:true}];
+ {v:"v15",pdf:"v15.pdf",d:"Aug 16 2026",t:"<b>eVolt retired as the instrument of record for muscle change.</b> A rescan 27 hours later on a different GoodLife machine reported −2.0 lbs weight, +1.3 lbs muscle, −4.0 lbs fat and −1.0 in waist. The overnight 'muscle' is nearly double the entire hydration-matched change across ten months. The strength log becomes the progress instrument; scan venue is now recorded.",now:true},
+ {v:"v14",pdf:"v14.pdf",d:"Aug 15 2026",t:"<b>Run restart logged.</b> Burst sessions tabled against the 163–178 bpm injury band. Return-to-run advanced from Stage 0 to Stage 2. Timeline corrected to mid-May, not late March. Low estradiol ruled out as a cause of the strength plateau."}];
 
 const METRICS=[
- {g:"Composition · eVolt Aug 15 2026",r:[
-  ["Skeletal muscle","78.3 lbs","hydration-matched anchor","hi"],
-  ["Total weight","166.7 lbs","75.6 kg"],
-  ["Body fat","16.0%","26.7 lbs fat mass"],
-  ["Visceral fat area","88 cm²","was 80 in Oct 2025","hi"],
-  ["Total body water","100.8 lbs","Optimal — scan is usable","ok"]]},
+ {g:"Composition · eVolt Aug 16 2026 · Pergola",r:[
+  ["Skeletal muscle","79.6 lbs","Pergola Aug 16 · eVolt retired for rate","hi"],
+  ["Total weight","164.7 lbs","74.7 kg · Pergola"],
+  ["Body fat","13.8%","22.7 lbs fat mass"],
+  ["Visceral fat area","74 cm²","was 80 in Oct 2025"],
+  ["Total body water","102.3 lbs","High — machine-to-machine noise","hi"]]},
  {g:"Performance",r:[
   ["VO2 max","48 ml/kg/min","Garmin, Aug 2026","ok"],
   ["VO2 absolute","~3,571 ml/min","held anchor · the real target, not relative"],
@@ -633,6 +660,10 @@ const METRICS=[
   ["LDL / HDL","2.55 / 1.58","excellent","ok"],
   ["PSA","1.6 ug/L","clean baseline","ok"],
   ["CRP","2.5 mg/L","illness-confounded"]]},
+ {g:"Instrument note",r:[
+  ["eVolt","retired for rate","Aug 15/16 scans 27 h apart differed by +1.3 lbs muscle","bad"],
+  ["Strength log","now the record","weights and reps are venue-independent","ok"],
+  ["Scan venue","Pergola #242","book all future scans here","hi"]]},
  {g:"Open",r:[
   ["Blood pressure","126/81","kiosk, post-training — not a baseline"],
   ["Sleep","see tile above","logged in-app — the leading variable","bad"],
@@ -674,6 +705,8 @@ function load(){
       &&s.sets.every(x=>x&&typeof x.n==="string"&&isFinite(x.w)&&isFinite(x.r))):[];
   o.sleep=Array.isArray(o.sleep)?o.sleep.filter(s=>s&&s.date&&isFinite(s.hrs)&&s.hrs>0&&s.hrs<=16):[];
   o.weight=Array.isArray(o.weight)?o.weight.filter(w=>w&&w.date&&isFinite(w.lb)&&w.lb>=80&&w.lb<=400):[];
+  o.bp=Array.isArray(o.bp)?o.bp.filter(x=>x&&x.date&&isFinite(x.sys)&&isFinite(x.dia)
+      &&x.sys>=70&&x.sys<=250&&x.dia>=40&&x.dia<=150):[];
   o.food=Array.isArray(o.food)?o.food.filter(f=>f&&f.date&&typeof f.n==="string"&&isFinite(f.kcal)):[];
   o.customFoods=Array.isArray(o.customFoods)?o.customFoods.filter(f=>f&&typeof f.n==="string"&&isFinite(f.kcal)):[];
   o._del=Array.isArray(o._del)?o._del.filter(x=>typeof x==="string"):[];
@@ -700,10 +733,10 @@ function mergeStored(mine){
   const wipe=Math.max(out._wipe||0, theirs._wipe||0);
   out._wipe=wipe;
   // if this copy wiped, drop anything older than the wipe
-  ["sessions","food","sleep","weight"].forEach(k=>{
+  ["sessions","food","sleep","weight","bp"].forEach(k=>{
     out[k]=(out[k]||[]).filter(x=>x && !dead.has(x._id) && !(wipe && (x._t||0)<wipe));
   });
-  ["sessions","food"].forEach(k=>{
+  ["sessions","food","bp"].forEach(k=>{
     const seen=new Set(out[k].map(x=>x._id).filter(Boolean));
     (theirs[k]||[]).forEach(x=>{
       if(!x||!x._id) return;
@@ -729,7 +762,7 @@ function mergeStored(mine){
 }
 function stampAll(){
   const now=Date.now();
-  ["sessions","food","sleep","weight"].forEach(k=>(DB[k]||[]).forEach(x=>{
+  ["sessions","food","sleep","weight","bp"].forEach(k=>(DB[k]||[]).forEach(x=>{
     if(x&&!x._id)x._id=uid(); if(x&&!x._t)x._t=now; }));
 }
 function save(){
@@ -759,7 +792,7 @@ function lastFor(n){for(let i=DB.sessions.length-1;i>=0;i--){const h=DB.sessions
 function bestFor(n){let b=0;DB.sessions.forEach(s=>s.sets.forEach(x=>{if(x.n===n){const v=e1rm(x.w,x.r);if(v>b)b=v;}}));return b;}
 document.getElementById("dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
 
-const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
+const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
 function nav(){document.getElementById("nav").innerHTML=TABS.map(([k,l])=>
   `<button class="nb ${tab===k?'on':''}" data-k="${k}">${l}</button>`).join("");
   document.querySelectorAll(".nb").forEach(b=>b.onclick=()=>{tab=b.dataset.k;if(["W1","W2","W3"].includes(tab))day=tab;render();});}
@@ -768,10 +801,17 @@ function render(){nav();
   const v=document.getElementById("view"),bar=document.getElementById("bar");
   if(tab==="home"){v.innerHTML=homeV();bar.innerHTML="";bar.style.display="none";document.getElementById("hm").classList.add("hide");
     const go=(id,t)=>{const el=document.getElementById(id);if(el)el.onclick=()=>{tab=t;if(["W1","W2","W3"].includes(t))day=t;render();};};
-    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goA","arch");go("goM","metrics");go("goP","prog");go("goT","time");return;}
+    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goB","bp");go("goA","arch");go("goM","metrics");go("goP","prog");go("goT","time");return;}
   bar.style.display="flex";document.getElementById("hm").classList.remove("hide");
   if(tab==="arch"){v.innerHTML=archiveV();bar.innerHTML=`<button class="btn" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};return;}
+  if(tab==="bp"){v.innerHTML=bpV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="bsv">Save reading</button>`;
+    document.getElementById("bk").onclick=()=>{tab="home";render();};
+    document.getElementById("bsv").onclick=()=>{const sl=document.getElementById("bslot");
+      saveBP(document.getElementById("bs").value,document.getElementById("bd").value,
+             document.getElementById("bp2").value,
+             sl&&sl.querySelector("button.on")?sl.querySelector("button.on").dataset.s:"am");};
+    wireBP();wireImp("bp");return;}
   if(tab==="weight"){v.innerHTML=weightV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="wsv">Save weight</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     document.getElementById("wsv").onclick=()=>saveWeight(document.getElementById("wlb").value,document.getElementById("wbf").value);
@@ -906,6 +946,9 @@ function homeV(){
   const fp=Math.round(ft.reduce((a,b)=>a+b.p,0));
   const W=DB.weight||[], lw=W[W.length-1];
   const lwd=lw?new Date(lw.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"}):"";
+  const BP=DB.bp||[], bpLast=BP[BP.length-1];
+  const bw=bpWindow(7);
+  const bpAvgTxt=bw?`7-day average ${Math.round(bw.sys)}/${Math.round(bw.dia)} · ${bw.n} reading${bw.n>1?"s":""}`:"Latest reading";
   return `<div class="wrap">
    <div class="hero" style="padding:20px 6px 16px"><h1 style="font-size:30px">Physique <em>&amp; Performance</em></h1>
      <div class="hr2"></div>
@@ -932,9 +975,14 @@ function homeV(){
      <span class="tx"><b>Log Weight</b><i>${lw?(lwd+(lw.bf?" · "+lw.bf+"% body fat":"")):"Nothing logged yet"}</i></span>
      <span class="num"><span class="k">${lw?lw.lb:"—"}</span><span class="u">${lw?"lbs":"tap to log"}</span></span>
    </button>
+   <button class="wide w4" id="goB">
+     <svg viewBox="0 0 24 24"><path d="M20.8 6.6a5 5 0 0 0-8.8-1.9A5 5 0 0 0 3.2 6.6C2 9.6 4.6 13 12 19c7.4-6 10-9.4 8.8-12.4z"/><path d="M2 12.6h4l1.6-3 2.4 5.6 2-3.2 1.4 2.2h4.4"/></svg>
+     <span class="tx"><b>Blood Pressure</b><i>${bpLast?bpAvgTxt:"Morning and evening · nothing logged yet"}</i></span>
+     <span class="num"><span class="k">${bpLast?bpLast.sys+"/"+bpLast.dia:"—"}</span><span class="u">${bpLast?"latest":"tap to log"}</span></span>
+   </button>
    <div class="grid2">
      <button class="sq c2" id="goA"><svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v6h6M8 14h8M8 18h5"/></svg>
-       <span class="lbl">Archive</span><span class="cap">v11 – v14 dashboards</span></button>
+       <span class="lbl">Archive</span><span class="cap">v11 – v15 dashboards</span></button>
      <button class="sq c1" id="goM"><svg viewBox="0 0 24 24"><path d="M3 20h18M6 20v-7M11 20V7M16 20v-4M21 20V4"/></svg>
        <span class="lbl">Metrics</span><span class="cap">current anchors</span></button>
      <button class="sq c3" id="goP"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 8-9"/><path d="M15 6h5v5"/></svg>
@@ -955,6 +1003,104 @@ function archiveV(){
         <a class="pb" style="text-decoration:none;padding:9px 13px;flex:0 0 auto" href="dashboards/${v.pdf}" download>Save</a>
       </div></div></div>`).join("")+
    `<div class="note">PDFs live in the <b>/dashboards/</b> folder of the repo. Adding a future version means uploading the PDF there and refreshing this list. Versions before v11 exist only as archived files and are not hosted.</div></div>`;}
+
+function bpWindow(days){
+  const cut=daysAgo(days-1);
+  const w=(DB.bp||[]).filter(x=>x&&x.date>=cut);
+  if(!w.length) return null;
+  return {sys:w.reduce((a,b)=>a+b.sys,0)/w.length, dia:w.reduce((a,b)=>a+b.dia,0)/w.length,
+          pulse:(()=>{const p=w.filter(x=>x.pulse); return p.length?p.reduce((a,b)=>a+b.pulse,0)/p.length:null;})(),
+          n:w.length, days:new Set(w.map(x=>x.date)).size};}
+function bpFlag(s,d){ return (s>=135||d>=85)?"bad":(s<120&&d<80)?"ok":"hi"; }
+
+function bpV(){
+  const B=(DB.bp||[]).slice().sort((a,b)=>a.date<b.date?-1:(a.date>b.date?1:(a.slot==="am"?-1:1)));
+  const w7=bpWindow(7), w14=bpWindow(14);
+  const byDay={}; B.forEach(x=>{(byDay[x.date]=byDay[x.date]||[]).push(x);});
+  const days=Object.keys(byDay).sort();
+  const sysPts=days.map(d=>({v:byDay[d].reduce((a,b)=>a+b.sys,0)/byDay[d].length,
+    l:new Date(d+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}));
+  const diaPts=days.map(d=>({v:byDay[d].reduce((a,b)=>a+b.dia,0)/byDay[d].length,
+    l:new Date(d+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}));
+  const rows=B.slice(-24).reverse().map((x,i)=>`<div class="dl">
+     <span class="a">${new Date(x.date+"T12:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}
+       <u>${x.slot==="am"?"morning":"evening"}${x.pulse?" · pulse "+x.pulse:""}</u></span>
+     <span class="b ${bpFlag(x.sys,x.dia)}">${x.sys}/${x.dia}</span>
+     <button class="drop" data-bpdel="${esc(x._id||"")}" style="color:var(--hot);background:none;border:0;font-size:15px;padding:2px 6px;cursor:pointer">×</button></div>`).join("")
+    ||`<div class="empty">Nothing logged yet.<br>Sit quietly five minutes, then take two readings a minute apart.</div>`;
+  return `<div class="wrap">
+   ${w7?`<div class="scards">
+     <div class="sc"><div class="v ${bpFlag(w7.sys,w7.dia)}">${Math.round(w7.sys)}/${Math.round(w7.dia)}</div><div class="k">last 7 days · ${w7.n} readings</div></div>
+     <div class="sc"><div class="v">${w14?Math.round(w14.sys)+"/"+Math.round(w14.dia):"—"}</div><div class="k">last 14 days${w14?" · "+w14.days+"d":""}</div></div>
+     <div class="sc"><div class="v">${w7.pulse?Math.round(w7.pulse):"—"}</div><div class="k">avg pulse</div></div>
+   </div>`:""}
+   ${sysPts.length>1?chartCard("Systolic",days.length+" days · dotted line is 135",sysPts,
+      {color:"#E0576B",color2:"#F2889A",avg:true,target:135,targetLabel:"135",id:6,dp:0,invert:true}):""}
+   ${diaPts.length>1?chartCard("Diastolic","dotted line is 85",diaPts,
+      {color:"#B0498E",color2:"#E37FC4",avg:true,target:85,targetLabel:"85",id:7,dp:0,invert:true}):""}
+   ${impPanel("bp")}
+   <div class="say">
+     <textarea id="bsay" placeholder="Say or type — &quot;126 over 81, pulse 72, morning&quot;"></textarea>
+     <div class="hintl">Tap the mic on your phone keyboard to dictate. Nothing saves until you confirm.</div>
+     <div class="row"><button class="clr" id="bsayc">Clear</button><button class="go2" id="bsayg" style="background:linear-gradient(180deg,#F2889A,#E0576B);color:#2a0d13">Read it</button></div>
+     <div id="bconf"></div>
+   </div>
+   <div class="card open"><div class="chead" style="cursor:default"><div class="cn"><b>Or enter by hand</b>
+     <i>${new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</i></div></div>
+     <div class="cbody" style="display:block">
+       <div class="srow" style="border-bottom:0">
+         <div class="fg"><span class="fl">Systolic</span><input class="n" id="bs" inputmode="numeric" placeholder="126"></div>
+         <div class="fg"><span class="fl">Diastolic</span><input class="n" id="bd" inputmode="numeric" placeholder="81"></div>
+         <div class="fg"><span class="fl">Pulse — optional</span><input class="n" id="bp2" inputmode="numeric" placeholder="72"></div>
+       </div>
+       <div class="srow" style="border-bottom:0;padding-top:2px">
+         <div class="fg"><span class="fl">When</span>
+           <div class="slot" id="bslot">
+             <button data-s="am" class="${new Date().getHours()<12?"on":""}">Morning</button>
+             <button data-s="pm" class="${new Date().getHours()>=12?"on":""}">Evening</button></div>
+           <span class="gh">Two readings a minute apart, morning and evening</span></div>
+       </div></div></div>
+   <h2 class="sec">Readings</h2>${rows}
+   <div class="note">Home readings use a threshold of <b>135/85</b>, not the 140/90 you see in a clinic. Sit five minutes first, feet flat, arm at heart height, no talking. Day one usually reads high — the seven-day average is the number worth giving Dr Salim.</div></div>`;}
+
+function wireBP(){
+  const sl=document.getElementById("bslot");
+  if(sl) sl.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    sl.querySelectorAll("button").forEach(o=>o.classList.remove("on")); b.classList.add("on");});
+  const ta=document.getElementById("bsay"), out=document.getElementById("bconf");
+  if(ta){
+    document.getElementById("bsayc").onclick=()=>{ta.value="";out.innerHTML="";};
+    document.getElementById("bsayg").onclick=()=>{
+      const txt=ta.value.trim(); if(!txt){toast("Nothing to read");return;}
+      const r=parseBP(txt);
+      if(!r){ out.innerHTML=`<div class="conf" style="border-color:#E0576B;background:rgba(224,87,107,.1)">
+        <h4 style="color:#F2889A">Could not read that</h4>
+        <div class="miss" style="color:#F2889A">Try "126 over 81" or "126/81, pulse 72, morning".</div></div>`; return; }
+      const slot=r.slot||(sl&&sl.querySelector("button.on")?sl.querySelector("button.on").dataset.s:(new Date().getHours()<12?"am":"pm"));
+      out.innerHTML=`<div class="conf" style="border-color:#E0576B;background:rgba(224,87,107,.1)">
+        <h4 style="color:#F2889A">Check before saving</h4>
+        <div class="ci"><span class="nm">Reading</span><b style="font-family:var(--mono);color:${bpFlag(r.sys,r.dia)==="bad"?"var(--hot)":"var(--chalk)"}">${r.sys}/${r.dia}</b></div>
+        ${r.pulse?`<div class="ci"><span class="nm">Pulse</span><b style="font-family:var(--mono)">${r.pulse}</b></div>`:""}
+        <div class="ci"><span class="nm">When</span><b style="font-family:var(--mono)">${slot==="am"?"Morning":"Evening"}</b></div>
+        <div class="row"><button class="go2" id="bcommit" style="background:linear-gradient(180deg,#F2889A,#E0576B);color:#2a0d13">Save reading</button></div></div>`;
+      document.getElementById("bcommit").onclick=()=>saveBP(r.sys,r.dia,r.pulse,slot);
+    };
+  }
+  document.querySelectorAll("[data-bpdel]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.bpdel; if(!id) return;
+    if(confirm("Delete this reading?")){ tomb(id);
+      DB.bp=DB.bp.filter(x=>x._id!==id); save(); render(); toast("Deleted"); }});
+}
+function saveBP(sys,dia,pulse,slot){
+  sys=+sys; dia=+dia; pulse=pulse?+pulse:null;
+  if(!(sys>=70&&sys<=250)||!(dia>=40&&dia<=150)){toast("Check those numbers");return;}
+  if(dia>=sys){toast("Diastolic must be lower than systolic");return;}
+  if(pulse&&!(pulse>=30&&pulse<=220)){toast("Check the pulse");return;}
+  DB.bp=DB.bp||[];
+  DB.bp.push({date:dkey(),slot:slot||"am",sys:sys,dia:dia,pulse:pulse});
+  save(); render();
+  toast(sys+"/"+dia+(bpFlag(sys,dia)==="bad"?" — above 135/85":" logged"));
+}
 
 function weightV(){
   const W=(DB.weight||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
@@ -1108,7 +1254,8 @@ function chartCard(title,sub,pts,o){
 
 /* ---------- IMPORT ---------- */
 function impPanel(kind){
-  const F={sleep:"date, bedtime, wake, hours, quality",
+  const F={bp:"date, slot(am/pm), systolic, diastolic, pulse",
+           sleep:"date, bedtime, wake, hours, quality",
            weight:"date, weight_lb, bodyfat_pct",
            strength:"date, day, exercise, set, weight, reps, rir",
            food:"date, food, qty, unit, kcal, protein, carbs, fat, sugar"}[kind];
@@ -1173,6 +1320,10 @@ function runImport(kind,txt,stat){
       if(d && d>today){ skipped++; return; }
       if(kind==="sleep"&&d&&c[1]&&c[2]){ const hh=+c[3]||hrs(c[1],c[2]);
         if(hh>0&&hh<=16) push({date:d,bed:c[1],wake:c[2],hrs:hh,q:c[4]?+c[4]:null}); else skipped++; return; }
+      if(kind==="bp"&&d&&c[2]){ const S=+c[2],D=+c[3];
+        if(S>=70&&S<=250&&D>=40&&D<=150&&D<S) push({date:d,slot:(c[1]||"am").toLowerCase().startsWith("p")?"pm":"am",
+          sys:S,dia:D,pulse:c[4]?+c[4]:null});
+        else skipped++; return; }
       if(kind==="weight"&&d&&c[1]){ const lb=+c[1]; if(lb>=80&&lb<=400) push({date:d,lb:lb,bf:c[2]?+c[2]:null}); else skipped++; return; }
       if(kind==="strength"&&d&&c[2]){ const W=+c[4],R=+c[5];
         if(W>0&&W<=2000&&R>0&&R<=100) push({date:d,day:c[1]||"W1",n:c[2],set:+c[3]||1,w:W,r:R,rir:c[6]===""?null:+c[6]});
@@ -1184,6 +1335,8 @@ function runImport(kind,txt,stat){
     // free text, one entry per line
     if(kind==="sleep"){ const r=parseSleep(line);
       if(r.bed&&r.wake){push({date:dkey(),bed:r.bed,wake:r.wake,hrs:hrs(r.bed,r.wake),q:r.q}); return;} skipped++; return; }
+    if(kind==="bp"){ const r=parseBP(line);
+      if(r){push({date:dkey(),slot:r.slot||"am",sys:r.sys,dia:r.dia,pulse:r.pulse}); return;} skipped++; return; }
     if(kind==="weight"){ const r=parseWeight(line);
       if(r){push({date:dkey(),lb:r.lb,bf:r.bf}); return;} skipped++; return; }
     if(kind==="strength"){ const r=parseStrength(line,DB.plan);
@@ -1209,6 +1362,7 @@ function runImport(kind,txt,stat){
       out.forEach(r=>{const i=DB.weight.findIndex(x=>x.date===r.date); if(i>=0)DB.weight[i]=r;else DB.weight.push(r);});
       DB.weight.sort((a,b)=>a.date<b.date?-1:1);}
     if(kind==="food"){DB.food=(DB.food||[]).concat(out);}
+    if(kind==="bp"){DB.bp=(DB.bp||[]).concat(out);DB.bp.sort((a,b)=>a.date<b.date?-1:1);}
     if(kind==="strength"){DB.sessions=DB.sessions||[];
       const byDate={}; out.forEach(r=>{const k=r.date+"|"+r.day; (byDate[k]=byDate[k]||[]).push(r);});
       Object.entries(byDate).forEach(([k,rows])=>{const [d,day]=k.split("|");
@@ -1422,9 +1576,9 @@ function metricsV(){return `<div class="wrap">
   <div class="tiles">
     ${(()=>{const W=DB.weight||[],l=W[W.length-1];
       return l?`<div class="tile"><div class="k">Body weight</div><div class="v">${l.lb.toFixed(1)}<u>lbs</u></div><div class="s">logged ${new Date(l.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})}</div></div>`
-              :`<div class="tile"><div class="k">Skeletal muscle</div><div class="v">78.3<u>lbs</u></div><div class="s">Aug 15 2026 · hydration-matched</div></div>`;})()}
+              :`<div class="tile"><div class="k">Skeletal muscle</div><div class="v">79.6<u>lbs</u></div><div class="s">Aug 16 2026 · Pergola</div></div>`;})()}
     <div class="tile b"><div class="k">VO2 max</div><div class="v">48<u>ml/kg</u></div><div class="s">~3,571 ml/min absolute anchor</div></div>
-    <div class="tile"><div class="k">Body fat</div><div class="v">16.0<u>%</u></div><div class="s">26.7 lbs fat mass</div></div>
+    <div class="tile"><div class="k">Body fat</div><div class="v">13.8<u>%</u></div><div class="s">22.7 lbs fat mass</div></div>
     ${(()=>{const w=windowAvg(DB.sleep,14,"hrs");const a=w&&w.v;
       const cls=a==null?"r":a<6.5?"r":a>=7.5?"g":"";
       return `<div class="tile ${cls}"><div class="k">Sleep</div><div class="v">${a?a.toFixed(1):"~5.5"}<u>h</u></div>
@@ -1465,9 +1619,10 @@ function csv(){const rows=[["date","day","exercise","set","weight","reps","rir",
   let out=rows.map(r=>r.join(",")).join("\n");
   if(DB.sleep.length)out+="\n\ndate,bedtime,wake,hours,quality\n"+DB.sleep.map(s=>[s.date,s.bed,s.wake,s.hrs.toFixed(2),s.q??""].join(",")).join("\n");
   if((DB.food||[]).length)out+="\n\ndate,food,qty,unit,kcal,protein,carbs,fat,sugar\n"+DB.food.map(f=>[f.date,'"'+f.n+'"',f.q,f.unit,f.kcal.toFixed(0),f.p.toFixed(1),f.c.toFixed(1),f.f.toFixed(1),f.s.toFixed(1)].join(",")).join("\n");
+  if((DB.bp||[]).length)out+="\n\ndate,slot,systolic,diastolic,pulse\n"+DB.bp.map(b=>[b.date,b.slot,b.sys,b.dia,b.pulse??""].join(",")).join("\n");
   if((DB.weight||[]).length)out+="\n\ndate,weight_lb,bodyfat_pct\n"+DB.weight.map(w=>[w.date,w.lb,w.bf??""].join(",")).join("\n");
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out],{type:"text/csv"}));
-  a.download="strength_and_sleep_log_"+dkey()+".csv";a.click();toast("Exported");}
+  a.download="physique_log_"+dkey()+".csv";a.click();toast("Exported");}
 document.addEventListener("click",e=>{if(e.target.id==="wipe"&&confirm("Erase every logged session and night?")){
   DB={plan:JSON.parse(JSON.stringify(SEED)),sessions:[],sleep:[],food:[],customFoods:[],weight:[],
       _del:[],_wipe:Date.now()+1};save();tab=day;render();toast("Erased");}});
