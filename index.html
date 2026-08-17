@@ -15,8 +15,8 @@
 <style>
 :root{
   --bg:#131518; --bg-2:#181b1f; --panel:#1c2025; --panel-2:#22262c; --line:#2b3037; --line-2:#363c45;
-  --chalk:#ece7dd; --dim:#8d939c; --dimmer:#5a606a;
-  --brass:#c9973f; --brass-2:#e0b565; --brass-dk:#7e5f26;
+  --chalk:#ece7dd; --dim:#8d939c; --dimmer:#7c8592;
+  --brass:#c9973f; --brass-2:#e0b565; --brass-dk:#a67d32;
   --amber:#f0a938; --cyan:#38bdf8;
   --go:#63a882; --hot:#c9603f; --ice:#6f96b8;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
@@ -24,6 +24,11 @@
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+::placeholder{color:#8a929e;opacity:1}
+::-webkit-input-placeholder{color:#8a929e;opacity:1}
+:-ms-input-placeholder{color:#8a929e;opacity:1}
+textarea::placeholder{color:#98a0ac;opacity:1}
+.srch::placeholder{color:#98a0ac;opacity:1}
 html{background:var(--bg)}
 body{margin:0;padding:0 0 92px;background:var(--bg);color:var(--chalk);font-family:var(--sans);
   max-width:680px;margin:0 auto;overscroll-behavior-y:contain;-webkit-font-smoothing:antialiased}
@@ -61,7 +66,7 @@ h2.sec:after{content:"";flex:1;height:1px;background:var(--line)}
 .cn i{display:block;font-style:normal;font-size:9.5px;color:var(--dimmer);letter-spacing:.11em;text-transform:uppercase;margin-top:4px}
 .cl{font-family:var(--mono);font-size:12px;color:var(--dim);text-align:right;white-space:nowrap;line-height:1.5}
 .cl b{color:var(--chalk);font-weight:600;font-size:13px}
-.cl span{display:block;font-size:8.5px;color:var(--dimmer);letter-spacing:.09em;text-transform:uppercase}
+.cl span{display:block;font-size:9px;color:var(--dimmer);letter-spacing:.09em;text-transform:uppercase}
 .chev{color:var(--dimmer);font-size:17px;transition:transform .2s}
 .card.open .chev{transform:rotate(90deg);color:var(--brass)}
 .cbody{display:none;border-top:1px solid var(--line);padding:2px 11px 12px}
@@ -71,8 +76,8 @@ h2.sec:after{content:"";flex:1;height:1px;background:var(--line)}
 .srow:last-of-type{border-bottom:0}
 .sn{width:19px;padding-top:17px;font-family:var(--mono);font-size:10px;color:var(--dimmer)}
 .fg{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
-.fl{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--dimmer)}
-.gh{font-family:var(--mono);font-size:9px;color:var(--brass-dk);height:11px;letter-spacing:.03em}
+.fl{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer)}
+.gh{font-family:var(--mono);font-size:9.5px;color:var(--brass-dk);height:11px;letter-spacing:.03em}
 input.n{width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:9px;color:var(--chalk);
   font-family:var(--mono);font-size:17px;font-weight:600;text-align:center;padding:10px 2px;-moz-appearance:textfield}
 input.n::-webkit-inner-spin-button,input.n::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
@@ -188,7 +193,7 @@ input.n[type=time]{font-size:18px}
 .say textarea{width:100%;background:var(--panel-2);border:1.5px solid var(--line);border-radius:10px;
   color:var(--chalk);font:400 15px/1.5 var(--sans);padding:12px;resize:none;min-height:76px}
 .say textarea:focus{outline:none;border-color:var(--go)}
-.say .hintl{font-size:10px;color:var(--dimmer);margin:9px 2px 0;line-height:1.5}
+.say .hintl{font-size:10.5px;color:var(--dimmer);margin:9px 2px 0;line-height:1.5}
 .say .row{display:flex;gap:8px;margin-top:10px}
 .say .go2{flex:1;background:linear-gradient(180deg,#7dbd95,var(--go));border:0;border-radius:10px;color:#0d1712;
   font:700 14px var(--sans);padding:13px 0;cursor:pointer}
@@ -253,7 +258,7 @@ input.n[type=time]{font-size:18px}
 .imp .fbtn:active{background:var(--line)}
 .imp .run{width:100%;margin-top:9px;background:linear-gradient(180deg,var(--brass-2),var(--brass));border:0;
   border-radius:10px;color:#17191c;font:700 13.5px var(--sans);padding:13px 0;cursor:pointer}
-.imp .fmt{font-size:10px;color:var(--dimmer);line-height:1.6;margin-top:9px}
+.imp .fmt{font-size:10.5px;color:var(--dimmer);line-height:1.6;margin-top:9px}
 .imp .fmt code{font-family:var(--mono);color:var(--dim)}
 .imp .stat{font-size:11.5px;margin-top:9px;line-height:1.5}
 .wide.w4{background:rgba(224,87,107,.20);border-color:#E0576B;
@@ -324,7 +329,7 @@ input.n[type=time]{font-size:18px}
 .sc{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 6px;text-align:center}
 .sc .v{font-family:var(--serif);font-size:25px;font-weight:600;line-height:1}
 .sc .v u{text-decoration:none;font-size:11px;color:var(--dim);font-family:var(--sans)}
-.sc .k{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:var(--dimmer);margin-top:7px}
+.sc .k{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);margin-top:7px}
 
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(19,21,24,.97);backdrop-filter:blur(10px);
   border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));
@@ -633,13 +638,15 @@ const VERSIONS=[
  {v:"v11",pdf:"v11.pdf",d:"Jul 27 2026",t:"<b>Injury log added.</b> Four hamstring tweaks documented, return-to-run protocol staged. Garmin dataset refreshed to Jul 21: 654 runs, 3,679 km. Speed-exposure gap identified — habitual pace frozen near 6:00/km for three years."},
  {v:"v12",pdf:"v12.pdf",d:"Aug 5 2026",t:"<b>Jul 28 bloodwork.</b> Hematocrit 0.521, estradiol landed at 113, IGF-1 down to 134, vitamin D deficient at 57.1. Dr Salim's decision log added. First blood pressure reading. Supplement log created after ashwagandha and vitamin C were disclosed. Three-company founding logged as a confounder."},
  {v:"v13",pdf:"v13.pdf",d:"Aug 15 2026",t:"<b>Model re-anchored.</b> The May 18 scan reclassified as a hydration outlier — eVolt derives muscle from body water, and May's water was the highest ever recorded. Only hydration-matched scans compare. Projection rebased: End-2030 target cut from 101.3 to 88.3 lbs."},
- {v:"v15",pdf:"v15.pdf",d:"Aug 16 2026",t:"<b>eVolt retired as the instrument of record for muscle change.</b> A rescan 27 hours later on a different GoodLife machine reported −2.0 lbs weight, +1.3 lbs muscle, −4.0 lbs fat and −1.0 in waist. The overnight 'muscle' is nearly double the entire hydration-matched change across ten months. The strength log becomes the progress instrument; scan venue is now recorded.",now:true},
+ {v:"v17",pdf:"v17.pdf",d:"Aug 17 2026",t:"<b>Correction: training began Aug 2024, not Nov 2025.</b> TRT and home-gym lifting both started Aug 2024, every ~5 days — earlier versions recorded 'sporadic ~1×/week'. Training age is 25 months, not 9. The optimal ceiling falls to 0.3–0.6 lbs muscle/month; phase 1 ran at only ~1.4 sessions/week, so measured performance sits at the bottom of the band rather than well below it. The Aug 2024 baseline is un-confirmed: the first scale reading is 112 days into the protocol.",now:true},
+ {v:"v16",pdf:"v16.pdf",d:"Aug 17 2026",t:"<b>A 21-month scale series enters the record.</b> 114 readings, Nov 2024 – Aug 2026, one instrument, consistent protocol. Confirms the 155 lb Aug 2024 baseline from measured data for the first time, and bounds total mass gain since lifting began at +3.4 lbs. Optimal-conditions ceiling stated at 0.5–1.0 lbs muscle/month — superseded at v17."},
+ {v:"v15",pdf:"v15.pdf",d:"Aug 16 2026",t:"<b>eVolt retired as the instrument of record for muscle change.</b> A rescan 27 hours later on a different GoodLife machine reported −2.0 lbs weight, +1.3 lbs muscle, −4.0 lbs fat and −1.0 in waist. The overnight 'muscle' is nearly double the entire hydration-matched change across ten months. The strength log becomes the progress instrument; scan venue is now recorded."},
  {v:"v14",pdf:"v14.pdf",d:"Aug 15 2026",t:"<b>Run restart logged.</b> Burst sessions tabled against the 163–178 bpm injury band. Return-to-run advanced from Stage 0 to Stage 2. Timeline corrected to mid-May, not late March. Low estradiol ruled out as a cause of the strength plateau."}];
 
 const METRICS=[
  {g:"Composition · eVolt Aug 16 2026 · Pergola",r:[
   ["Skeletal muscle","79.6 lbs","Pergola Aug 16 · eVolt retired for rate","hi"],
-  ["Total weight","164.7 lbs","74.7 kg · Pergola"],
+  ["Total weight","164.7 lbs","eVolt · scale series 114 readings"],
   ["Body fat","13.8%","22.7 lbs fat mass"],
   ["Visceral fat area","74 cm²","was 80 in Oct 2025"],
   ["Total body water","102.3 lbs","High — machine-to-machine noise","hi"]]},
@@ -660,6 +667,13 @@ const METRICS=[
   ["LDL / HDL","2.55 / 1.58","excellent","ok"],
   ["PSA","1.6 ug/L","clean baseline","ok"],
   ["CRP","2.5 mg/L","illness-confounded"]]},
+ {g:"Mass · scale series",r:[
+  ["Readings","114","Nov 2024 – Aug 2026, one scale","ok"],
+  ["Whole series","+5.4 lbs","630 days · 0.26 lbs/month · all inside the intervention"],
+  ["Training age","25 months","15 at ~1.4×/wk home gym · 9 at GoodLife"],
+  ["Aug 2024 baseline","155 lbs","back-calculated · still UNVERIFIED","hi"],
+  ["Optimal ceiling","0.3–0.6 lbs/mo","central ~0.4 · measured 0.26–0.32 = bottom of band","hi"],
+  ["Cadence","2 in 30 days","weigh daily — cheapest fix available","bad"]]},
  {g:"Instrument note",r:[
   ["eVolt","retired for rate","Aug 15/16 scans 27 h apart differed by +1.3 lbs muscle","bad"],
   ["Strength log","now the record","weights and reps are venue-independent","ok"],
@@ -670,6 +684,7 @@ const METRICS=[
   ["Next bloods","Aug 20–27","ApoB · Lp(a) · cystatin C · retics"],
   ["Strength plateau","since ~May 15","no working-weight increase","bad"]]}];
 
+const WHIST=[["2024-11-21",155.0],["2024-11-27",158.8],["2024-12-06",159.6],["2024-12-15",161.6],["2024-12-17",159.6],["2024-12-19",162.2],["2024-12-20",160.2],["2024-12-21",159.4],["2025-01-02",158.6],["2025-01-07",160.2],["2025-02-07",155.8],["2025-02-10",157.2],["2025-02-15",157.4],["2025-02-25",160.4],["2025-02-26",159.4],["2025-03-02",159.4],["2025-03-03",159.8],["2025-03-04",160.0],["2025-03-17",162.8],["2025-03-19",158.0],["2025-03-21",162.6],["2025-03-22",158.0],["2025-04-03",159.2],["2025-04-04",159.8],["2025-04-05",161.0],["2025-04-06",159.2],["2025-04-07",160.4],["2025-04-27",162.0],["2025-05-01",163.0],["2025-05-05",163.4],["2025-05-08",164.2],["2025-05-17",163.4],["2025-05-27",160.4],["2025-06-02",162.0],["2025-06-18",164.0],["2025-08-10",163.0],["2025-08-24",163.0],["2025-08-25",163.0],["2025-08-27",163.4],["2025-09-02",159.4],["2025-09-03",159.8],["2025-09-04",161.0],["2025-09-05",162.8],["2025-09-06",161.8],["2025-09-10",160.2],["2025-09-19",162.8],["2025-10-08",160.2],["2025-10-23",162.0],["2025-10-24",163.6],["2025-10-30",163.0],["2025-11-30",161.8],["2025-12-01",162.6],["2025-12-03",162.0],["2025-12-08",160.2],["2025-12-17",162.6],["2025-12-23",162.6],["2025-12-26",162.4],["2025-12-30",163.0],["2025-12-31",162.8],["2026-01-02",163.4],["2026-01-04",164.8],["2026-01-08",163.0],["2026-01-09",164.0],["2026-01-11",163.0],["2026-01-14",164.6],["2026-01-15",164.3],["2026-01-16",164.5],["2026-01-17",165.0],["2026-01-19",165.2],["2026-01-20",168.6],["2026-01-21",164.8],["2026-01-22",165.0],["2026-02-03",165.6],["2026-02-04",165.2],["2026-02-05",166.0],["2026-02-10",166.4],["2026-02-11",166.2],["2026-02-13",166.8],["2026-02-15",165.8],["2026-02-18",167.0],["2026-02-19",168.0],["2026-02-20",166.8],["2026-02-25",167.0],["2026-03-06",167.4],["2026-03-22",164.8],["2026-03-24",166.4],["2026-03-30",166.0],["2026-03-31",166.8],["2026-04-08",164.2],["2026-04-10",164.8],["2026-04-14",164.8],["2026-04-16",164.2],["2026-04-17",165.8],["2026-04-18",163.0],["2026-04-26",166.8],["2026-04-28",166.0],["2026-04-29",166.0],["2026-04-30",169.2],["2026-05-03",166.4],["2026-05-04",168.0],["2026-05-09",168.2],["2026-05-10",170.2],["2026-05-11",167.0],["2026-05-12",167.0],["2026-05-17",169.0],["2026-05-18",167.4],["2026-06-07",165.8],["2026-06-10",167.2],["2026-06-14",164.6],["2026-06-18",164.8],["2026-06-20",161.8],["2026-07-14",165.2],["2026-08-12",166.6],["2026-08-13",163.6]];
 const K="kmLog_v2";
 let DB=load(), day="W1", tab="home";
 let drafts=(()=>{try{const r=localStorage.getItem("kmDraft_v2");
@@ -721,6 +736,23 @@ function windowAvg(list,days,field){
   return w.length?{v:w.reduce((a,b)=>a+b[field],0)/w.length,n:w.length}:null;
 }
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const BK="kmLog_backups_v1";
+function snapshots(){ try{const r=localStorage.getItem(BK); return r?JSON.parse(r):[];}catch(e){return [];} }
+function snapshot(reason){
+  try{
+    const raw=localStorage.getItem(K); if(!raw) return;
+    const list=snapshots();
+    if(list.length && list[list.length-1].raw===raw) return;
+    list.push({at:new Date().toISOString(), reason:reason, raw:raw});
+    while(list.length>5) list.shift();
+    localStorage.setItem(BK, JSON.stringify(list));
+  }catch(e){}
+}
+function restoreSnapshot(i){
+  const list=snapshots(); const s=list[i]; if(!s) return false;
+  try{ snapshot("before restore"); localStorage.setItem(K, s.raw); DB=load(); return true; }
+  catch(e){ return false; }
+}
 function tomb(id){ if(!id) return; DB._del=DB._del||[]; if(!DB._del.includes(id)) DB._del.push(id);
   if(DB._del.length>800) DB._del=DB._del.slice(-800); }
 function mergeStored(mine){
@@ -815,7 +847,10 @@ function render(){nav();
   if(tab==="weight"){v.innerHTML=weightV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="wsv">Save weight</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     document.getElementById("wsv").onclick=()=>saveWeight(document.getElementById("wlb").value,document.getElementById("wbf").value);
-    wireWeight();wireImp("weight");return;}
+    wireWeight();wireImp("weight");
+    const wg=document.getElementById("whistgo");
+    if(wg) wg.onclick=()=>{ if(confirm("Load your scale history into the app?")) loadWeightHistory(); };
+    return;}
   if(tab==="food"){v.innerHTML=foodV();bar.innerHTML=`<button class="btn gh2" id="x">Export</button><button class="btn" id="bk">Back</button>`;
     document.getElementById("x").onclick=csv;document.getElementById("bk").onclick=()=>{tab="home";render();};wireFood();wireFoodSay();wireImp("food");return;}
   if(tab==="sleep"){v.innerHTML=sleepV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn gh2" id="x">Export</button><button class="btn" id="ss">Save last night</button>`;
@@ -828,6 +863,9 @@ function render(){nav();
     setTimeout(()=>{document.querySelectorAll(".exh").forEach(el=>el.onclick=()=>{
       const c=document.getElementById("exc"+el.dataset.ex);
       c.style.display=c.style.display==="none"?"block":"none";});
+      document.querySelectorAll("[data-restore]").forEach(el=>el.onclick=()=>{
+        if(confirm("Restore this snapshot? Everything logged now will be replaced.")){
+          if(restoreSnapshot(+el.dataset.restore)){render();toast("Restored");}else toast("Could not restore");}});
       document.querySelectorAll("[data-sess]").forEach(el=>el.onclick=()=>{
         if(confirm("Delete this session? This cannot be undone.")){
           const s=DB.sessions[+el.dataset.sess]; if(s) tomb(s._id);
@@ -982,7 +1020,7 @@ function homeV(){
    </button>
    <div class="grid2">
      <button class="sq c2" id="goA"><svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v6h6M8 14h8M8 18h5"/></svg>
-       <span class="lbl">Archive</span><span class="cap">v11 – v15 dashboards</span></button>
+       <span class="lbl">Archive</span><span class="cap">v11 – v17 dashboards</span></button>
      <button class="sq c1" id="goM"><svg viewBox="0 0 24 24"><path d="M3 20h18M6 20v-7M11 20V7M16 20v-4M21 20V4"/></svg>
        <span class="lbl">Metrics</span><span class="cap">current anchors</span></button>
      <button class="sq c3" id="goP"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 8-9"/><path d="M15 6h5v5"/></svg>
@@ -1102,6 +1140,37 @@ function saveBP(sys,dia,pulse,slot){
   toast(sys+"/"+dia+(bpFlag(sys,dia)==="bad"?" — above 135/85":" logged"));
 }
 
+function whistPending(){
+  const have=new Set((DB.weight||[]).map(w=>w.date));
+  return WHIST.filter(a=>!have.has(a[0])).length;
+}
+function whistHTML(){
+  const n=whistPending();
+  if(!n) return "";
+  return `<div class="card open" style="border-color:#9b87dc;margin-bottom:12px">
+    <div class="chead" style="cursor:default"><div class="cn">
+      <b>Load your scale history</b>
+      <i>${n} readings · Nov 2024 – Aug 2026</i></div></div>
+    <div class="cbody" style="display:block">
+      <div class="note" style="padding:0 0 10px">Morning weigh-ins, after coffee, unclothed, same
+        electronic scale throughout. Nothing already logged is touched.</div>
+      <button class="go2" id="whistgo" style="width:100%;background:linear-gradient(180deg,#b7a6ea,#9b87dc);
+        color:#1a1430;border:0;border-radius:10px;padding:15px 0;font:700 15px var(--sans);cursor:pointer">
+        Load ${n} reading${n>1?"s":""}</button>
+    </div></div>`;
+}
+function loadWeightHistory(){
+  try{
+    snapshot("before scale history");
+    DB.weight=DB.weight||[];
+    const have=new Set(DB.weight.map(w=>w.date));
+    const now=Date.now(); let n=0;
+    WHIST.forEach(a=>{ if(have.has(a[0])) return;
+      DB.weight.push({date:a[0],lb:a[1],bf:null,_id:uid(),_t:now}); n++;});
+    DB.weight.sort((x,y)=>x.date<y.date?-1:1);
+    if(save()){ render(); alert("Loaded "+n+" weigh-ins.\n\nNov 2024 – Aug 2026."); }
+  }catch(e){ alert("Could not load: "+e.message); }
+}
 function weightV(){
   const W=(DB.weight||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
   const last=W[W.length-1];
@@ -1109,12 +1178,14 @@ function weightV(){
   const a7=g7&&g7.v, a30=g30&&g30.v;
   let trend=null,trendN=0;
   (()=>{ if(W.length<2) return;
-    let rec=W.filter(x=>x.date>=daysAgo(29));
-    if(rec.length<2) rec=W.slice(-4);
-    if(rec.length<2) return;
-    const f=rec[0], l=rec[rec.length-1];
-    const span=(new Date(l.date)-new Date(f.date))/864e5;
-    if(span>0){ trend=(l.lb-f.lb)/span*7; trendN=Math.round(span); } })();
+    // widen until the window spans enough days for a rate to mean anything
+    for(const days of [30,60,90,180,365]){
+      const rec=W.filter(x=>x.date>=daysAgo(days-1));
+      if(rec.length<3) continue;
+      const f=rec[0], l=rec[rec.length-1];
+      const span=(new Date(l.date)-new Date(f.date))/864e5;
+      if(span>=14){ trend=(l.lb-f.lb)/span*7; trendN=Math.round(span); return; }
+    }})();
   const rows=W.slice(-20).reverse().map((x,i)=>{
     const prev=W[W.length-2-i];
     const d=prev?x.lb-prev.lb:null;
@@ -1130,6 +1201,7 @@ function weightV(){
    </div>`:""}
    ${W.length>1?chartCard("Weight trend",W.length+" entries · dashed line is the 7-day average",W.map(x=>({v:x.lb,l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),{color:"#a78bfa",color2:"#e0aaff",avg:true,id:1}):""}
    ${W.filter(x=>x.bf).length>1?chartCard("Body fat %","from entries where you recorded it",W.filter(x=>x.bf).map(x=>({v:x.bf,l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),{color:"#fb7185",color2:"#fdba74",id:2,invert:true}):""}
+   ${whistHTML()}
    ${impPanel("weight")}
       <div class="say">
      <textarea id="wsay" placeholder="Say or type — &quot;166.7 lbs, 16% body fat&quot; or just &quot;167&quot;"></textarea>
@@ -1145,7 +1217,7 @@ function weightV(){
          <div class="fg"><span class="fl">Body fat % — optional</span><input class="n" id="wbf" inputmode="decimal" placeholder="${last&&last.bf?last.bf:""}"></div>
        </div></div></div>
    <h2 class="sec">History${trend?` · ${trend>0?"+":""}${trend.toFixed(2)} lbs/week over ${trendN} days`:""}</h2>${rows}
-   <div class="note">Weigh consistently — same time of day, same conditions. Day-to-day swings are mostly water; the 7-day average is the number worth reading.</div></div>`;}
+   <div class="note">Protocol: mornings, after coffee, unclothed, same electronic scale. Consistency is what makes the series readable. Day-to-day swings are mostly water; the 7-day average is the number worth reading.</div></div>`;}
 
 function wireWeight(){
   const ta=document.getElementById("wsay"), out=document.getElementById("wconf");
@@ -1253,12 +1325,13 @@ function chartCard(title,sub,pts,o){
     <div class="cx"><span>${pts[0].l}</span><span>${pts[pts.length-1].l}</span></div></div>`;}
 
 /* ---------- IMPORT ---------- */
-function impPanel(kind){
-  const F={bp:"date, slot(am/pm), systolic, diastolic, pulse",
+const FMT={bp:"date, slot(am/pm), systolic, diastolic, pulse",
            sleep:"date, bedtime, wake, hours, quality",
            weight:"date, weight_lb, bodyfat_pct",
            strength:"date, day, exercise, set, weight, reps, rir",
-           food:"date, food, qty, unit, kcal, protein, carbs, fat, sugar"}[kind];
+           food:"date, food, qty, unit, kcal, protein, carbs, fat, sugar"};
+function impPanel(kind){
+  const F=FMT[kind]||"";
   return `<div class="imp" id="imp">
     <div class="ih" id="imph"><b>Import past data</b><span>›</span></div>
     <div class="ib">
@@ -1267,12 +1340,12 @@ function impPanel(kind){
         <button class="fbtn" id="impcsv">Choose CSV file</button>
         <button class="fbtn" id="impimg">Choose screenshot</button>
       </div>
-      <input type="file" id="impf" accept=".csv,text/csv,text/plain" style="display:none">
+      <input type="file" id="impf" style="display:none">
       <input type="file" id="impi" accept="image/*" style="display:none">
       <button class="run" id="imprun">Read and preview</button>
       <div class="stat" id="impstat"></div>
       <div class="fmt">CSV columns: <code>${F}</code> — a header row is optional. The app's own
-      export re-imports cleanly. <b>Screenshots:</b> your phone can already copy text out of an image
+      export re-imports cleanly. <b>On iPhone:</b> from Mail, tap the attachment, then the share icon, then <b>Copy</b> — or save it to Files first. Copy-and-paste is the more reliable route.<br><br><b>Screenshots:</b> your phone can already copy text out of an image
       (long-press the image → Google Lens → Select all → Copy), which is far more accurate than
       in-app OCR. Paste it above.</div>
     </div></div>`;}
@@ -1283,27 +1356,47 @@ function wireImp(kind){
   const ta=document.getElementById("impt"), stat=document.getElementById("impstat");
   document.getElementById("impcsv").onclick=()=>document.getElementById("impf").click();
   document.getElementById("impimg").onclick=()=>document.getElementById("impi").click();
-  document.getElementById("impf").onchange=e=>{const f=e.target.files[0]; if(!f)return;
-    const r=new FileReader(); r.onload=()=>{ta.value=r.result;stat.style.color="var(--dim)";
-      stat.textContent=f.name+" loaded — tap Read and preview.";}; r.readAsText(f);};
+  document.getElementById("impf").onchange=e=>{const f=e.target.files[0];
+    if(!f){stat.style.color="var(--hot)";stat.textContent="No file was chosen.";return;}
+    stat.style.color="var(--dim)"; stat.textContent="Reading "+f.name+"…";
+    const r=new FileReader();
+    r.onerror=()=>{stat.style.color="var(--hot)";
+      stat.innerHTML="Could not read <b>"+esc(f.name)+"</b>. Open the file, select all, copy, and paste it into the box above instead.";};
+    r.onload=()=>{
+      const txt=(r.result==null?"":String(r.result));
+      if(!txt.trim()){stat.style.color="var(--hot)";
+        stat.innerHTML="<b>"+esc(f.name)+"</b> came through empty ("+f.size+" bytes). Try copy-and-paste instead.";return;}
+      ta.value=txt;
+      const first=txt.split(/\r?\n/)[0].slice(0,52);
+      stat.style.color="var(--go)";
+      stat.innerHTML="<b>"+esc(f.name)+"</b> · "+txt.split(/\r?\n/).filter(Boolean).length+
+        " lines<br><span style=\"font-family:var(--mono);font-size:10px;color:var(--dimmer)\">"+
+        esc(first)+"…</span><br>Now tap <b>Read and preview</b>.";};
+    r.readAsText(f);};
   document.getElementById("impi").onchange=e=>{const f=e.target.files[0]; if(!f)return;
     stat.style.color="var(--brass)";
     stat.innerHTML="In-app OCR is not built in — it is large, slow on a phone, and less accurate than what your phone already does.<br><br><b>Do this instead:</b> open the screenshot in Google Photos, tap Lens, tap Select all, Copy, then paste into the box above.";};
-  document.getElementById("imprun").onclick=()=>runImport(kind,ta.value,stat);
+  document.getElementById("imprun").onclick=()=>runImport(kind,ta.value,stat,FMT[kind]||"");
 }
 
 function splitRows(txt){
   return txt.trim().split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length);
 }
-function runImport(kind,txt,stat){
+function runImport(kind,txt,stat,F){
   if(!txt||!txt.trim()){stat.style.color="var(--hot)";stat.textContent="Nothing to read.";return;}
-  const lines=splitRows(txt.replace(/^\uFEFF/,""));
+  txt=String(txt).replace(/^\uFEFF/,"")
+     .replace(/\u00a0/g," ")
+     .replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"')
+     .replace(/[\u2010-\u2015]/g,"-")
+     .replace(/\u200b/g,"");
+  const lines=splitRows(txt);
   const DELIM = /\t/.test(txt) ? "\t" : (/;/.test(txt)&&!/,/.test(txt) ? ";" : ",");
   const isCSV = lines.filter(l=>l.includes(DELIM)).length >= Math.max(1,lines.length*0.6);
   const today = dkey();
   const normDate = s => {
     s=(s||"").trim();
-    let m=s.match(/^(\d{4})-(\d{2})-(\d{2})/); if(m) return m[0];
+    let m=s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/);
+    if(m) return m[1]+"-"+String(+m[2]).padStart(2,"0")+"-"+String(+m[3]).padStart(2,"0");
     m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
     if(m){ const a=+m[1],bb=+m[2];
       const mo = a>12 ? bb : a, dd = a>12 ? a : bb;   // ambiguous: assume M/D/Y
@@ -1350,7 +1443,10 @@ function runImport(kind,txt,stat){
   });
 
   if(!out.length){stat.style.color="var(--hot)";
-    stat.textContent="Nothing recognised. Check the column order, or paste one entry per line.";return;}
+    const first=(lines[0]||"").slice(0,52);
+    stat.innerHTML="Nothing recognised in "+lines.length+" line"+(lines.length===1?"":"s")+
+      ".<br><span style=\"font-family:var(--mono);font-size:10px;color:var(--dimmer)\">first line: "+
+      esc(first)+"</span><br>Expected columns: <b>"+esc(F)+"</b>";return;}
   stat.style.color="var(--go)";
   stat.innerHTML=`Found <b>${out.length}</b> entr${out.length>1?"ies":"y"}${skipped?` · ${skipped} line${skipped>1?"s":""} skipped`:""}.
     <button class="run" id="impgo" style="margin-top:9px">Add ${out.length} to history</button>`;
@@ -1591,7 +1687,20 @@ function timeV(){return `<div class="wrap"><h2 class="sec">Dashboard evolution</
   VERSIONS.slice().reverse().map(v=>`<div class="ev ${v.now?'now':''}"><div class="vn">${v.v}</div><div class="vd">${v.d}</div><div class="vt">${v.t}</div></div>`).join("")+
   `</div><div class="note">Versions before v9c are partially reconstructed from the project archive; early numbering was less consistent than the record above implies.</div></div>`;}
 
-function progV(){if(!DB.sessions.length)return `<div class="wrap">${impPanel("strength")}<div class="empty">No sessions logged yet.<br>Log one, or import your history above.</div></div>`;
+function backupsHTML(){
+  const list=snapshots();
+  if(!list.length) return `<div class="note" style="padding:8px 4px 0">A snapshot is taken automatically before any bulk load. None yet.</div>`;
+  return list.slice().reverse().map((s,i)=>{
+    const idx=list.length-1-i;
+    let n=0; try{const d=JSON.parse(s.raw);
+      n=(d.sessions||[]).length+(d.sleep||[]).length+(d.food||[]).length+(d.weight||[]).length+(d.bp||[]).length;}catch(e){}
+    return `<div class="dl"><span class="a">${new Date(s.at).toLocaleDateString(undefined,{day:"numeric",month:"short"})}
+      ${new Date(s.at).toLocaleTimeString(undefined,{hour:"2-digit",minute:"2-digit"})}
+      <u>${esc(s.reason)} · ${n} entries</u></span>
+      <button class="pb" data-restore="${idx}" style="flex:0 0 auto;padding:8px 12px;font-size:12px">Restore</button></div>`;
+  }).join("")+`<div class="note" style="padding:8px 4px 0">The last five are kept. Restoring replaces what is logged now — the current state is snapshotted first.</div>`;}
+
+function progV(){if(!DB.sessions.length)return `<div class="wrap">${impPanel("strength")}<div class="empty">No sessions logged yet.<br>Log one, or import your history above.</div><h2 class="sec">Backups</h2>${backupsHTML()}</div>`;
   const names=[...new Set(DB.sessions.flatMap(s=>s.sets.map(x=>x.n)))];
   return `<div class="wrap">${impPanel("strength")}<h2 class="sec">Best estimated 1RM</h2>`+
    names.map((n,i)=>{
@@ -1605,7 +1714,7 @@ function progV(){if(!DB.sessions.length)return `<div class="wrap">${impPanel("st
        <div class="exc" id="exc${i}" style="display:none">${pts.length>1
          ? chartCard(esc(n)+" — estimated 1RM",pts.length+" sessions",pts,{color:"#f0a938",color2:"#fde047",id:100+i,dp:0})
          : `<div class="note" style="padding:8px 4px">Log this again and the trend appears here.</div>`}</div></div>`;}).join("")+
-   `<h2 class="sec">Recent sessions</h2>`+DB.sessions.slice(-8).reverse().map(s=>{const by={};
+   `<h2 class="sec">Backups</h2>`+backupsHTML()+`<h2 class="sec">Recent sessions</h2>`+DB.sessions.slice(-8).reverse().map(s=>{const by={};
      s.sets.forEach(x=>{(by[x.n]=by[x.n]||[]).push(x.w+"×"+x.r);});
      const idx=DB.sessions.indexOf(s);
      return `<div class="dl" style="display:block"><div style="display:flex;align-items:baseline;gap:10px">

@@ -1,11 +1,11 @@
 /* Strength & Sleep Log — service worker
    Shell is precached. The newest dashboard PDF is precached so it opens
    offline; older ones are fetched on demand and then kept. */
-const CACHE = "kmlog-v16-6";
+const CACHE = "kmlog-v17-2";
 const SHELL = [
   "./", "./index.html", "./manifest.json",
   "./icon-192.png", "./icon-512.png", "./icon-512-maskable.png",
-  "./dashboards/v15.pdf"
+  "./dashboards/v17.pdf"
 ];
 
 self.addEventListener("install", e => {
