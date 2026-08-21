@@ -1881,11 +1881,13 @@ function runsV(){
      <div class="ih" id="gimph"><b>Import Garmin runs</b><span>›</span></div>
      <div class="ib">
        <textarea id="gimpt" placeholder="Paste a Garmin Connect activities export, or choose the CSV file"></textarea>
-       <div class="btns"><button class="fbtn" id="gimpcsv">Choose CSV file</button></div>
+       <div class="btns"><button class="fbtn" id="gimprepo">Load from repo</button><button class="fbtn" id="gimpcsv">Choose CSV file</button></div>
        <input type="file" id="gimpf" accept=".csv,text/csv" style="display:none">
        <button class="run" id="gimprun">Read and preview</button>
        <div class="stat" id="gimpstat"></div>
-       <div class="fmt">Garmin Connect → Activities → the export icon. Columns are matched by name:
+       <div class="fmt"><b>Load from repo</b> pulls the archive kept at
+       <code>data/garmin_activities.csv</code> — May 2023 to May 2026. For anything newer,
+       Garmin Connect → Activities → the export icon, then <b>Choose CSV file</b>. Columns are matched by name:
        <code>Activity Type, Date, Title, Distance, Time, Avg HR, Max HR, Aerobic TE</code>.
        Non-running rows are ignored. Every imported run is filed as <b>easy</b> — the activities
        export has no lap splits, so it cannot tell an interval session from a steady one.
@@ -1926,6 +1928,16 @@ function wireRuns(){
       rd.onerror=()=>{stat.style.color="var(--hot)";stat.textContent="Could not read that file.";};
       rd.readAsText(f);};
     document.getElementById("gimprun").onclick=()=>previewRuns(parseGarmin(ta.value),stat,"garmin");
+    /* The export is kept alongside the app at data/garmin_activities.csv so the
+       history can be pulled in with one tap instead of a download and file pick. */
+    document.getElementById("gimprepo").onclick=()=>{
+      stat.style.color="var(--dimmer)"; stat.textContent="Fetching…";
+      fetch("data/garmin_activities.csv")
+        .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
+        .then(t=>{ ta.value=t; previewRuns(parseGarmin(t),stat,"garmin"); })
+        .catch(e=>{ stat.style.color="var(--hot)";
+          stat.textContent="Could not fetch data/garmin_activities.csv — "+e.message+". Use Choose CSV file instead."; });
+    };
   }
   const ib=document.getElementById("iimp");
   if(ib){
@@ -1941,7 +1953,8 @@ function previewRuns(res,stat,kind){
   if(!res.rows.length){stat.style.color="var(--hot)";
     stat.textContent="Nothing recognised"+(res.skipped?" · "+res.skipped+" line"+(res.skipped>1?"s":"")+" skipped":"")+".";return;}
   const n=res.rows.length, km=res.rows.reduce((a,b)=>a+(b.km||0),0);
-  const first=res.rows[0].date, lastd=res.rows[n-1].date;
+  const ds=res.rows.map(r=>r.date).sort();  /* exports come newest-first */
+  const first=ds[0], lastd=ds[ds.length-1];
   const flagged=res.rows.filter(r=>runFlags(r).length).length;
   stat.style.color="var(--go)";
   stat.innerHTML=`Found <b>${n}</b> ${kind==="interval"?"session":"run"}${n>1?"s":""} · ${km.toFixed(1)} km · ${first} to ${lastd}`+
