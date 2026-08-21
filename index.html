@@ -1444,10 +1444,10 @@ function archiveV(){
     <div class="card"><div class="chead" style="cursor:default">
       <div class="cn"><b>Dashboard ${v.v}</b><i>${v.d}</i></div>
       <div style="display:flex;gap:7px">
-        <a class="pb" style="text-decoration:none;padding:9px 13px;flex:0 0 auto" href="dashboards/${v.pdf}" target="_blank" rel="noopener">View</a>
-        <a class="pb" style="text-decoration:none;padding:9px 13px;flex:0 0 auto" href="dashboards/${v.pdf}" download>Save</a>
+        <a class="pb" style="text-decoration:none;padding:9px 13px;flex:0 0 auto" href="${v.pdf}" target="_blank" rel="noopener">View</a>
+        <a class="pb" style="text-decoration:none;padding:9px 13px;flex:0 0 auto" href="${v.pdf}" download>Save</a>
       </div></div></div>`).join("")+
-   `<div class="note">PDFs live in the <b>/dashboards/</b> folder of the repo. Adding a future version means uploading the PDF there and refreshing this list. Versions before v11 exist only as archived files and are not hosted.</div></div>`;}
+   `<div class="note">PDFs sit at the root of the repo, named <b>v11.pdf</b> through <b>v17.pdf</b>. Adding a future version means uploading the PDF there under the same naming and refreshing this list. Versions before v11 exist only as archived files and are not hosted.</div></div>`;}
 
 function bpWindow(days){
   const cut=daysAgo(days-1);
