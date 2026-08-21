@@ -348,6 +348,40 @@ input.n[type=time]{font-size:18px}
 .toast.on{opacity:1}
 .note{font-size:10.5px;color:var(--dimmer);line-height:1.65;padding:10px 4px 0}
 .del{background:none;border:0;color:var(--dimmer);font-size:11px;padding:8px;cursor:pointer}
+
+/* Runs & Boulder — kmlog-v17-4 */
+.gbt{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:transparent;
+  color:var(--dimmer);font-family:var(--mono);font-size:11px}
+.gbt.on{background:var(--brass);color:#1a1408;border-color:var(--brass);font-weight:700}
+.gwrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:8px}
+.gcell{border:1px solid var(--line);border-radius:8px;padding:6px 4px;text-align:center}
+.gcell .gl{display:block;font-family:var(--mono);font-size:10px;color:var(--dimmer);letter-spacing:.06em}
+.grow2{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:3px}
+.grow2 b{font-family:var(--mono);font-size:14px;min-width:16px}
+.grow2 button{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);
+  background:transparent;color:var(--ink);font-size:14px;line-height:1}
+
+/* Run calendar — kmlog-v17-5 */
+.cal{border:1px solid var(--line);border-radius:12px;padding:11px 10px 9px;margin:11px 0}
+.calh{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.calh b{font-size:12.5px;letter-spacing:.05em}
+.cnav{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:transparent;
+  color:var(--dim);font-size:17px;line-height:1}
+.cdow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-bottom:4px}
+.cdow span{text-align:center;font-family:var(--mono);font-size:9px;color:var(--dimmer)}
+.cgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cd{aspect-ratio:1;border-radius:8px;border:1.5px solid var(--line);background:transparent;
+  color:var(--dim);font-family:var(--mono);font-size:12px;padding:0;position:relative;line-height:1}
+.cd.off{border:0}
+.cd.td{border-color:var(--dim);border-style:dashed}
+.cd.on{background:color-mix(in srgb,var(--m) 22%,transparent);border:2.5px solid var(--m);color:#fff;font-weight:700}
+.cd .au{position:absolute;right:3px;top:3px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.55}
+.calf{display:flex;flex-wrap:wrap;gap:9px;margin-top:9px;font-size:9.5px;color:var(--dim)}
+.calf .lg{display:flex;align-items:center;gap:4px}
+.calf .lg i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.calsince{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
+  font-size:11px;color:var(--dim);font-family:var(--mono)}
+.calsince b{color:var(--go)}
 </style>
 </head>
 <body>
@@ -486,11 +520,322 @@ Sports drink|26|0|6.9|0|6|591|1 bottle
 Honey|304|0.3|82|0|82|21|1 tbsp
 Maple syrup|260|0|67|0|60|20|1 tbsp
 Sugar, white|387|0|100|0|100|4|1 tsp
-Creatine monohydrate|0|0|0|0|0|5|1 scoop`;
+Creatine monohydrate|0|0|0|0|0|5|1 scoop
+Chicken thigh, boneless cooked|209|26|0|10.9|0|120|1 thigh
+Chicken wings|203|30|0|8.1|0|85|3 wings
+Chicken drumstick|172|28|0|5.7|0|95|1 drumstick
+Rotisserie chicken|190|29|0|7.6|0|140|1 portion
+Chicken nuggets|296|15|18|19|0|96|6 pieces
+Ground turkey, cooked|203|27|0|10|0|150|1 portion
+Turkey deli slices|104|17|3|1.7|1.5|56|4 slices
+Ham, deli|145|17|3|7|2|56|4 slices
+Pork chop, cooked|231|26|0|13|0|150|1 chop
+Ribs, pork|277|20|0|21|0|180|1 portion
+Beef, ground 80/20 cooked|272|26|0|18|0|150|1 portion
+Beef, ribeye cooked|291|24|0|21|0|225|1 steak
+Beef, brisket cooked|246|29|0|14|0|150|1 portion
+Lamb chop, cooked|294|25|0|21|0|150|1 chop
+Meatballs, beef|286|18|8|20|2|85|3 meatballs
+Sausage, pork|301|17|2|25|1|75|1 sausage
+Chorizo|455|24|2|38|0|60|1 portion
+Prosciutto|195|26|1|9|0|30|3 slices
+Salami|336|22|2|26|1|30|5 slices
+Pepperoni|504|19|1|46|0|30|10 slices
+Hot dog|290|10|4|26|1|50|1 hot dog
+Cod, baked|105|23|0|0.9|0|150|1 fillet
+Halibut, cooked|111|23|0|1.6|0|150|1 fillet
+Sea bass, cooked|124|24|0|2.6|0|150|1 fillet
+Trout, cooked|168|24|0|7.2|0|150|1 fillet
+Mackerel, cooked|262|24|0|18|0|100|1 fillet
+Sardines, canned|208|25|0|11|0|92|1 tin
+Anchovies|210|29|0|10|0|20|5 fillets
+Scallops, cooked|111|20|5|1|0|85|1 portion
+Mussels, cooked|172|24|7|4.5|0|85|1 portion
+Crab, cooked|97|20|0|1.5|0|85|1 portion
+Lobster, cooked|89|19|0|0.9|0|145|1 tail
+Calamari, fried|175|15|8|7|0|85|1 portion
+Fish and chips|232|12|20|12|1|300|1 serving
+Fish sticks|249|13|22|12|1|114|4 sticks
+Egg, fried|196|14|1|15|1|46|1 egg
+Egg, scrambled|149|10|2|11|1.5|61|1 egg
+Omelette, 3-egg|154|11|1|11|1|180|1 omelette
+Egg salad|247|9|2|22|1|120|1 portion
+Quiche|262|10|18|17|3|150|1 slice
+Cheese, feta|264|14|4|21|4|28|1 oz
+Cheese, goat|364|22|0.1|30|0.1|28|1 oz
+Cheese, swiss|380|27|5|28|1.3|28|1 slice
+Cheese, brie|334|21|0.5|28|0.5|28|1 oz
+Cheese, cream|342|6|4|34|3|30|2 tbsp
+Cheese, ricotta|174|11|3|13|0.3|124|1/2 cup
+Cheese, blue|353|21|2|29|0.5|28|1 oz
+Cheese, halloumi|321|22|2|25|1|80|1 portion
+Yogurt, plain whole|61|3.5|4.7|3.3|4.7|170|1 cup
+Yogurt, fruit low-fat|95|4|17|1|15|170|1 cup
+Skyr|63|11|4|0.2|4|170|1 cup
+Kefir|41|3.3|4.5|1|4.5|240|1 cup
+Milk, whole|61|3.2|4.8|3.3|5|244|1 cup
+Almond milk, unsweetened|15|0.6|0.6|1.2|0.2|240|1 cup
+Oat milk|47|1|7|1.5|4|240|1 cup
+Soy milk|54|3.3|6|1.8|4|240|1 cup
+Cream, heavy|340|2|3|36|3|15|1 tbsp
+Half and half|130|3|4|11|4|30|2 tbsp
+Ice cream, chocolate|216|3.8|28|11|25|66|1/2 cup
+Frozen yogurt|127|3|24|2|24|72|1/2 cup
+Sourdough bread|289|12|56|1.8|3|50|1 slice
+Rye bread|259|9|48|3.3|4|32|1 slice
+Multigrain bread|265|13|43|4.2|6|33|1 slice
+Pita bread|275|9|55|1.2|1|60|1 pita
+Naan|310|9|50|9|3|90|1 naan
+English muffin|235|8|46|1.8|4|57|1 muffin
+Croissant|406|8|46|21|11|57|1 croissant
+Baguette|274|9|55|1|3|60|1 portion
+Crackers|502|7|61|25|5|30|10 crackers
+Rice cakes|387|8|82|3|1|9|1 cake
+Couscous, cooked|112|3.8|23|0.2|0.1|157|1 cup
+Barley, cooked|123|2.3|28|0.4|0.3|157|1 cup
+Farro, cooked|170|6|34|1|1|180|1 cup
+Bulgur, cooked|83|3|19|0.2|0.1|182|1 cup
+Rice, jasmine cooked|130|2.7|28|0.3|0|186|1 cup
+Rice, basmati cooked|121|3|25|0.4|0|180|1 cup
+Wild rice, cooked|101|4|21|0.3|0.7|164|1 cup
+Noodles, egg cooked|138|4.5|25|2.1|0.4|160|1 cup
+Ramen, prepared|188|5|27|7|1|300|1 bowl
+Rice noodles, cooked|109|1|25|0.2|0|176|1 cup
+Gnocchi|133|3|27|1|1|150|1 serving
+Cereal, corn flakes|357|8|84|0.4|8|30|1 cup
+Cereal, muesli|375|10|66|8|18|55|1/2 cup
+Porridge with milk|92|4|12|3|5|250|1 bowl
+Pancakes|227|6|28|10|6|77|2 pancakes
+Waffle|291|8|33|14|6|75|1 waffle
+French toast|229|8|25|11|6|65|1 slice
+Muffin, blueberry|377|5|54|16|30|113|1 muffin
+Scone|385|7|53|16|10|80|1 scone
+Danish pastry|374|6|47|18|18|65|1 pastry
+Doughnut|452|5|51|25|23|60|1 doughnut
+Bagel with cream cheese|300|10|40|11|6|130|1 bagel
+Pear|57|0.4|15|0.1|10|178|1 pear
+Peach|39|0.9|10|0.3|8|150|1 peach
+Plum|46|0.7|11|0.3|10|66|1 plum
+Cherries|63|1.1|16|0.2|13|138|1 cup
+Raspberries|52|1.2|12|0.7|4.4|123|1 cup
+Blackberries|43|1.4|10|0.5|4.9|144|1 cup
+Kiwi|61|1.1|15|0.5|9|75|1 kiwi
+Grapefruit|42|0.8|11|0.1|7|123|1/2 fruit
+Melon, cantaloupe|34|0.8|8|0.2|8|160|1 cup
+Papaya|43|0.5|11|0.3|8|145|1 cup
+Pomegranate|83|1.7|19|1.2|14|87|1/2 cup
+Dates|282|2.5|75|0.4|63|24|3 dates
+Raisins|299|3.1|79|0.5|59|28|1 oz
+Dried apricots|241|3.4|63|0.5|53|35|5 pieces
+Prunes|240|2.2|64|0.4|38|25|3 prunes
+Figs, dried|249|3.3|64|0.9|48|30|2 figs
+Cranberries, dried|308|0.1|82|1.4|65|40|1/3 cup
+Cauliflower|25|1.9|5|0.3|1.9|100|1 cup
+Brussels sprouts|43|3.4|9|0.3|2.2|88|1 cup
+Cabbage|25|1.3|6|0.1|3.2|89|1 cup
+Zucchini|17|1.2|3.1|0.3|2.5|124|1 cup
+Eggplant|25|1|6|0.2|3.5|82|1 cup
+Sweet corn|86|3.2|19|1.2|3.2|154|1 cup
+Peas, green|81|5.4|14|0.4|6|145|1 cup
+Beets|43|1.6|10|0.2|8|136|1 cup
+Squash, butternut|45|1|12|0.1|2.2|205|1 cup
+Celery|16|0.7|3|0.2|1.3|101|1 cup
+Lettuce, romaine|17|1.2|3.3|0.3|1.2|47|1 cup
+Arugula|25|2.6|3.7|0.7|2|20|1 cup
+Bok choy|13|1.5|2.2|0.2|1.2|70|1 cup
+Green beans, cooked|35|1.9|8|0.3|1.5|125|1 cup
+Sweet potato fries|165|2|26|6|6|85|1 portion
+Mashed potato|113|2|17|4.2|1.5|210|1 cup
+Potato salad|143|2|11|10|2|125|1/2 cup
+Coleslaw|152|1|14|11|10|100|1/2 cup
+Pinto beans, cooked|143|9|27|0.7|0.3|171|1 cup
+Navy beans, cooked|140|8|26|0.6|0.4|182|1 cup
+Split peas, cooked|118|8|21|0.4|3|196|1 cup
+Refried beans|91|5|15|1.5|0.5|120|1/2 cup
+Falafel|333|13|32|18|0|51|3 balls
+Seitan|141|25|14|2|0|100|1 portion
+Soy protein isolate|335|88|3|3.4|0|30|1 scoop
+Pea protein powder|375|80|5|6|1|30|1 scoop
+Nuts, pistachios|560|20|28|45|8|28|1 oz
+Nuts, pecans|691|9|14|72|4|28|1 oz
+Nuts, macadamia|718|8|14|76|4.6|28|1 oz
+Nuts, hazelnuts|628|15|17|61|4.3|28|1 oz
+Nuts, brazil|659|14|12|67|2.3|28|1 oz
+Seeds, pumpkin|559|30|11|49|1.4|28|1 oz
+Seeds, sunflower|584|21|20|51|2.6|28|1 oz
+Seeds, chia|486|17|42|31|0|28|2 tbsp
+Seeds, flax|534|18|29|42|1.6|14|2 tbsp
+Tahini|595|17|21|54|0.5|30|2 tbsp
+Coconut oil|862|0|0|100|0|14|1 tbsp
+Mayonnaise|680|1|0.6|75|0.6|14|1 tbsp
+Ketchup|101|1|26|0.1|22|17|1 tbsp
+Mustard|66|4|6|3.3|1|10|2 tsp
+Soy sauce|53|8|5|0.6|0.4|16|1 tbsp
+Salad dressing, ranch|430|1|6|45|4|30|2 tbsp
+Salad dressing, vinaigrette|292|0.3|6|30|5|30|2 tbsp
+Salsa|36|1.5|7|0.2|4|32|2 tbsp
+Guacamole|155|2|9|14|1|60|1/4 cup
+Pesto|450|5|6|46|2|30|2 tbsp
+Barbecue sauce|172|0.8|41|0.6|33|30|2 tbsp
+Sriracha|93|2|19|1|15|10|2 tsp
+Honey mustard|180|1|18|11|15|30|2 tbsp
+Maple syrup, light|260|0|67|0|60|20|1 tbsp
+Jam|278|0.4|69|0.1|49|20|1 tbsp
+Nutella|539|6|58|31|56|37|2 tbsp
+Peanut butter, natural|598|22|22|51|5|32|2 tbsp
+Protein shake, ready|63|9|4|1|3|330|1 bottle
+Smoothie, fruit|54|1|13|0.3|11|250|1 glass
+Green juice|38|1|8|0.2|6|250|1 glass
+Apple juice|46|0.1|11|0.1|10|248|1 cup
+Lemonade|40|0.1|10|0|10|248|1 cup
+Iced tea, sweetened|29|0|7|0|7|250|1 cup
+Coffee with milk|20|1|2|1|2|240|1 cup
+Latte|56|3|5|2.5|5|350|1 medium
+Cappuccino|41|2.5|3.5|2|3.5|180|1 cup
+Hot chocolate|77|3.5|11|2.5|9|250|1 cup
+Energy drink|45|0|11|0|11|250|1 can
+Diet soda|0|0|0|0|0|355|1 can
+Kombucha|29|0|7|0|6|240|1 cup
+Coconut water|19|0.7|3.7|0.2|2.6|240|1 cup
+Gin and tonic|90|0|9|0|9|200|1 glass
+Cider|49|0|5|0|5|330|1 bottle
+Champagne|76|0.1|1.6|0|1|150|1 glass
+Wine, white|82|0.1|2.6|0|1|148|1 glass
+Sushi, tuna roll|132|6|27|0.6|3|170|1 roll
+Sashimi|130|24|0|3|0|100|1 portion
+Poke bowl|140|12|17|3|2|400|1 bowl
+Ramen, tonkotsu|160|8|18|6|1|500|1 bowl
+Pho|65|5|9|1|1|500|1 bowl
+Dumplings, steamed|220|9|30|7|2|100|4 pieces
+Spring rolls|154|4|20|6|3|60|2 rolls
+Fried rice|163|5|20|6|1|200|1 cup
+Chow mein|180|7|22|7|3|200|1 cup
+Butter chicken|180|13|8|11|4|300|1 serving
+Chana masala|120|6|18|3|4|300|1 serving
+Biryani|170|7|24|5|2|300|1 serving
+Tacos, beef|217|9|20|11|2|100|2 tacos
+Quesadilla|280|13|25|14|2|150|1 quesadilla
+Nachos|306|9|32|17|2|150|1 portion
+Enchiladas|168|9|17|7|3|250|1 serving
+Chili, vegetarian|85|5|15|1.5|4|250|1 cup
+Greek salad|110|4|6|8|4|250|1 bowl
+Cobb salad|170|13|4|12|2|300|1 bowl
+Tuna salad sandwich|230|13|24|9|3|200|1 sandwich
+BLT sandwich|250|11|25|12|4|180|1 sandwich
+Club sandwich|240|15|22|10|4|250|1 sandwich
+Wrap, chicken caesar|210|14|22|7|2|250|1 wrap
+Bagel, everything|260|10|50|2|5|100|1 bagel
+Soup, tomato|74|2|12|2.4|6|245|1 cup
+Soup, minestrone|68|3|11|1.7|3|245|1 cup
+Soup, lentil|99|6|17|1|2|245|1 cup
+Soup, butternut squash|72|1.5|13|2|4|245|1 cup
+Stew, beef|101|9|8|4|2|250|1 cup
+Shepherd's pie|130|8|12|5|2|300|1 serving
+Lasagne|132|8|12|5|3|300|1 serving
+Mac and cheese|164|7|20|6|4|200|1 cup
+Risotto|130|4|20|4|1|250|1 serving
+Paella|156|9|20|4|1|300|1 serving
+Roast dinner|150|12|13|6|3|400|1 plate
+Protein bar, low sugar|340|33|32|9|2|60|1 bar
+Granola bar|450|7|64|18|24|40|1 bar
+Trail mix|462|14|45|29|30|40|1/4 cup
+Popcorn, buttered|500|9|58|28|1|30|1 bag
+Pretzels|380|10|80|3|3|30|1 oz
+Tortilla chips|498|7|63|24|1|28|1 oz
+Chocolate, white|539|6|59|32|59|28|1 oz
+Chocolate bar, caramel|480|6|63|23|55|45|1 bar
+Brownie|466|6|59|24|40|60|1 brownie
+Cheesecake|321|6|26|23|22|100|1 slice
+Apple pie|237|2|34|11|16|125|1 slice
+Cake, chocolate|371|4|53|16|38|100|1 slice
+Biscuits, digestive|471|7|62|21|17|15|1 biscuit
+Custard|122|3|17|4|17|100|1/2 cup
+Jelly / gelatin|62|1.2|14|0|14|100|1/2 cup
+Sorbet|130|0.4|33|0|28|100|1/2 cup
+Rice pudding|118|3|18|3.5|13|150|1/2 cup
+Starbucks Caffè Latte, grande 2%|40|2.7|4|1.5|3.8|473|1 grande
+Starbucks Caffè Latte, tall 2%|40|2.7|4|1.5|3.8|354|1 tall
+Starbucks Caffè Latte, grande nonfat|28|2.8|4|0.1|3.8|473|1 grande
+Starbucks Caffè Latte, grande oat|44|1.5|6|1.7|4|473|1 grande
+Starbucks Caffè Latte, grande almond|21|1|2.5|1|1.5|473|1 grande
+Starbucks Cappuccino, grande 2%|25|1.7|2.5|0.9|2.3|473|1 grande
+Starbucks Flat White, grande 2%|48|2.7|4.4|2.3|4.2|473|1 grande
+Starbucks Americano, grande|3|0.4|0.4|0|0|473|1 grande
+Starbucks Brewed Coffee, grande|1|0.1|0|0|0|473|1 grande
+Starbucks Espresso, doppio|2|0.3|0|0|0|60|1 doppio
+Starbucks Cortado|30|2|3|1.4|3|236|1 serving
+Starbucks Caffè Misto, grande 2%|23|1.7|2.3|0.8|2.1|473|1 grande
+Starbucks Vanilla Latte, grande 2%|53|2.3|8|1.3|7.6|473|1 grande
+Starbucks Caramel Macchiato, grande 2%|53|2.1|7.8|1.6|7.2|473|1 grande
+Starbucks Caffè Mocha, grande 2%|76|2.9|11|2.8|8.9|473|1 grande
+Starbucks White Chocolate Mocha, grande 2%|91|3.2|14|3.4|14|473|1 grande
+Starbucks Cinnamon Dolce Latte, grande 2%|55|2.3|8.5|1.3|8|473|1 grande
+Starbucks Honey Oat Latte, grande|53|1.5|8|1.7|6|473|1 grande
+Starbucks Chai Tea Latte, grande 2%|51|1.5|9.7|0.8|9.3|473|1 grande
+Starbucks Matcha Tea Latte, grande 2%|51|2.1|8.9|0.9|8.5|473|1 grande
+Starbucks London Fog Tea Latte, grande|30|1.3|5.3|0.6|4.9|473|1 grande
+Starbucks Hot Chocolate, grande 2%|80|3.4|11|3|10|473|1 grande
+Starbucks White Hot Chocolate, grande 2%|95|3.6|14|3.6|14|473|1 grande
+Starbucks Pumpkin Spice Latte, grande 2%|82|2.7|11|2.9|10|473|1 grande
+Starbucks Gingerbread Latte, grande 2%|66|2.5|7.4|3|7|473|1 grande
+Starbucks Peppermint Mocha, grande 2%|87|3|13|3.2|12|473|1 grande
+Starbucks Iced Caffè Latte, grande 2%|27|1.7|2.7|1|2.3|473|1 grande
+Starbucks Iced Caramel Macchiato, grande 2%|53|2.1|7.8|1.6|7.2|473|1 grande
+Starbucks Iced Coffee, grande unsweetened|1|0.1|0|0|0|473|1 grande
+Starbucks Iced Coffee, grande sweetened|17|0|4.4|0|4.4|473|1 grande
+Starbucks Cold Brew, grande black|1|0|0|0|0|473|1 grande
+Starbucks Nitro Cold Brew, grande|1|0|0|0|0|473|1 grande
+Starbucks Cold Brew with Sweet Cream, grande|21|0.6|2.5|1.1|2.3|473|1 grande
+Starbucks Iced Shaken Espresso, grande|21|1.1|2.1|0.6|1.9|473|1 grande
+Starbucks Brown Sugar Oat Shaken Espresso, grande|25|0.6|3.6|0.8|2.9|473|1 grande
+Starbucks Iced Chai Tea Latte, grande 2%|51|1.5|9.7|0.8|9.3|473|1 grande
+Starbucks Iced Matcha Latte, grande 2%|42|1.9|7.2|0.8|6.8|473|1 grande
+Starbucks Refresher, Strawberry Açaí grande|19|0|4.7|0|4.2|473|1 grande
+Starbucks Refresher, Mango Dragonfruit grande|19|0|4.7|0|4.2|473|1 grande
+Starbucks Iced Green Tea, grande unsweetened|0|0|0|0|0|473|1 grande
+Starbucks Iced Passion Tango Tea, grande|0|0|0|0|0|473|1 grande
+Starbucks Frappuccino, Coffee grande|48|1.1|10|0.6|9.5|473|1 grande
+Starbucks Frappuccino, Caramel grande|80|1.5|16|2.6|15|473|1 grande
+Starbucks Frappuccino, Mocha grande|76|1.7|15|2.3|14|473|1 grande
+Starbucks Frappuccino, Java Chip grande|93|1.9|17|3.6|15|473|1 grande
+Starbucks Frappuccino, Vanilla Bean grande|80|1.7|16|2.1|16|473|1 grande
+Starbucks Frappuccino, Matcha Crème grande|89|2.1|17|2.3|16|473|1 grande
+Starbucks Butter Croissant|436|7.7|44.9|25.6|7.7|78|1 croissant
+Starbucks Chocolate Croissant|400|7.1|44.7|22.4|15.3|85|1 croissant
+Starbucks Almond Croissant|446|9.8|44.6|26.1|18.5|92|1 croissant
+Starbucks Cheese Danish|279|5.8|29.8|15.4|11.5|104|1 danish
+Starbucks Blueberry Muffin|319|5.3|47.8|12.4|26.5|113|1 muffin
+Starbucks Banana Bread|372|5.3|51.3|16.8|29.2|113|1 slice
+Starbucks Lemon Loaf|416|4.4|60.2|17.7|37.2|113|1 slice
+Starbucks Pumpkin Loaf|363|4.4|53.1|15.0|31.0|113|1 slice
+Starbucks Coffee Cake|389|4.4|51.3|18.6|28.3|113|1 slice
+Starbucks Chocolate Chip Cookie|500|5.6|66.7|23.6|40.3|72|1 cookie
+Starbucks Birthday Cake Pop|395|4.7|62.8|16.3|51.2|43|1 cake pop
+Starbucks Petite Vanilla Bean Scone|423|5.6|60.6|18.3|33.8|71|1 scone
+Starbucks Plain Bagel|248|9.7|49.6|1.3|4.4|113|1 bagel
+Starbucks Everything Bagel|257|9.7|49.6|2.7|4.4|113|1 bagel
+Starbucks Sprouted Grain Bagel|265|10.6|47.8|3.5|5.3|113|1 bagel
+Starbucks Bacon Gouda Sandwich|265|13.2|23.5|14.0|2.9|136|1 sandwich
+Starbucks Sausage Cheddar Sandwich|333|12.7|27.3|19.3|3.3|150|1 sandwich
+Starbucks Spinach Feta Wrap|171|11.8|20.0|4.7|2.9|170|1 wrap
+Starbucks Turkey Bacon Egg White Sandwich|189|13.9|23.0|4.1|2.5|122|1 sandwich
+Starbucks Impossible Breakfast Sandwich|255|13.3|20.6|13.3|3.6|165|1 sandwich
+Starbucks Egg Bites, Bacon Gruyère|231|14.6|6.9|15.4|1.5|130|2 bites
+Starbucks Egg Bites, Egg White Red Pepper|131|9.2|8.5|6.2|2.3|130|2 bites
+Starbucks Egg Bites, Kale Mushroom|177|11.5|8.5|10.8|1.5|130|2 bites
+Starbucks Oatmeal, plain|68|2.1|12.0|1.1|0.0|234|1 serving
+Starbucks Protein Box, Eggs and Cheese|187|9.1|15.9|9.9|2.8|252|1 box
+Starbucks Turkey Pesto Panini|224|12.4|23.2|8.7|2.1|241|1 panini
+Starbucks Tomato Mozzarella Panini|199|8.9|22.5|7.9|3.1|191|1 panini
+Starbucks Chicken Caprese Sandwich|212|12.5|21.6|8.2|2.4|255|1 sandwich`;
 
 const NUMW={a:1,an:1,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,
   half:0.5,"a half":0.5,quarter:0.25,couple:2,"a couple":2,double:2,dozen:12,"a dozen":12};
 function numFrom(t){
+  /* v17-3: strip fat/cocoa percentages, 80/20 ratios and n-egg descriptors before
+     reading a quantity. Without this "grande starbucks caffe latte 2%" parses as
+     qty 2. Introduced when the 410-item library landed — 25 names carry a %. */
+  t=t.replace(/\d+(?:\.\d+)?\s*%/g," ").replace(/\b\d{2}\/\d{2}\b/g," ").replace(/\b\d+-egg\b/g," ");
   const f=t.match(/(\d+(?:\.\d+)?)\s*(?:and\s*a\s*half)?/);
   if(/and a half/.test(t)&&f) return parseFloat(f[1])+0.5;
   if(f) return parseFloat(f[1]);
@@ -724,6 +1069,13 @@ function load(){
       &&x.sys>=70&&x.sys<=250&&x.dia>=40&&x.dia<=150):[];
   o.food=Array.isArray(o.food)?o.food.filter(f=>f&&f.date&&typeof f.n==="string"&&isFinite(f.kcal)):[];
   o.customFoods=Array.isArray(o.customFoods)?o.customFoods.filter(f=>f&&typeof f.n==="string"&&isFinite(f.kcal)):[];
+  o.runs=Array.isArray(o.runs)?o.runs.filter(r=>r&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)
+      &&(r.km==null||(isFinite(r.km)&&r.km>=0&&r.km<=200))&&(r.secs==null||(isFinite(r.secs)&&r.secs>0))):[];
+  o.boulder=Array.isArray(o.boulder)?o.boulder.filter(b=>b&&/^\d{4}-\d{2}-\d{2}$/.test(b.date)
+      &&isFinite(b.mins)&&b.mins>0&&b.mins<=600):[];
+  o.runCal=(o.runCal&&typeof o.runCal==="object"&&!Array.isArray(o.runCal))?o.runCal:{};
+  o.runPolicyFrom=/^\d{4}-\d{2}-\d{2}$/.test(o.runPolicyFrom)?o.runPolicyFrom:"2026-05-15";
+  o.runStage=isFinite(o.runStage)?Math.max(0,Math.min(4,o.runStage)):2;
   o._del=Array.isArray(o._del)?o._del.filter(x=>typeof x==="string"):[];
   o._wipe=isFinite(o._wipe)?o._wipe:0;
   return o;
@@ -765,10 +1117,10 @@ function mergeStored(mine){
   const wipe=Math.max(out._wipe||0, theirs._wipe||0);
   out._wipe=wipe;
   // if this copy wiped, drop anything older than the wipe
-  ["sessions","food","sleep","weight","bp"].forEach(k=>{
+  ["sessions","food","sleep","weight","bp","runs","boulder"].forEach(k=>{
     out[k]=(out[k]||[]).filter(x=>x && !dead.has(x._id) && !(wipe && (x._t||0)<wipe));
   });
-  ["sessions","food","bp"].forEach(k=>{
+  ["sessions","food","bp","runs","boulder"].forEach(k=>{
     const seen=new Set(out[k].map(x=>x._id).filter(Boolean));
     (theirs[k]||[]).forEach(x=>{
       if(!x||!x._id) return;
@@ -794,7 +1146,7 @@ function mergeStored(mine){
 }
 function stampAll(){
   const now=Date.now();
-  ["sessions","food","sleep","weight","bp"].forEach(k=>(DB[k]||[]).forEach(x=>{
+  ["sessions","food","sleep","weight","bp","runs","boulder"].forEach(k=>(DB[k]||[]).forEach(x=>{
     if(x&&!x._id)x._id=uid(); if(x&&!x._t)x._t=now; }));
 }
 function save(){
@@ -824,7 +1176,7 @@ function lastFor(n){for(let i=DB.sessions.length-1;i>=0;i--){const h=DB.sessions
 function bestFor(n){let b=0;DB.sessions.forEach(s=>s.sets.forEach(x=>{if(x.n===n){const v=e1rm(x.w,x.r);if(v>b)b=v;}}));return b;}
 document.getElementById("dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
 
-const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
+const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["runs","Runs"],["boulder","Boulder"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
 function nav(){document.getElementById("nav").innerHTML=TABS.map(([k,l])=>
   `<button class="nb ${tab===k?'on':''}" data-k="${k}">${l}</button>`).join("");
   document.querySelectorAll(".nb").forEach(b=>b.onclick=()=>{tab=b.dataset.k;if(["W1","W2","W3"].includes(tab))day=tab;render();});}
@@ -833,7 +1185,7 @@ function render(){nav();
   const v=document.getElementById("view"),bar=document.getElementById("bar");
   if(tab==="home"){v.innerHTML=homeV();bar.innerHTML="";bar.style.display="none";document.getElementById("hm").classList.add("hide");
     const go=(id,t)=>{const el=document.getElementById(id);if(el)el.onclick=()=>{tab=t;if(["W1","W2","W3"].includes(t))day=t;render();};};
-    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goB","bp");go("goA","arch");go("goM","metrics");go("goP","prog");go("goT","time");return;}
+    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goB","bp");go("goA","arch");go("goR","runs");go("goBo","boulder");go("goM","metrics");go("goP","prog");go("goT","time");return;}
   bar.style.display="flex";document.getElementById("hm").classList.remove("hide");
   if(tab==="arch"){v.innerHTML=archiveV();bar.innerHTML=`<button class="btn" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};return;}
@@ -844,6 +1196,12 @@ function render(){nav();
              document.getElementById("bp2").value,
              sl&&sl.querySelector("button.on")?sl.querySelector("button.on").dataset.s:"am");};
     wireBP();wireImp("bp");return;}
+  if(tab==="runs"){v.innerHTML=runsV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button>`;
+    document.getElementById("bk").onclick=()=>{tab="home";render();};
+    wireRuns();wireCal();return;}
+  if(tab==="boulder"){v.innerHTML=boulderV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="bosv">Save session</button>`;
+    document.getElementById("bk").onclick=()=>{tab="home";render();};
+    wireBoulder();return;}
   if(tab==="weight"){v.innerHTML=weightV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="wsv">Save weight</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     document.getElementById("wsv").onclick=()=>saveWeight(document.getElementById("wlb").value,document.getElementById("wbf").value);
@@ -1021,6 +1379,10 @@ function homeV(){
    <div class="grid2">
      <button class="sq c2" id="goA"><svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v6h6M8 14h8M8 18h5"/></svg>
        <span class="lbl">Archive</span><span class="cap">v11 – v17 dashboards</span></button>
+     <button class="sq c3" id="goR"><svg viewBox="0 0 24 24"><path d="M13 4.5a1.6 1.6 0 1 0 0-.1"/><path d="M8 21l2.5-5.5 3-2 1-4 3.5 2.5 2.5-.5M6.5 11l3-2.5 4-1"/><path d="M10.5 15.5L7.5 14"/></svg>
+       <span class="lbl">Runs</span><span class="cap">${(DB.runs||[]).length?((DB.runs||[]).filter(x=>x.date>=daysAgo(6)).reduce((a,b)=>a+(b.km||0),0)).toFixed(1)+" km this week":"import Garmin"}</span></button>
+     <button class="sq c4" id="goBo"><svg viewBox="0 0 24 24"><path d="M12 3v7M8 6l4-3 4 3"/><circle cx="7" cy="14" r="1.6"/><circle cx="17" cy="12" r="1.6"/><circle cx="11" cy="19" r="1.6"/><path d="M7 14l4 5 6-7"/></svg>
+       <span class="lbl">Boulder</span><span class="cap">${(DB.boulder||[]).length?(DB.boulder||[]).filter(x=>x.date>=daysAgo(6)).length+" this week":"time and grades"}</span></button>
      <button class="sq c1" id="goM"><svg viewBox="0 0 24 24"><path d="M3 20h18M6 20v-7M11 20V7M16 20v-4M21 20V4"/></svg>
        <span class="lbl">Metrics</span><span class="cap">current anchors</span></button>
      <button class="sq c3" id="goP"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 8-9"/><path d="M15 6h5v5"/></svg>
@@ -1245,6 +1607,374 @@ function saveWeight(lb,bf){
   if(i>=0)DB.weight[i]=rec; else DB.weight.push(rec);
   DB.weight.sort((a,b)=>a.date<b.date?-1:1);
   save(); render(); toast(rec.lb+" lbs logged");
+}
+
+/* ---------- RUNS & BOULDERING (kmlog-v17-4) ---------- */
+const nnum=v=>typeof v==="number"&&isFinite(v);  /* isFinite(null) is true — Number(null) is 0 */
+const HRMAX=186, EASY_CAP=140, BAND_LO=163, BAND_HI=178;
+const STAGES=[
+ {s:0,n:"Stage 0",d:"No running. Eccentrics only."},
+ {s:1,n:"Stage 1",d:"1-min efforts at 60% effort. Max HR capped at 150. Duration before speed."},
+ {s:2,n:"Stage 2",d:"Pickups and strides. Rep length building. Two clean weeks opens Stage 3."},
+ {s:3,n:"Stage 3",d:"Tempo. 20–25 min at 80–83% of max HR."},
+ {s:4,n:"Stage 4",d:"Helgerud 4×4 resumes. The Phase 1 six-cycle clock starts here."}];
+const GRADES=["V0","V1","V2","V3","V4","V5","V6","V7","V8+"];
+
+const s2hms=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;
+  return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0");};
+const hms2s=t=>{if(t==null)return null;const p=String(t).trim().split(":").map(Number);
+  if(p.some(isNaN)||!p.length)return null;
+  return p.length===3?p[0]*3600+p[1]*60+p[2]:p.length===2?p[0]*60+p[1]:p[0];};
+const paceOf=r=>(r.km&&r.secs)?r.secs/r.km:null;
+const dOf=r=>String(r.date||"").slice(0,10);
+const nice=d=>new Date(d+"T12:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
+
+function curStage(){ const v=DB.runStage; return isFinite(v)?Math.max(0,Math.min(4,v)):2; }
+
+function runFlags(r){
+  const f=[];
+  /* The <140 easy ceiling is a return-to-run policy, not a description of the
+     back catalogue. Of 628 runs in the 2023–2026 Garmin export, 405 breach it —
+     flagging those buries the ones that matter. Flags apply from the restart on. */
+  if(dOf(r) < (DB.runPolicyFrom||"2026-05-15")) return f;
+  if(r.type==="easy"&&nnum(r.avgHR)&&r.avgHR>EASY_CAP) f.push({t:"warn",m:"Avg HR "+r.avgHR+" over the "+EASY_CAP+" easy ceiling"});
+  if(nnum(r.maxHR)&&r.maxHR>=BAND_LO&&r.maxHR<=BAND_HI) f.push({t:"warn",m:"Max HR "+r.maxHR+" inside the "+BAND_LO+"–"+BAND_HI+" injury band"});
+  if(curStage()===1&&nnum(r.maxHR)&&r.maxHR>150) f.push({t:"warn",m:"Max HR "+r.maxHR+" over the Stage 1 cap of 150"});
+  return f;
+}
+
+/* Garmin Connect activities export. Columns are matched by header name, so a
+   reordered or trimmed export still reads. Non-running rows are ignored. */
+function csvSplit(line){
+  const out=[];let cur="",q=false;
+  for(let i=0;i<line.length;i++){const c=line[i];
+    if(c==='"'){ if(q&&line[i+1]==='"'){cur+='"';i++;} else q=!q; }
+    else if(c===","&&!q){out.push(cur);cur="";}
+    else cur+=c;}
+  out.push(cur);return out.map(s=>s.trim().replace(/^"|"$/g,""));
+}
+function parseGarmin(text){
+  const lines=text.split(/\r?\n/).filter(l=>l.trim());
+  if(!lines.length) return {rows:[],skipped:0};
+  const head=csvSplit(lines[0]).map(h=>h.toLowerCase().replace(/[^a-z0-9]/g,""));
+  const col=n=>head.indexOf(n);
+  const iType=col("activitytype"),iDate=col("date"),iTitle=col("title"),iDist=col("distance"),
+        iTime=col("time"),iAvg=col("avghr"),iMax=col("maxhr"),iTE=col("aerobicte"),iCal=col("calories");
+  if(iDate<0||iDist<0||iTime<0) return {rows:[],skipped:lines.length,bad:true};
+  const rows=[];let skipped=0;
+  lines.slice(1).forEach(l=>{
+    const c=csvSplit(l);
+    const ty=(iType>=0?c[iType]:"Running")||"";
+    if(!/run/i.test(ty)){skipped++;return;}
+    const raw=c[iDate]||""; const date=raw.slice(0,10);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){skipped++;return;}
+    const km=parseFloat(String(c[iDist]).replace(/[^0-9.]/g,""));
+    const secs=hms2s(c[iTime]);
+    if(!isFinite(km)||km<=0||!secs){skipped++;return;}
+    const num=i=>{if(i<0)return null;const v=parseFloat(String(c[i]).replace(/[^0-9.]/g,""));return isFinite(v)?v:null;};
+    rows.push({date:date, t:raw.length>10?raw:null, title:(iTitle>=0?c[iTitle]:"")||"Run",
+      km:+km.toFixed(2), secs:secs, avgHR:num(iAvg), maxHR:num(iMax),
+      te:num(iTE), kcal:num(iCal), type:"easy", reps:null, note:null, src:"garmin"});
+  });
+  return {rows:rows,skipped:skipped};
+}
+
+/* Interval sessions carry per-rep detail the activities export does not have.
+   One JSON object per line, generated from a Garmin screen capture. */
+function parseIntervalBlob(text){
+  const rows=[];let skipped=0;
+  text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).forEach(l=>{
+    let o=null; try{o=JSON.parse(l);}catch(e){skipped++;return;}
+    if(!o||!/^\d{4}-\d{2}-\d{2}$/.test(String(o.date||"").slice(0,10))){skipped++;return;}
+    const reps=Array.isArray(o.reps)?o.reps.map(r=>Array.isArray(r)?{sec:+r[0],hr:+r[1]||null}
+      :{sec:+(r.sec||r.s),hr:+(r.hr)||null}).filter(r=>isFinite(r.sec)&&r.sec>0):null;
+    rows.push({date:String(o.date).slice(0,10), title:o.title||"Intervals",
+      km:nnum(o.km)?+o.km:null, secs:nnum(o.secs)?+o.secs:(o.time?hms2s(o.time):null),
+      avgHR:nnum(o.avgHR)?+o.avgHR:null, maxHR:nnum(o.maxHR)?+o.maxHR:
+        (reps&&reps.some(r=>r.hr)?Math.max(...reps.filter(r=>r.hr).map(r=>r.hr)):null),
+      te:nnum(o.te)?+o.te:null, kcal:null, type:o.type||"interval",
+      reps:reps, note:o.note||null, src:"manual"});
+  });
+  return {rows:rows,skipped:skipped};
+}
+
+function addRuns(rows){
+  DB.runs=DB.runs||[];
+  let added=0,dupe=0;
+  rows.forEach(r=>{
+    const hit=DB.runs.find(x=>x.date===r.date&&Math.abs((x.km||0)-(r.km||0))<0.02&&Math.abs((x.secs||0)-(r.secs||0))<30);
+    if(hit){ // an interval blob upgrades the easy row the CSV already filed
+      if(r.reps&&!hit.reps){hit.reps=r.reps;hit.type=r.type;hit.note=r.note||hit.note;added++;}
+      else dupe++; return; }
+    DB.runs.push(r); added++;
+  });
+  DB.runs.sort((a,b)=>a.date<b.date?-1:1);
+  return {added:added,dupe:dupe};
+}
+
+function repSummary(reps){
+  if(!reps||!reps.length) return "";
+  const g=[];reps.forEach(r=>{const l=g[g.length-1];
+    if(l&&l.sec===r.sec)l.n++;else g.push({sec:r.sec,n:1});});
+  return g.map(x=>x.n+"×"+(x.sec%60?(x.sec/60).toFixed(1):x.sec/60)+" min").join(" + ");
+}
+
+
+/* ---------- RUN CALENDAR ---------- */
+/* Manual marks live in DB.runCal. A day with no mark falls back to whatever the
+   Garmin import filed for it, so the month fills in on its own; tapping a day
+   overrides that, and tapping past the end clears back to the derived value. */
+let calM=null;
+const CAL_ORDER=["easy","int","tempo"];
+const CAL_META={easy:{n:"Easy",c:"#6f96b8"},int:{n:"Intervals",c:"#63a882"},tempo:{n:"Tempo",c:"#c9973f"}};
+function derivedMark(d){
+  const r=(DB.runs||[]).filter(x=>x.date===d);
+  if(!r.length) return null;
+  if(r.some(x=>x.reps&&x.reps.length)) return "int";
+  if(r.some(x=>x.type==="tempo")) return "tempo";
+  if(r.some(x=>x.type==="interval")) return "int";
+  return "easy";
+}
+const markOf=d=>DB.runCal&&DB.runCal[d]?DB.runCal[d]:derivedMark(d);
+function cycleDay(d){
+  DB.runCal=DB.runCal||{};
+  const cur=DB.runCal[d]||null;
+  const i=cur?CAL_ORDER.indexOf(cur):-1;
+  if(i<0) DB.runCal[d]=CAL_ORDER[0];
+  else if(i<CAL_ORDER.length-1) DB.runCal[d]=CAL_ORDER[i+1];
+  else delete DB.runCal[d];
+  save(); render();
+}
+function lastMark(kind){
+  const days=new Set(Object.keys(DB.runCal||{}).filter(d=>DB.runCal[d]===kind));
+  (DB.runs||[]).forEach(r=>{ if(!(DB.runCal||{})[r.date] && derivedMark(r.date)===kind) days.add(r.date); });
+  const l=[...days].sort();
+  if(!l.length) return null;
+  const d=l[l.length-1];
+  return {date:d, ago:Math.round((new Date(dkey()+"T12:00")-new Date(d+"T12:00"))/864e5)};
+}
+function calHTML(){
+  const now=new Date();
+  if(!calM) calM={y:now.getFullYear(),m:now.getMonth()};
+  const {y,m}=calM;
+  const first=new Date(y,m,1), lead=first.getDay(), len=new Date(y,m+1,0).getDate();
+  const pad=n=>String(n).padStart(2,"0");
+  const key=dd=>y+"-"+pad(m+1)+"-"+pad(dd);
+  const today=dkey();
+  let cells="";
+  for(let i=0;i<lead;i++) cells+=`<div class="cd off"></div>`;
+  for(let d=1;d<=len;d++){
+    const k=key(d), mk=markOf(k), meta=mk?CAL_META[mk]:null;
+    const manual=!!(DB.runCal&&DB.runCal[k]);
+    cells+=`<button class="cd${meta?" on":""}${k===today?" td":""}" data-d="${k}"
+      ${meta?`style="--m:${meta.c}"`:""}>${d}${meta&&!manual?`<i class="au"></i>`:""}</button>`;
+  }
+  const li=lastMark("int");
+  const label=new Date(y,m,1).toLocaleDateString(undefined,{month:"long",year:"numeric"});
+  const legend=CAL_ORDER.map(k=>`<span class="lg"><i style="background:${CAL_META[k].c}"></i>${CAL_META[k].n}</span>`).join("");
+  return `<div class="cal">
+    <div class="calh"><button class="cnav" id="cprev">‹</button><b>${label}</b><button class="cnav" id="cnext">›</button></div>
+    <div class="cdow">${["S","M","T","W","T","F","S"].map(x=>`<span>${x}</span>`).join("")}</div>
+    <div class="cgrid">${cells}</div>
+    <div class="calf">${legend}<span class="lg" style="color:var(--dimmer)">tap a day to cycle · tap past the end to clear</span></div>
+    <div class="calsince">${li?`Last intervals <b>${li.ago===0?"today":li.ago===1?"yesterday":li.ago+" days ago"}</b> · ${nice(li.date)}`
+      :"No interval session marked yet"}</div>
+  </div>`;
+}
+function wireCal(){
+  const p=document.getElementById("cprev"), n=document.getElementById("cnext");
+  if(p) p.onclick=()=>{calM.m--;if(calM.m<0){calM.m=11;calM.y--;}render();};
+  if(n) n.onclick=()=>{calM.m++;if(calM.m>11){calM.m=0;calM.y++;}render();};
+  document.querySelectorAll(".cgrid .cd[data-d]").forEach(b=>b.onclick=()=>cycleDay(b.dataset.d));
+}
+
+function runsV(){
+  const R=(DB.runs||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
+  const st=curStage(), S=STAGES[st];
+  const last=R[R.length-1];
+  const wk=R.filter(x=>x.date>=daysAgo(6)), mo=R.filter(x=>x.date>=daysAgo(29));
+  const sum=(l,f)=>l.reduce((a,b)=>a+(b[f]||0),0);
+  const paced=R.filter(x=>paceOf(x));
+  const withHR=R.filter(x=>nnum(x.avgHR));
+  const intervals=R.filter(x=>x.reps&&x.reps.length);
+
+  const stageBtns=STAGES.map(s=>`<button class="gbt ${s.s===st?'on':''}" data-st="${s.s}">${s.s}</button>`).join("");
+
+  const rows=R.slice(-40).reverse().map(x=>{
+    const p=paceOf(x), fl=runFlags(x);
+    return `<div class="dl" style="display:block">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <span class="a">${nice(x.date)} <u>${esc(x.title||"Run")}${x.type!=="easy"?" · "+esc(x.type):""}</u></span>
+        <span class="b">${x.km?x.km.toFixed(2)+" km":"—"}<u>${x.secs?s2hms(x.secs):""}${p?" · "+s2hms(p)+"/km":""}</u></span>
+      </div>
+      ${(nnum(x.avgHR)||nnum(x.maxHR))?`<div style="font-family:var(--mono);font-size:10px;color:var(--dimmer);margin-top:3px">
+        ${nnum(x.avgHR)?"avg "+x.avgHR:""}${nnum(x.maxHR)?" · max "+x.maxHR:""}${nnum(x.te)?" · TE "+x.te:""}
+        ${nnum(x.maxHR)?" · "+Math.round(x.maxHR/HRMAX*100)+"% of max":""}</div>`:""}
+      ${x.reps&&x.reps.length?`<div style="font-family:var(--mono);font-size:10px;color:var(--brass);margin-top:3px">
+        ${repSummary(x.reps)}${x.reps.some(r=>r.hr)?" · peaks "+x.reps.filter(r=>r.hr).map(r=>r.hr).join(", "):""}</div>`:""}
+      ${x.note?`<div style="font-size:10px;color:var(--dimmer);margin-top:3px">${esc(x.note)}</div>`:""}
+      ${fl.map(f=>`<div style="font-size:10px;color:var(--hot);margin-top:3px">▲ ${esc(f.m)}</div>`).join("")}
+    </div>`;}).join("")||`<div class="empty">No runs yet.<br>Import a Garmin activities export below, or paste an interval session.</div>`;
+
+  return `<div class="wrap">
+   <div class="card open"><div class="chead" style="cursor:default"><div class="cn"><b>Return to run · ${S.n}</b>
+     <i>${esc(S.d)}</i></div></div>
+     <div class="cbody" style="display:block"><div class="srow" style="border-bottom:0;align-items:center;gap:6px">
+       <span class="fl" style="flex:1">Set the stage you are actually at</span><span id="gst" style="display:flex;gap:5px">${stageBtns}</span>
+     </div></div></div>
+   ${calHTML()}
+   ${R.length?`<div class="scards">
+     <div class="sc"><div class="v">${sum(wk,"km").toFixed(1)}<u>km</u></div><div class="k">last 7 days · ${wk.length} run${wk.length===1?"":"s"}</div></div>
+     <div class="sc"><div class="v">${sum(mo,"km").toFixed(0)}<u>km</u></div><div class="k">last 30 days · ${mo.length} runs</div></div>
+     <div class="sc"><div class="v">${intervals.length}</div><div class="k">interval sessions logged</div></div>
+   </div>`:""}
+   ${paced.length>1?chartCard("Pace","min/km · lower is faster",paced.map(x=>({v:paceOf(x)/60,l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),{color:"#63a882",color2:"#8fd3a8",id:11,invert:true,dp:2}):""}
+   ${withHR.length>1?chartCard("Average heart rate","bpm across logged runs",withHR.map(x=>({v:x.avgHR,l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),{color:"#fb7185",color2:"#fdba74",id:12,invert:true,dp:0}):""}
+   ${R.length>1?chartCard("Distance","km per run",R.map(x=>({v:x.km||0,l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),{color:"#7dd3fc",color2:"#a5b4fc",id:13,dp:2}):""}
+
+   <div class="imp" id="gimp">
+     <div class="ih" id="gimph"><b>Import Garmin runs</b><span>›</span></div>
+     <div class="ib">
+       <textarea id="gimpt" placeholder="Paste a Garmin Connect activities export, or choose the CSV file"></textarea>
+       <div class="btns"><button class="fbtn" id="gimpcsv">Choose CSV file</button></div>
+       <input type="file" id="gimpf" accept=".csv,text/csv" style="display:none">
+       <button class="run" id="gimprun">Read and preview</button>
+       <div class="stat" id="gimpstat"></div>
+       <div class="fmt">Garmin Connect → Activities → the export icon. Columns are matched by name:
+       <code>Activity Type, Date, Title, Distance, Time, Avg HR, Max HR, Aerobic TE</code>.
+       Non-running rows are ignored. Every imported run is filed as <b>easy</b> — the activities
+       export has no lap splits, so it cannot tell an interval session from a steady one.
+       Runs already logged are skipped rather than duplicated.</div>
+     </div></div>
+
+   <div class="imp" id="iimp">
+     <div class="ih" id="iimph"><b>Add an interval session</b><span>›</span></div>
+     <div class="ib">
+       <textarea id="iimpt" placeholder='{"date":"2026-08-20","reps":[[90,0],[90,0],[90,0],[150,0]],"km":6.0,"time":"36:00","note":"pickups"}'></textarea>
+       <button class="run" id="iimprun">Read and preview</button>
+       <div class="stat" id="iimpstat"></div>
+       <div class="fmt">One session per line. <code>reps</code> is a list of
+       <code>[seconds, peak HR]</code> pairs — put <code>0</code> for the HR if you do not have it.
+       If a session is already filed as an easy run from the CSV, this upgrades that row in place
+       rather than adding a second one. Send the screen capture and I will write the line for you.</div>
+     </div></div>
+
+   <h2 class="sec">History${R.length?" · "+R.length+" run"+(R.length===1?"":"s"):""}</h2>${rows}
+   <div class="note">Every run imported from Garmin is assumed easy and under ${EASY_CAP} bpm; anything above that
+   is flagged rather than hidden, for runs from ${DB.runPolicyFrom||"2026-05-15"} onward — the back catalogue predates the policy and is left unmarked. Max HR ${HRMAX}. The ${BAND_LO}–${BAND_HI} band is the range the hamstring
+   tweaks happened in. Stage is yours to set — nothing here blocks a session.</div></div>`;}
+
+function wireRuns(){
+  const g=document.getElementById("gst");
+  if(g) g.querySelectorAll(".gbt").forEach(b=>b.onclick=()=>{
+    DB.runStage=+b.dataset.st; save(); render(); toast("Stage "+DB.runStage+" set");});
+
+  const box=document.getElementById("gimp");
+  if(box){
+    document.getElementById("gimph").onclick=()=>box.classList.toggle("open");
+    const ta=document.getElementById("gimpt"), stat=document.getElementById("gimpstat");
+    document.getElementById("gimpcsv").onclick=()=>document.getElementById("gimpf").click();
+    document.getElementById("gimpf").onchange=e=>{const f=e.target.files[0];
+      if(!f){stat.style.color="var(--hot)";stat.textContent="No file was chosen.";return;}
+      const rd=new FileReader();
+      rd.onload=()=>{ta.value=rd.result;stat.style.color="var(--dimmer)";stat.textContent=f.name+" loaded — tap Read and preview.";};
+      rd.onerror=()=>{stat.style.color="var(--hot)";stat.textContent="Could not read that file.";};
+      rd.readAsText(f);};
+    document.getElementById("gimprun").onclick=()=>previewRuns(parseGarmin(ta.value),stat,"garmin");
+  }
+  const ib=document.getElementById("iimp");
+  if(ib){
+    document.getElementById("iimph").onclick=()=>ib.classList.toggle("open");
+    const ta2=document.getElementById("iimpt"), st2=document.getElementById("iimpstat");
+    document.getElementById("iimprun").onclick=()=>previewRuns(parseIntervalBlob(ta2.value),st2,"interval");
+  }
+}
+
+function previewRuns(res,stat,kind){
+  if(res.bad){stat.style.color="var(--hot)";
+    stat.textContent="That does not look like a Garmin activities export — no Date, Distance or Time column found.";return;}
+  if(!res.rows.length){stat.style.color="var(--hot)";
+    stat.textContent="Nothing recognised"+(res.skipped?" · "+res.skipped+" line"+(res.skipped>1?"s":"")+" skipped":"")+".";return;}
+  const n=res.rows.length, km=res.rows.reduce((a,b)=>a+(b.km||0),0);
+  const first=res.rows[0].date, lastd=res.rows[n-1].date;
+  const flagged=res.rows.filter(r=>runFlags(r).length).length;
+  stat.style.color="var(--go)";
+  stat.innerHTML=`Found <b>${n}</b> ${kind==="interval"?"session":"run"}${n>1?"s":""} · ${km.toFixed(1)} km · ${first} to ${lastd}`+
+    (res.skipped?` · ${res.skipped} row${res.skipped>1?"s":""} ignored`:"")+
+    (flagged?`<br><span style="color:var(--hot)">${flagged} would be flagged on heart rate</span>`:"")+
+    `<button class="run" id="grungo" style="margin-top:9px">Add to history</button>`;
+  document.getElementById("grungo").onclick=()=>{
+    const r=addRuns(res.rows); save(); render();
+    toast(r.added+" added"+(r.dupe?" · "+r.dupe+" already logged":""));};
+}
+
+/* ---------- BOULDERING ---------- */
+function boulderV(){
+  const B=(DB.boulder||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
+  const last=B[B.length-1];
+  const wk=B.filter(x=>x.date>=daysAgo(6)), mo=B.filter(x=>x.date>=daysAgo(29));
+  const mins=l=>l.reduce((a,b)=>a+(b.mins||0),0);
+  const probs=s=>(s.sends||[]).reduce((a,b)=>a+(b.n||0),0);
+  const hardest=s=>{const g=(s.sends||[]).filter(x=>x.n>0).map(x=>GRADES.indexOf(x.g));
+    return g.length?GRADES[Math.max(...g)]:null;};
+  const steppers=GRADES.map(g=>`<div class="gcell">
+     <span class="gl">${g}</span>
+     <div class="grow2"><button class="gmin" data-g="${g}">−</button>
+     <b id="gc-${g}">0</b><button class="gpl" data-g="${g}">+</button></div></div>`).join("");
+
+  const rows=B.slice(-40).reverse().map(x=>{
+    const h=hardest(x), p=probs(x);
+    return `<div class="dl" style="display:block">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <span class="a">${nice(x.date)}${h?` <u>hardest ${h}</u>`:""}</span>
+        <span class="b">${x.mins||0}<u>min${p?" · "+p+" problem"+(p===1?"":"s"):""}</u></span></div>
+      ${(x.sends||[]).filter(s=>s.n>0).length?`<div style="font-family:var(--mono);font-size:10px;color:var(--dimmer);margin-top:3px">
+        ${x.sends.filter(s=>s.n>0).map(s=>s.g+"×"+s.n).join("  ")}</div>`:""}
+      ${x.note?`<div style="font-size:10px;color:var(--dimmer);margin-top:3px">${esc(x.note)}</div>`:""}
+    </div>`;}).join("")||`<div class="empty">Nothing logged yet.<br>Twice a week since 2017 — this only starts counting from today.</div>`;
+
+  const sessWk=wk.length, hrsMo=(mins(mo)/60);
+  return `<div class="wrap">
+   ${B.length?`<div class="scards">
+     <div class="sc"><div class="v">${sessWk}</div><div class="k">last 7 days · ${mins(wk)} min</div></div>
+     <div class="sc"><div class="v">${hrsMo.toFixed(1)}<u>hr</u></div><div class="k">last 30 days · ${mo.length} sessions</div></div>
+     <div class="sc"><div class="v">${last&&hardest(last)?hardest(last):"—"}</div><div class="k">hardest last session</div></div>
+   </div>`:""}
+   ${B.length>1?chartCard("Session length","minutes on the wall",B.map(x=>({v:x.mins||0,l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),{color:"#f0a868",color2:"#f7c59f",id:14,dp:0}):""}
+   ${B.filter(x=>probs(x)).length>1?chartCard("Problems sent","count per session",B.filter(x=>probs(x)).map(x=>({v:probs(x),l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),{color:"#a78bfa",color2:"#e0aaff",id:15,dp:0}):""}
+   <div class="card open"><div class="chead" style="cursor:default"><div class="cn"><b>Log a session</b>
+     <i>${new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</i></div></div>
+     <div class="cbody" style="display:block">
+       <div class="srow"><div class="fg"><span class="fl">Time on the wall (minutes)</span>
+         <input class="n" id="bomin" inputmode="numeric" placeholder="${last?last.mins:"90"}"></div></div>
+       <div class="srow" style="display:block"><span class="fl">Problems sent, by grade</span>
+         <div class="gwrap">${steppers}</div></div>
+       <div class="srow" style="border-bottom:0"><div class="fg"><span class="fl">Note — optional</span>
+         <input class="n" id="bonote" placeholder="overhang, felt strong"></div></div>
+     </div></div>
+   <h2 class="sec">History${B.length?" · "+B.length+" session"+(B.length===1?"":"s"):""}</h2>${rows}
+   <div class="note">Kept separate from weights on purpose. A session is duration and problems sent, not
+   sets and load — folding it into the strength log would put null loads into the volume figures and the
+   1RM charts. Both surface together in Timeline.</div></div>`;}
+
+function wireBoulder(){
+  const w=document.querySelector(".gwrap"); if(!w) return;
+  const counts={}; GRADES.forEach(g=>counts[g]=0);
+  const paint=g=>{const el=document.getElementById("gc-"+g); if(el)el.textContent=counts[g];};
+  w.querySelectorAll(".gpl").forEach(b=>b.onclick=()=>{counts[b.dataset.g]++;paint(b.dataset.g);});
+  w.querySelectorAll(".gmin").forEach(b=>b.onclick=()=>{
+    if(counts[b.dataset.g]>0)counts[b.dataset.g]--;paint(b.dataset.g);});
+  const btn=document.getElementById("bosv");
+  if(btn) btn.onclick=()=>{
+    const m=parseInt(document.getElementById("bomin").value,10);
+    if(!isFinite(m)||m<=0){toast("Enter the minutes");return;}
+    const sends=GRADES.map(g=>({g:g,n:counts[g]})).filter(s=>s.n>0);
+    const note=(document.getElementById("bonote").value||"").trim();
+    DB.boulder=DB.boulder||[];
+    DB.boulder.push({date:dkey(),mins:m,sends:sends,note:note||null});
+    DB.boulder.sort((a,b)=>a.date<b.date?-1:1);
+    save(); render();
+    toast(m+" min logged"+(sends.length?" · "+sends.reduce((a,b)=>a+b.n,0)+" problems":""));};
 }
 
 /* ---------- CHARTS ---------- */
