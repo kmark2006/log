@@ -1320,7 +1320,52 @@ function saveSess(){const sets=[];let rejected=0;
     else if(s.w!=null||s.r!=null) rejected++;}));
   if(!sets.length){toast(rejected?"Check those numbers":"Nothing to save");return;}
   if(rejected){toast(rejected+" set"+(rejected>1?"s":"")+" skipped — out of range");}
-  DB.sessions.push({date:new Date().toISOString(),day:day,sets:sets});save();clearDraft();render();toast("Saved "+sets.length+" sets");}
+  /* v17-6: saves for the same day and day-type merge into one session instead of
+     stacking a new one each time, and the form is left filled. Re-saving is
+     idempotent: for a given exercise and set number the newest entry wins. */
+  const today=dkey();
+  const hit=DB.sessions.find(x=>String(x.date).slice(0,10)===today && x.day===day);
+  let msg;
+  if(hit){
+    const byKey=new Map((hit.sets||[]).map(x=>[x.n+"#"+x.set,x]));
+    let added=0,upd=0;
+    sets.forEach(x=>{const k=x.n+"#"+x.set;
+      if(byKey.has(k)){const o=byKey.get(k);
+        if(o.w!==x.w||o.r!==x.r||o.rir!==x.rir){o.w=x.w;o.r=x.r;o.rir=x.rir;upd++;}}
+      else{byKey.set(k,x);added++;}});
+    hit.sets=[...byKey.values()].sort((a,b)=>a.n===b.n?a.set-b.set:(a.n<b.n?-1:1));
+    hit._t=Date.now();
+    msg=added||upd?("Session updated · "+hit.sets.length+" sets"+(upd?" · "+upd+" changed":"")):"Already saved";
+  }else{
+    DB.sessions.push({date:new Date().toISOString(),day:day,sets:sets});
+    msg="Saved "+sets.length+" sets";
+  }
+  save();render();toast(msg);}
+
+/* One-time repair for sessions split across several saves before v17-6.
+   Runs once, snapshots first, and only touches days that actually have
+   more than one session of the same day-type. */
+function mergeSplitSessions(){
+  const groups={};
+  (DB.sessions||[]).forEach(x=>{
+    const k=String(x.date).slice(0,10)+"|"+x.day;
+    (groups[k]=groups[k]||[]).push(x);});
+  const dupes=Object.keys(groups).filter(k=>groups[k].length>1);
+  if(!dupes.length) return {days:0,removed:0,sets:0};
+  snapshot("before merging split sessions");
+  let removed=0,total=0;
+  dupes.forEach(k=>{
+    const g=groups[k].slice().sort((a,b)=>(a._t||0)-(b._t||0)||(a.date<b.date?-1:1));
+    const keep=g[0], byKey=new Map();
+    g.forEach(sn=>(sn.sets||[]).forEach(x=>byKey.set(x.n+"#"+x.set,x)));  /* newest wins */
+    keep.sets=[...byKey.values()].sort((a,b)=>a.n===b.n?a.set-b.set:(a.n<b.n?-1:1));
+    keep._t=Date.now();
+    total+=keep.sets.length;
+    g.slice(1).forEach(sn=>{ tomb(sn._id);
+      DB.sessions.splice(DB.sessions.indexOf(sn),1); removed++; });
+  });
+  return {days:dupes.length,removed:removed,sets:total};
+}
 
 function homeV(){
   const S=DB.sleep, last=S[S.length-1];
@@ -2467,6 +2512,12 @@ document.addEventListener("click",e=>{if(e.target.id==="wipe"&&confirm("Erase ev
       _del:[],_wipe:Date.now()+1};save();tab=day;render();toast("Erased");}});
 document.getElementById("hm").onclick=()=>{tab="home";render();};
 window.addEventListener("storage",e=>{ if(e.key===K){ DB=load(); render(); toast("Updated from another window"); }});
+(()=>{ try{
+    if(!localStorage.getItem("kmMerge_v1")){
+      const r=mergeSplitSessions();
+      localStorage.setItem("kmMerge_v1", new Date().toISOString());
+      if(r.days){ save(); setTimeout(()=>toast("Merged "+r.removed+" split session"+(r.removed>1?"s":"")+" across "+r.days+" day"+(r.days>1?"s":"")), 800); }
+    }}catch(e){} })();
 render();
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("sw.js").then(reg=>{
