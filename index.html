@@ -1616,7 +1616,7 @@ function render(){nav();
   const v=document.getElementById("view"),bar=document.getElementById("bar");
   if(tab==="home"){v.innerHTML=homeV();bar.innerHTML="";bar.style.display="none";document.getElementById("hm").classList.add("hide");
     const go=(id,t)=>{const el=document.getElementById(id);if(el)el.onclick=()=>{tab=t;if(["W1","W2","W3"].includes(t))day=t;render();};};
-    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goB","bp");go("goA","arch");go("goR","runs");go("goBo","boulder");go("goM","metrics");go("goP","prog");go("goT","time");return;}
+    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goB","bp");go("goA","arch");go("goR","runs");go("goBo","boulder");go("goSa","sauna");go("goMd","meds");go("goM","metrics");go("goP","prog");go("goT","time");return;}
   bar.style.display="flex";document.getElementById("hm").classList.remove("hide");
   if(tab==="arch"){v.innerHTML=archiveV();bar.innerHTML=`<button class="btn" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};return;}
@@ -1866,6 +1866,15 @@ function homeV(){
        <span class="lbl">Runs</span><span class="cap">${(DB.runs||[]).length?((DB.runs||[]).filter(x=>x.date>=daysAgo(6)).reduce((a,b)=>a+(b.km||0),0)).toFixed(1)+" km this week":"import Garmin"}</span></button>
      <button class="sq c4" id="goBo"><svg viewBox="0 0 24 24"><path d="M12 3v7M8 6l4-3 4 3"/><circle cx="7" cy="14" r="1.6"/><circle cx="17" cy="12" r="1.6"/><circle cx="11" cy="19" r="1.6"/><path d="M7 14l4 5 6-7"/></svg>
        <span class="lbl">Boulder</span><span class="cap">${(DB.boulder||[]).length?(DB.boulder||[]).filter(x=>x.date>=daysAgo(6)).length+" this week":"time and grades"}</span></button>
+     <button class="sq c4" id="goSa"><svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M6 20V9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v11"/><path d="M9 4.5c0 1-1 1.2-1 2.2M12 3.5c0 1.2-1 1.4-1 2.4M15 4.5c0 1-1 1.2-1 2.2"/><path d="M6 13h12"/></svg>
+       <span class="lbl">Sauna</span><span class="cap">${(()=>{const S=(DB.sauna||[]);if(!S.length)return "15 min at 85°C";
+         const l=S.slice().sort((a,b)=>a.date<b.date?-1:1).pop();
+         const d=Math.round((new Date(dkey()+"T12:00")-new Date(l.date+"T12:00"))/864e5);
+         return d===0?"today":d===1?"yesterday":d+" days ago";})()}</span></button>
+     <button class="sq c2" id="goMd"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 13h18M9 8V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/><path d="M12 11v6M9 14h6"/></svg>
+       <span class="lbl">Meds</span><span class="cap">${(()=>{try{const a=adherence(7);const k=Object.keys(a).filter(m=>a[m].due>0);
+         if(!k.length)return "plan and confirm";const due=k.reduce((x,m)=>x+a[m].due,0),done=k.reduce((x,m)=>x+a[m].done,0);
+         return done+" of "+due+" this week";}catch(e){return "plan and confirm";}})()}</span></button>
      <button class="sq c1" id="goM"><svg viewBox="0 0 24 24"><path d="M3 20h18M6 20v-7M11 20V7M16 20v-4M21 20V4"/></svg>
        <span class="lbl">Metrics</span><span class="cap">current anchors</span></button>
      <button class="sq c3" id="goP"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 8-9"/><path d="M15 6h5v5"/></svg>
