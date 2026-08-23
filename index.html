@@ -1499,6 +1499,8 @@ function load(){
       &&(r.warmup==null||(isFinite(r.warmup)&&r.warmup>=0&&r.warmup<=90))):[];
   o.boulder=Array.isArray(o.boulder)?o.boulder.filter(b=>b&&/^\d{4}-\d{2}-\d{2}$/.test(b.date)
       &&isFinite(b.mins)&&b.mins>0&&b.mins<=600):[];
+  o.sauna=Array.isArray(o.sauna)?o.sauna.filter(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)
+      &&isFinite(x.mins)&&x.mins>0&&x.mins<=180&&(x.temp==null||(isFinite(x.temp)&&x.temp>0&&x.temp<=130))):[];
   o.medPlan=Array.isArray(o.medPlan)?o.medPlan.filter(r=>r&&MEDS[r.m]&&Array.isArray(r.days)&&isFinite(r.qty)):[];
   o.medLog=(o.medLog&&typeof o.medLog==="object"&&!Array.isArray(o.medLog))?o.medLog:{};
   o.medExtra=(o.medExtra&&typeof o.medExtra==="object"&&!Array.isArray(o.medExtra))?o.medExtra:{};
@@ -1546,10 +1548,10 @@ function mergeStored(mine){
   const wipe=Math.max(out._wipe||0, theirs._wipe||0);
   out._wipe=wipe;
   // if this copy wiped, drop anything older than the wipe
-  ["sessions","food","sleep","weight","bp","runs","boulder"].forEach(k=>{
+  ["sessions","food","sleep","weight","bp","runs","boulder","sauna"].forEach(k=>{
     out[k]=(out[k]||[]).filter(x=>x && !dead.has(x._id) && !(wipe && (x._t||0)<wipe));
   });
-  ["sessions","food","bp","runs","boulder"].forEach(k=>{
+  ["sessions","food","bp","runs","boulder","sauna"].forEach(k=>{
     const seen=new Set(out[k].map(x=>x._id).filter(Boolean));
     (theirs[k]||[]).forEach(x=>{
       if(!x||!x._id) return;
@@ -1575,7 +1577,7 @@ function mergeStored(mine){
 }
 function stampAll(){
   const now=Date.now();
-  ["sessions","food","sleep","weight","bp","runs","boulder"].forEach(k=>(DB[k]||[]).forEach(x=>{
+  ["sessions","food","sleep","weight","bp","runs","boulder","sauna"].forEach(k=>(DB[k]||[]).forEach(x=>{
     if(x&&!x._id)x._id=uid(); if(x&&!x._t)x._t=now; }));
 }
 function save(){
@@ -1605,7 +1607,7 @@ function lastFor(n){for(let i=DB.sessions.length-1;i>=0;i--){const h=DB.sessions
 function bestFor(n){let b=0;DB.sessions.forEach(s=>s.sets.forEach(x=>{if(x.n===n){const v=e1rm(x.w,x.r);if(v>b)b=v;}}));return b;}
 document.getElementById("dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
 
-const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["runs","Runs"],["boulder","Boulder"],["meds","Meds"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
+const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["runs","Runs"],["boulder","Boulder"],["sauna","Sauna"],["meds","Meds"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
 function nav(){document.getElementById("nav").innerHTML=TABS.map(([k,l])=>
   `<button class="nb ${tab===k?'on':''}" data-k="${k}">${l}</button>`).join("");
   document.querySelectorAll(".nb").forEach(b=>b.onclick=()=>{tab=b.dataset.k;if(["W1","W2","W3"].includes(tab))day=tab;render();});}
@@ -1628,6 +1630,10 @@ function render(){nav();
   if(tab==="runs"){v.innerHTML=runsV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     wireRuns();wireCal();return;}
+  if(tab==="sauna"){v.innerHTML=saunaV();
+    bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="sasv">Save session</button>`;
+    document.getElementById("bk").onclick=()=>{tab="home";render();};
+    wireSauna();return;}
   if(tab==="meds"){v.innerHTML=medsV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     wireMeds();return;}
@@ -2524,6 +2530,70 @@ function medSheet(date, m){
     } else { setDose(date,m,a); }
     close();
   });
+}
+
+
+/* ---------- SAUNA (kmlog-v17-19) ----------
+   Own tab rather than folded into Boulder: different intervention, different
+   dose axis (temperature x duration), and it lapsed for time reasons — a
+   standing habit that needs its own visible counter to come back. */
+const SAUNA_MIN=15, SAUNA_TEMP=85;
+
+function saunaV(){
+  const S=(DB.sauna||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
+  const last=S[S.length-1];
+  const wk=S.filter(x=>x.date>=daysAgo(6)), mo=S.filter(x=>x.date>=daysAgo(29));
+  const mins=l=>l.reduce((a,b)=>a+(b.mins||0),0);
+  const since=last?Math.round((new Date(dkey()+"T12:00")-new Date(last.date+"T12:00"))/864e5):null;
+
+  const rows=S.slice(-40).reverse().map(x=>`<div class="dl" style="display:block">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <span class="a">${nice(x.date)}${x.temp?` <u>${x.temp}°C</u>`:""}</span>
+        <span class="b">${x.mins}<u>min</u></span></div>
+      ${x.note?`<div style="font-size:10px;color:var(--dimmer);margin-top:3px">${esc(x.note)}</div>`:""}
+    </div>`).join("")||`<div class="empty">Nothing logged yet.<br>Standing protocol is
+      ${SAUNA_MIN} min at ${SAUNA_TEMP}°C. It lapsed for time reasons — this is the counter that says so.</div>`;
+
+  return `<div class="wrap">
+   <div class="scards">
+     <div class="sc"><div class="v">${since==null?"—":since===0?"today":since}</div>
+       <div class="k">${since==null?"no session logged":since<=1?"":"days since last"}</div></div>
+     <div class="sc"><div class="v">${wk.length}</div><div class="k">last 7 days · ${mins(wk)} min</div></div>
+     <div class="sc"><div class="v">${mo.length}</div><div class="k">last 30 days · ${mins(mo)} min</div></div>
+   </div>
+   ${S.length>1?chartCard("Session length","minutes",S.map(x=>({v:x.mins||0,
+      l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),
+      {color:"#e0785a",color2:"#f2b199",id:16,dp:0}):""}
+   ${S.filter(x=>nnum(x.temp)).length>1?chartCard("Temperature","°C",
+      S.filter(x=>nnum(x.temp)).map(x=>({v:x.temp,
+      l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),
+      {color:"#c9603f",color2:"#e8a08a",id:17,dp:0}):""}
+   <div class="card open"><div class="chead" style="cursor:default"><div class="cn"><b>Log a session</b>
+     <i>${new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</i></div></div>
+     <div class="cbody" style="display:block">
+       <div class="srow"><div class="fg"><span class="fl">Minutes</span>
+         <input class="n" id="samin" inputmode="numeric" placeholder="${last?last.mins:SAUNA_MIN}"></div>
+         <div class="fg"><span class="fl">Temperature °C</span>
+         <input class="n" id="satemp" inputmode="numeric" placeholder="${last&&last.temp?last.temp:SAUNA_TEMP}"></div></div>
+       <div class="srow" style="border-bottom:0"><div class="fg"><span class="fl">Note — optional</span>
+         <input class="n" id="sanote" placeholder="after legs"></div></div>
+     </div></div>
+   <h2 class="sec">History${S.length?" · "+S.length+" session"+(S.length===1?"":"s"):""}</h2>${rows}
+   <div class="note">Protocol is ${SAUNA_MIN} min at ${SAUNA_TEMP}°C. Kept separate from Boulder because the
+   dose is temperature and duration rather than grades and problems, and because a lapsed habit needs its own
+   counter rather than being buried in another screen.</div></div>`;}
+
+function wireSauna(){
+  const btn=document.getElementById("sasv"); if(!btn) return;
+  btn.onclick=()=>{
+    const m=parseInt(document.getElementById("samin").value,10);
+    const t=parseInt(document.getElementById("satemp").value,10);
+    if(!isFinite(m)||m<=0){toast("Enter the minutes");return;}
+    DB.sauna=DB.sauna||[];
+    DB.sauna.push({date:dkey(),mins:m,temp:isFinite(t)?t:null,
+      note:(document.getElementById("sanote").value||"").trim()||null});
+    DB.sauna.sort((a,b)=>a.date<b.date?-1:1);
+    save(); render(); toast(m+" min"+(isFinite(t)?" at "+t+"°C":"")+" logged");};
 }
 
 /* ---------- RUN CALENDAR ---------- */
