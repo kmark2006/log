@@ -382,6 +382,49 @@ input.n[type=time]{font-size:18px}
 .calsince{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
   font-size:11px;color:var(--dim);font-family:var(--mono)}
 .calsince b{color:var(--go)}
+
+/* Meds planner — kmlog-v17-12 */
+.adhrow{display:flex;flex-wrap:wrap;gap:6px;margin:10px 2px 6px}
+.adh{flex:1 1 44%;border:1px solid var(--line);border-left:3px solid var(--mc);border-radius:8px;
+  padding:6px 8px;font-size:9.5px;color:var(--dimmer);letter-spacing:.05em;text-transform:uppercase}
+.adh b{display:block;font-family:var(--mono);font-size:15px;color:var(--ink);letter-spacing:0;margin-top:2px}
+.adh i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--mc)}
+.wk{border:1px solid var(--line);border-radius:10px;padding:7px 6px;margin-bottom:7px}
+.mhead,.mrow{display:grid;grid-template-columns:56px repeat(7,minmax(0,1fr));gap:3px;align-items:center}
+.mhead{margin-bottom:4px}
+.mdh{text-align:center;font-family:var(--mono);font-size:8px;color:var(--dimmer);line-height:1.1}
+.mdh b{display:block;font-size:11px;color:var(--dim);font-weight:400}
+.mdh.mdt b{color:var(--brass);font-weight:700}
+.mlab{font-size:9px;color:var(--mc,var(--dimmer));letter-spacing:.04em;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;padding-right:2px}
+.mrow{margin-bottom:3px}
+.mc{height:30px;border-radius:6px;border:1.5px solid transparent;background:transparent;padding:0;
+  font-family:var(--mono);font-size:9px;color:transparent;line-height:1}
+.mnone{border:0}
+.mp{border-color:var(--mc);opacity:.55;color:var(--mc)}
+.mk{background:var(--mc);border-color:var(--mc);color:#14110b;font-weight:700}
+.ms{border-color:var(--hot);color:var(--hot)}
+.ms::after{content:"–"}
+.mv{border-color:var(--dimmer);color:var(--dimmer);border-style:dashed}
+.mx{border-style:dotted;border-width:2px}
+.calf .lg i.lgp{width:11px;height:11px;border:1.5px solid var(--dim);border-radius:3px;background:transparent}
+.calf .lg i.lgk{width:11px;height:11px;background:var(--dim);border-radius:3px}
+.calf .lg i.lgs{width:11px;height:11px;border:1.5px solid var(--hot);border-radius:3px}
+.calf .lg i.lgv{width:11px;height:11px;border:1.5px dashed var(--dimmer);border-radius:3px}
+.calf .lg i.lgx{width:11px;height:11px;border:2px dotted var(--dim);border-radius:3px}
+.msheet{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;z-index:60}
+.mspanel{width:100%;background:var(--surface,#1b1e23);border-top:1px solid var(--line);
+  border-radius:14px 14px 0 0;padding:14px 14px 22px}
+.msh{margin-bottom:10px}
+.msh b{font-size:15px}.msh i{display:block;font-style:normal;font-size:10px;color:var(--dimmer);margin-top:2px}
+.msb{width:100%;height:42px;border-radius:9px;border:1px solid var(--line);background:transparent;
+  color:var(--ink);font-size:13px;margin-bottom:7px}
+.msgo{background:var(--brass);color:#1a1408;border-color:var(--brass);font-weight:700}
+.mscx{color:var(--dimmer)}
+.msmv{display:flex;align-items:center;gap:8px;margin:4px 0 8px}
+.msmv label{font-size:10px;color:var(--dimmer);letter-spacing:.05em;text-transform:uppercase}
+.msmv input{flex:1;height:38px;border-radius:8px;border:1px solid var(--line);background:transparent;
+  color:var(--ink);padding:0 9px;font-size:13px}
 </style>
 </head>
 <body>
@@ -1452,9 +1495,13 @@ function load(){
   o.food=Array.isArray(o.food)?o.food.filter(f=>f&&f.date&&typeof f.n==="string"&&isFinite(f.kcal)):[];
   o.customFoods=Array.isArray(o.customFoods)?o.customFoods.filter(f=>f&&typeof f.n==="string"&&isFinite(f.kcal)):[];
   o.runs=Array.isArray(o.runs)?o.runs.filter(r=>r&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)
-      &&(r.km==null||(isFinite(r.km)&&r.km>=0&&r.km<=200))&&(r.secs==null||(isFinite(r.secs)&&r.secs>0))):[];
+      &&(r.km==null||(isFinite(r.km)&&r.km>=0&&r.km<=200))&&(r.secs==null||(isFinite(r.secs)&&r.secs>0))
+      &&(r.warmup==null||(isFinite(r.warmup)&&r.warmup>=0&&r.warmup<=90))):[];
   o.boulder=Array.isArray(o.boulder)?o.boulder.filter(b=>b&&/^\d{4}-\d{2}-\d{2}$/.test(b.date)
       &&isFinite(b.mins)&&b.mins>0&&b.mins<=600):[];
+  o.medPlan=Array.isArray(o.medPlan)?o.medPlan.filter(r=>r&&MEDS[r.m]&&Array.isArray(r.days)&&isFinite(r.qty)):[];
+  o.medLog=(o.medLog&&typeof o.medLog==="object"&&!Array.isArray(o.medLog))?o.medLog:{};
+  o.medExtra=(o.medExtra&&typeof o.medExtra==="object"&&!Array.isArray(o.medExtra))?o.medExtra:{};
   o.runCal=(o.runCal&&typeof o.runCal==="object"&&!Array.isArray(o.runCal))?o.runCal:{};
   o.runPolicyFrom=/^\d{4}-\d{2}-\d{2}$/.test(o.runPolicyFrom)?o.runPolicyFrom:"2026-05-15";
   o.runStage=isFinite(o.runStage)?Math.max(0,Math.min(4,o.runStage)):2;
@@ -1558,7 +1605,7 @@ function lastFor(n){for(let i=DB.sessions.length-1;i>=0;i--){const h=DB.sessions
 function bestFor(n){let b=0;DB.sessions.forEach(s=>s.sets.forEach(x=>{if(x.n===n){const v=e1rm(x.w,x.r);if(v>b)b=v;}}));return b;}
 document.getElementById("dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
 
-const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["runs","Runs"],["boulder","Boulder"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
+const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["runs","Runs"],["boulder","Boulder"],["meds","Meds"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
 function nav(){document.getElementById("nav").innerHTML=TABS.map(([k,l])=>
   `<button class="nb ${tab===k?'on':''}" data-k="${k}">${l}</button>`).join("");
   document.querySelectorAll(".nb").forEach(b=>b.onclick=()=>{tab=b.dataset.k;if(["W1","W2","W3"].includes(tab))day=tab;render();});}
@@ -1581,6 +1628,9 @@ function render(){nav();
   if(tab==="runs"){v.innerHTML=runsV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     wireRuns();wireCal();return;}
+  if(tab==="meds"){v.innerHTML=medsV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button>`;
+    document.getElementById("bk").onclick=()=>{tab="home";render();};
+    wireMeds();return;}
   if(tab==="boulder"){v.innerHTML=boulderV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="bosv">Save session</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     wireBoulder();return;}
@@ -2039,6 +2089,14 @@ function saveWeight(lb,bf){
 /* ---------- RUNS & BOULDERING (kmlog-v17-4) ---------- */
 const nnum=v=>typeof v==="number"&&isFinite(v);  /* isFinite(null) is true — Number(null) is 0 */
 const HRMAX=186, EASY_CAP=140, BAND_LO=163, BAND_HI=178;
+const WARMUP_MIN=10;   /* the Helgerud protocol's stated warm-up */
+/* Read off the HR traces on the Garmin activity pages: flat low HR, then the
+   first sharp rep. Accurate to about a minute. */
+const WARMUP_SEED={
+  /* the four hamstring-tweak sessions */
+  "2026-06-19":9.5, "2026-07-05":4, "2026-07-11":6, "2026-07-19":5.5,
+  /* the clean August block */
+  "2026-08-01":12, "2026-08-04":14, "2026-08-09":14, "2026-08-16":19, "2026-08-20":8.5};
 const STAGES=[
  {s:0,n:"Stage 0",d:"No running. Eccentrics only."},
  {s:1,n:"Stage 1",d:"1-min efforts at 60% effort. Max HR capped at 150. Duration before speed."},
@@ -2060,14 +2118,35 @@ function curStage(){ const v=DB.runStage; return isFinite(v)?Math.max(0,Math.min
 
 function runFlags(r){
   const f=[];
-  /* The <140 easy ceiling is a return-to-run policy, not a description of the
-     back catalogue. Of 628 runs in the 2023–2026 Garmin export, 405 breach it —
-     flagging those buries the ones that matter. Flags apply from the restart on. */
   if(dOf(r) < (DB.runPolicyFrom||"2026-05-15")) return f;
-  if(r.type==="easy"&&nnum(r.avgHR)&&r.avgHR>EASY_CAP) f.push({t:"warn",m:"Avg HR "+r.avgHR+" over the "+EASY_CAP+" easy ceiling"});
-  if(nnum(r.maxHR)&&r.maxHR>=BAND_LO&&r.maxHR<=BAND_HI) f.push({t:"warn",m:"Max HR "+r.maxHR+" inside the "+BAND_LO+"–"+BAND_HI+" injury band"});
-  if(curStage()===1&&nnum(r.maxHR)&&r.maxHR>150) f.push({t:"warn",m:"Max HR "+r.maxHR+" over the Stage 1 cap of 150"});
+  const hard = r.type==="interval"||r.type==="tempo"||r.type==="stride";
+  const wu = nnum(r.warmup)?r.warmup:null;
+
+  /* Warm-up is the variable the injury record actually supports. All four
+     hamstring tweaks (19 Jun, 5 Jul, 11 Jul, 19 Jul 2026) followed roughly
+     five-minute warm-ups. Since 1 Aug, five sessions at 10+ min have been
+     clean — including 20 Aug at 179 bpm, above the old band entirely. */
+  if(hard && wu!=null && wu < WARMUP_MIN)
+    f.push({t:"warn", m:"Warm-up "+wu+" min — under the "+WARMUP_MIN+"-minute minimum"});
+  if(hard && wu==null)
+    f.push({t:"note", m:"Warm-up not recorded"});
+
+  if(r.type==="easy"&&nnum(r.avgHR)&&r.avgHR>EASY_CAP)
+    f.push({t:"warn", m:"Avg HR "+r.avgHR+" over the "+EASY_CAP+" easy ceiling"});
+  if(curStage()===1&&nnum(r.maxHR)&&r.maxHR>150)
+    f.push({t:"warn", m:"Max HR "+r.maxHR+" over the Stage 1 cap of 150"});
   return f;
+}
+
+/* The 163–178 band is kept as context, not as a warning. It was built on the
+   four July tweaks and August broke it: 174 and 179 both passed clean while
+   three of the four July tweaks happened at 163–166. */
+function bandNote(r){
+  if(!nnum(r.maxHR)) return null;
+  const pct=Math.round(r.maxHR/HRMAX*100);
+  if(r.maxHR>BAND_HI) return "peak "+r.maxHR+" · "+pct+"% of max · above the old injury band";
+  if(r.maxHR>=BAND_LO) return "peak "+r.maxHR+" · "+pct+"% of max · within the old injury band";
+  return null;
 }
 
 /* Garmin Connect activities export. Columns are matched by header name, so a
@@ -2102,12 +2181,16 @@ function parseGarmin(text){
     const title=(iTitle>=0?c[iTitle]:"")||"Run";
     /* The export has no lap splits, but a renamed activity still carries the intent.
        Rename a session in Garmin Connect and it imports typed instead of as easy. */
-    const ty2=/\b(interval|helgerud|4x4|pickup)/i.test(title)?"interval"
+    const TWEAKS={"2026-06-19":1,"2026-07-05":1,"2026-07-11":1,"2026-07-19":1};
+    const ty2=(TWEAKS[date]&&km>1)?"interval"
+             :/\b(interval|helgerud|4x4|pickup)/i.test(title)?"interval"
              :/\btempo\b/i.test(title)?"tempo"
              :/\bstride/i.test(title)?"stride":"easy";
     rows.push({date:date, t:raw.length>10?raw:null, title:title,
       km:+km.toFixed(2), secs:secs, avgHR:num(iAvg), maxHR:num(iMax),
-      te:num(iTE), kcal:num(iCal), type:ty2, reps:null, note:null, src:"garmin"});
+      te:num(iTE), kcal:num(iCal), type:ty2, reps:null,
+      warmup:(WARMUP_SEED[date]!=null?WARMUP_SEED[date]:null),
+      note:(TWEAKS[date]&&km>1)?"hamstring tweaked on this run":null, src:"garmin"});
   });
   return {rows:rows,skipped:skipped};
 }
@@ -2126,7 +2209,8 @@ function parseIntervalBlob(text){
       avgHR:nnum(o.avgHR)?+o.avgHR:null, maxHR:nnum(o.maxHR)?+o.maxHR:
         (reps&&reps.some(r=>r.hr)?Math.max(...reps.filter(r=>r.hr).map(r=>r.hr)):null),
       te:nnum(o.te)?+o.te:null, kcal:null, type:o.type||"interval",
-      reps:reps, note:o.note||null, src:"manual"});
+      reps:reps, note:o.note||null,
+      warmup:(nnum(+o.warmup)?+o.warmup:(WARMUP_SEED[String(o.date).slice(0,10)]??null)), src:"manual"});
   });
   return {rows:rows,skipped:skipped};
 }
@@ -2139,6 +2223,7 @@ function addRuns(rows){
     if(hit){ // a typed row or an interval blob upgrades the easy row already filed
       let up=false;
       if(r.reps&&!hit.reps){hit.reps=r.reps;up=true;}
+      if(nnum(r.warmup)&&!nnum(hit.warmup)){hit.warmup=r.warmup;up=true;}
       if(r.type&&r.type!=="easy"&&hit.type!==r.type){hit.type=r.type;up=true;}
       if(r.note&&!hit.note){hit.note=r.note;up=true;}
       if(up){added++;} else {dupe++;} return; }
@@ -2155,6 +2240,291 @@ function repSummary(reps){
   return g.map(x=>x.n+"×"+(x.sec%60?(x.sec/60).toFixed(1):x.sec/60)+" min").join(" + ");
 }
 
+
+
+/* ---------- MEDS PLANNER (kmlog-v17-12) ----------
+   Rows are medications, columns are days — the layout of the paper sheets.
+   Each cell is one dose and one tap target, so Sermorelin can be confirmed
+   without touching that day's Cypionate. Plan is generated from recurring
+   rules; the log stores only confirmations and deviations. */
+
+const MEDS = {
+  /* conc = active mg per ml (or per tablet). Where it is null the schedule shows
+     volume only — the ester switch cost a round trip precisely because this was
+     nowhere in the record, so it lives here now. */
+  enan: {n:"Enanthate",   c:"#a9762f", u:"ml",  conc:200,
+         cnote:"200 mg/ml — superseded by cypionate"},
+  cyp:  {n:"Cypionate",   c:"#c9973f", u:"ml",  conc:100,
+         cnote:"effective concentration is half the enanthate's 200 mg/ml, so 0.50 ml delivers the same 50 mg"},
+  hcg:  {n:"HCG",         c:"#6f96b8", u:"ml",  conc:null, cnote:"IU per ml not recorded"},
+  anas: {n:"Anastrozole", c:"#63a882", u:"tab", conc:null, cnote:"tablet strength not recorded — if 1 mg, 0.25 tab is 0.25 mg"},
+  serm: {n:"Sermorelin",  c:"#9b87dc", u:"ml",  conc:null, cnote:"mg per ml not recorded"}
+};
+const MED_ORDER = ["enan","cyp","hcg","anas","serm"];   /* display order; rows shown only where scheduled */
+const DOWS = ["S","M","T","W","T","F","S"];
+
+/* days: 0=Sun … 6=Sat */
+const DEFAULT_PLAN = [
+  /* Testosterone timeline, read off the scanned sheets 22 Aug 2026.
+     Injection days were verified mark-by-mark, not assumed:
+       Wed/Sat  07-Aug-24 → 02-Nov-24   (sheet 1, checked Aug, Sep, Oct and the final block)
+       Tue/Fri  05-Nov-24 → present     (sheets 2, 5 and 6 all checked; no further change) */
+  {m:"enan", qty:0.25, days:[3,6], from:"2024-08-07", to:"2024-11-02",
+   note:"100 mg/week. Wed and Sat."},
+  {m:"enan", qty:0.25, days:[2,5], from:"2024-11-05", to:"2025-09-15",
+   note:"100 mg/week. Injection days moved to Tue and Fri on 05-Nov-24."},
+  {m:"enan", qty:0.20, days:[2,5], from:"2025-09-16", to:"2026-04-13",
+   note:"REDUCED to 80 mg/week for seven months. Absent from the project record until 22 Aug 2026."},
+  {m:"enan", qty:0.25, days:[2,5], from:"2026-04-14", to:"2026-07-27",
+   note:"Back to 100 mg/week."},
+  {m:"cyp",  qty:0.50, days:[2,5], from:"2026-07-28", to:null,
+   note:"Same 100 mg/week — half the concentration at twice the volume. Start date assumed to follow sheet 7; confirm."},
+
+  /* hCG and anastrozole days read off the sheets 22 Aug 2026, same method as the
+     testosterone rows. The whole protocol shifted back one day on 05-Nov-24. */
+  {m:"hcg",  qty:1.00, days:[3,5,0], from:"2024-08-07", to:"2024-11-02",
+   note:"Wed, Fri, Sun."},
+  {m:"hcg",  qty:1.00, days:[2,4,6], from:"2024-11-05", to:null,
+   note:"Tue, Thu, Sat. Shifted back a day with the rest of the protocol."},
+
+  {m:"anas", qty:0.50, days:[3,6],   from:"2024-08-07", to:"2024-11-02",
+   note:"0.5 tablet twice weekly, on the injection days."},
+  {m:"anas", qty:0.50, days:[2,5,0], from:"2024-11-05", to:"2026-04-19",
+   note:"0.5 tablet THREE times weekly — Tue, Fri, Sun. Sheet 7 has STOPPED \u2018AI\u2019 written above Sun 19-Apr-26."},
+  {m:"anas", qty:0.25, days:[2,5],   from:"2026-05-13", to:null,
+   note:"Restarted at half the dose, twice weekly. Restart date is from the project record; the sheet annotation near 15\u201317 May was not legible enough to confirm it."},
+
+  {m:"serm", qty:0.15, days:[0,2,3,5,6], from:"2025-12-09", to:"2025-12-29",
+   note:"Start of Sermorelin, handwritten on sheet 5. The record gave 22 Dec at 0.3 ml — wrong on both counts."},
+  {m:"serm", qty:0.30, days:[0,2,3,5,6], from:"2025-12-30", to:null,
+   note:"Off Mon and Thu, so the two rest days never fall together."}
+];
+
+let medM = null;                       /* first of the two months on screen */
+const mkey = (d,m) => d + "|" + m;
+const dstr = dt => dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0");
+
+function medPlan(){ return (DB.medPlan && DB.medPlan.length) ? DB.medPlan : DEFAULT_PLAN; }
+
+/* what is scheduled for this med on this date, from the rules */
+function planned(date, m){
+  const dt = new Date(date+"T12:00"), dow = dt.getDay();
+  let hit = null;
+  medPlan().forEach(r=>{
+    if(r.m!==m) return;
+    if(r.from && date < r.from) return;
+    if(r.to && date > r.to) return;
+    if(r.days.indexOf(dow)<0) return;
+    hit = r;
+  });
+  return hit;
+}
+const logOf   = (date,m) => (DB.medLog||{})[mkey(date,m)] || null;
+const extraOf = (date,m) => (DB.medExtra||{})[mkey(date,m)] || null;
+
+/* one cell can be: not scheduled · planned · taken · skipped · moved out · moved in */
+function cellState(date, m){
+  const ex = extraOf(date,m);
+  if(ex) return {kind: ex.taken ? "takenExtra" : "extra", qty: ex.qty};
+  const p = planned(date,m);
+  if(!p) return {kind:"none"};
+  const lg = logOf(date,m);
+  if(lg && lg.s==="taken")  return {kind:"taken",  qty:p.qty};
+  if(lg && lg.s==="skipped")return {kind:"skipped",qty:p.qty};
+  if(lg && lg.s==="moved")  return {kind:"moved",  qty:p.qty, to:lg.to};
+  return {kind:"planned", qty:p.qty};
+}
+
+function toggleDose(date, m){
+  DB.medLog = DB.medLog || {}; DB.medExtra = DB.medExtra || {};
+  const ex = extraOf(date,m);
+  if(ex){ ex.taken = !ex.taken; save(); render(); return; }
+  if(!planned(date,m)) return;
+  const k = mkey(date,m), cur = (DB.medLog[k]||{}).s;
+  if(cur==="taken") delete DB.medLog[k];      /* second tap undoes */
+  else DB.medLog[k] = {s:"taken"};
+  save(); render();
+}
+
+function setDose(date, m, status, moveTo){
+  DB.medLog = DB.medLog || {}; DB.medExtra = DB.medExtra || {};
+  const k = mkey(date,m);
+  if(status==="clear"){ delete DB.medLog[k]; }
+  else if(status==="moved"){
+    const p = planned(date,m); if(!p || !moveTo) return;
+    DB.medLog[k] = {s:"moved", to:moveTo};
+    DB.medExtra[mkey(moveTo,m)] = {from:date, qty:p.qty, taken:false};
+  }
+  else DB.medLog[k] = {s:status};
+  save(); render();
+}
+
+function adherence(days){
+  const out = {}; const today = dkey();
+  const start = daysAgo(days-1);
+  const live = medsActive(start, today);
+  live.forEach(m=>{ out[m] = {due:0, done:0}; });
+  const dt = new Date(start+"T12:00"), end = new Date(today+"T12:00");
+  while(dt <= end){
+    const d = dstr(dt);
+    live.forEach(m=>{
+      const st = cellState(d,m);
+      if(st.kind==="none") return;
+      if(st.kind==="moved") return;                  /* not a miss — it moved */
+      out[m].due++;
+      if(st.kind==="taken"||st.kind==="takenExtra") out[m].done++;
+    });
+    dt.setDate(dt.getDate()+1);
+  }
+  return out;
+}
+
+function medsActive(from,to){
+  /* a med earns a row only if it has a real dose in the window — checking rule
+     overlap alone left empty rows on the month a protocol ended */
+  const hit={};
+  const dt=new Date(from+"T12:00"), end=new Date(to+"T12:00");
+  let guard=0;
+  while(dt<=end && guard++<800){
+    const d=dstr(dt);
+    MED_ORDER.forEach(m=>{ if(!hit[m] && (planned(d,m)||extraOf(d,m))) hit[m]=true; });
+    dt.setDate(dt.getDate()+1);
+  }
+  const out=MED_ORDER.filter(m=>hit[m]);
+  return out.length?out:MED_ORDER.filter(m=>m!=="enan");
+}
+function weekStrip(monday, meds){
+  const days = [];
+  const dt = new Date(monday+"T12:00");
+  for(let i=0;i<7;i++){ days.push(dstr(dt)); dt.setDate(dt.getDate()+1); }
+  const today = dkey();
+  const head = days.map(d=>{
+    const x = new Date(d+"T12:00");
+    return `<span class="mdh${d===today?" mdt":""}">${DOWS[x.getDay()]}<b>${x.getDate()}</b></span>`;
+  }).join("");
+  const rows = meds.map(m=>{
+    const meta = MEDS[m];
+    const cells = days.map(d=>{
+      const st = cellState(d,m);
+      if(st.kind==="none") return `<span class="mc mnone"></span>`;
+      const cls = {planned:"mp", taken:"mk", skipped:"ms", moved:"mv", extra:"mx", takenExtra:"mk mx"}[st.kind];
+      const q = st.qty!=null ? (meta.u==="tab" ? st.qty : st.qty.toFixed(2)) : "";
+      return `<button class="mc ${cls}" style="--mc:${meta.c}" data-d="${d}" data-m="${m}">${q}</button>`;
+    }).join("");
+    return `<div class="mrow"><span class="mlab" style="--mc:${meta.c}">${meta.n}</span>${cells}</div>`;
+  }).join("");
+  return `<div class="wk"><div class="mhead"><span class="mlab"></span>${head}</div>${rows}</div>`;
+}
+
+function medsV(){
+  const now = new Date();
+  if(!medM) medM = {y:now.getFullYear(), m:now.getMonth()};
+  /* first Sunday on or before the 1st of month one, through the end of month two */
+  const first = new Date(medM.y, medM.m, 1);
+  const last  = new Date(medM.y, medM.m+2, 0);
+  const cur = new Date(first); cur.setDate(cur.getDate()-cur.getDay());
+  const rowMeds = medsActive(dstr(cur), dstr(last));
+  const strips = [];
+  let guard = 0;
+  while(cur <= last && guard++ < 20){
+    strips.push(weekStrip(dstr(cur), rowMeds));
+    cur.setDate(cur.getDate()+7);
+  }
+  const a = adherence(30);
+  const chips = Object.keys(a).filter(m=>a[m].due>0).map(m=>{
+    const v = a[m], pct = v.due ? Math.round(v.done/v.due*100) : null;
+    return `<span class="adh" style="--mc:${MEDS[m].c}">${MEDS[m].n}<b>${v.done}/${v.due}</b>
+      ${pct!=null?`<i>${pct}%</i>`:""}</span>`;
+  }).join("");
+  const label = first.toLocaleDateString(undefined,{month:"long",year:"numeric"}) + " – " +
+                new Date(medM.y, medM.m+1, 1).toLocaleDateString(undefined,{month:"long",year:"numeric"});
+  const today = dkey();
+  const rules = medPlan().slice().sort((a,b)=>a.from<b.from?-1:1).map(r=>{
+    const live = (!r.to || r.to>=today) && r.from<=today;
+    const meta = MEDS[r.m];
+    const dn = r.days.slice().sort().map(d=>["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d]).join(" · ");
+    const perWk = r.qty * r.days.length;
+    const mg = meta.conc ? (r.qty*meta.conc) : null;
+    const wk = meta.conc
+      ? `${(mg*r.days.length).toFixed(0)} mg/week · ${mg.toFixed(0)} mg per dose`
+      : `${perWk.toFixed(2)} ${meta.u}/week`;
+    const warn=/REDUCED|wrong|confirm|not yet read/.test(r.note||"");
+    return `<div class="dl" style="display:block;${live?"":"opacity:.62"}">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <span class="a">${meta.n}${live?' <b style="color:var(--go);font-size:9px">CURRENT</b>':""}
+          <u>${dn} · ${r.days.length}x weekly</u></span>
+        <span class="b">${meta.u==="tab"?r.qty:r.qty.toFixed(2)}<u>${meta.u} · ${r.from} to ${r.to||"present"}</u></span></div>
+      <div style="font-family:var(--mono);font-size:10px;color:${meta.conc?"var(--go)":"var(--dimmer)"};margin-top:3px">
+        ${wk}</div>
+      ${r.note?`<div style="font-size:10px;color:${warn?"var(--hot)":"var(--dimmer)"};margin-top:2px">${r.note}</div>`:""}</div>`;
+  }).join("");
+
+  return `<div class="wrap">
+    <div class="adhrow">${chips}</div>
+    <div class="calh" style="margin:4px 2px 8px">
+      <button class="cnav" id="mprev">‹</button><b>${label}</b><button class="cnav" id="mnext">›</button></div>
+    ${strips.join("")}
+    <div class="calf" style="padding:0 2px">
+      <span class="lg"><i class="lgp"></i>planned</span>
+      <span class="lg"><i class="lgk"></i>taken</span>
+      <span class="lg"><i class="lgs"></i>skipped</span>
+      <span class="lg"><i class="lgv"></i>moved out</span>
+      <span class="lg"><i class="lgx"></i>moved in</span>
+    </div>
+    <div class="note">Tap a cell to confirm that dose. Tap it again to undo. Press and hold for skip or to move
+    it to another date — a moved dose leaves a marker on the original day and does not count as missed.
+    Adherence is the last 30 days.</div>
+    <h2 class="sec">Protocol timeline</h2>${rules}
+    <div class="note">The plan is generated from these rules, so changing one changes every future day at once.
+    Dose changes should be entered as a new rule with its own start date rather than by editing the old one —
+    that is how the seven months at reduced enanthate went unrecorded.</div>
+  </div>`;
+}
+
+function wireMeds(){
+  const p=document.getElementById("mprev"), n=document.getElementById("mnext");
+  if(p) p.onclick=()=>{ medM.m--; if(medM.m<0){medM.m=11;medM.y--;} render(); };
+  if(n) n.onclick=()=>{ medM.m++; if(medM.m>11){medM.m=0;medM.y++;} render(); };
+  let timer=null, held=false;
+  document.querySelectorAll(".mc[data-d]").forEach(el=>{
+    const d=el.dataset.d, m=el.dataset.m;
+    const start=()=>{ held=false; timer=setTimeout(()=>{ held=true; medSheet(d,m); }, 500); };
+    const end=e=>{ clearTimeout(timer); if(!held){ toggleDose(d,m); } e.preventDefault(); };
+    el.addEventListener("touchstart", start, {passive:true});
+    el.addEventListener("touchend", end);
+    el.addEventListener("mousedown", start);
+    el.addEventListener("mouseup", end);
+    el.addEventListener("mouseleave", ()=>clearTimeout(timer));
+  });
+}
+
+function medSheet(date, m){
+  const st = cellState(date,m), meta = MEDS[m];
+  const nice2 = new Date(date+"T12:00").toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+  const wrap = document.createElement("div");
+  wrap.className = "msheet";
+  wrap.innerHTML = `<div class="mspanel">
+    <div class="msh"><b style="color:${meta.c}">${meta.n}</b><i>${nice2}</i></div>
+    <button class="msb" data-a="taken">Taken</button>
+    <button class="msb" data-a="skipped">Skipped</button>
+    <button class="msb" data-a="clear">Clear — back to planned</button>
+    <div class="msmv"><label>Move to</label><input type="date" id="msdate" value="${date}"></div>
+    <button class="msb msgo" data-a="moved">Move this dose</button>
+    <button class="msb mscx">Cancel</button></div>`;
+  document.body.appendChild(wrap);
+  const close=()=>wrap.remove();
+  wrap.querySelector(".mscx").onclick=close;
+  wrap.onclick=e=>{ if(e.target===wrap) close(); };
+  wrap.querySelectorAll(".msb[data-a]").forEach(b=>b.onclick=()=>{
+    const a=b.dataset.a;
+    if(a==="moved"){
+      const to=document.getElementById("msdate").value;
+      if(!to||to===date){ toast("Pick a different date"); return; }
+      setDose(date,m,"moved",to); toast(meta.n+" moved to "+to);
+    } else { setDose(date,m,a); }
+    close();
+  });
+}
 
 /* ---------- RUN CALENDAR ---------- */
 /* Manual marks live in DB.runCal. A day with no mark falls back to whatever the
@@ -2246,6 +2616,8 @@ function runsV(){
       ${(nnum(x.avgHR)||nnum(x.maxHR))?`<div style="font-family:var(--mono);font-size:10px;color:var(--dimmer);margin-top:3px">
         ${nnum(x.avgHR)?"avg "+x.avgHR:""}${nnum(x.maxHR)?" · max "+x.maxHR:""}${nnum(x.te)?" · TE "+x.te:""}
         ${nnum(x.maxHR)?" · "+Math.round(x.maxHR/HRMAX*100)+"% of max":""}</div>`:""}
+      ${(nnum(x.warmup)||bandNote(x))?`<div style="font-family:var(--mono);font-size:10px;color:var(--dimmer);margin-top:3px">
+        ${nnum(x.warmup)?"warm-up "+x.warmup+" min":""}${nnum(x.warmup)&&bandNote(x)?" · ":""}${bandNote(x)||""}</div>`:""}
       ${x.reps&&x.reps.length?`<div style="font-family:var(--mono);font-size:10px;color:var(--brass);margin-top:3px">
         ${repSummary(x.reps)}${x.reps.some(r=>r.hr)?" · peaks "+x.reps.filter(r=>r.hr).map(r=>r.hr).join(", "):""}</div>`:""}
       ${x.note?`<div style="font-size:10px;color:var(--dimmer);margin-top:3px">${esc(x.note)}</div>`:""}
@@ -2292,15 +2664,16 @@ function runsV(){
        <button class="run" id="iimprun">Read and preview</button>
        <div class="stat" id="iimpstat"></div>
        <div class="fmt">One session per line. <code>reps</code> is a list of
-       <code>[seconds, peak HR]</code> pairs — put <code>0</code> for the HR if you do not have it.
+       <code>[seconds, peak HR]</code> pairs — put <code>0</code> for the HR if you do not have it. Add <code>"warmup":12</code> for the warm-up in minutes; it can be read off the Garmin HR trace as the flat stretch before the first sharp rep.
        If a session is already filed as an easy run from the CSV, this upgrades that row in place
        rather than adding a second one. Send the screen capture and I will write the line for you.</div>
      </div></div>
 
    <h2 class="sec">History${R.length?" · "+R.length+" run"+(R.length===1?"":"s"):""}</h2>${rows}
    <div class="note">Every run imported from Garmin is assumed easy and under ${EASY_CAP} bpm; anything above that
-   is flagged rather than hidden, for runs from ${DB.runPolicyFrom||"2026-05-15"} onward — the back catalogue predates the policy and is left unmarked. Max HR ${HRMAX}. The ${BAND_LO}–${BAND_HI} band is the range the hamstring
-   tweaks happened in. Stage is yours to set — nothing here blocks a session.</div></div>`;}
+   is flagged rather than hidden, for runs from ${DB.runPolicyFrom||"2026-05-15"} onward — the back catalogue predates the policy and is left unmarked. Max HR ${HRMAX}. Hard sessions are flagged on WARM-UP, not on peak heart rate: all four hamstring
+   tweaks followed roughly five-minute warm-ups, and five August sessions at 10+ min were clean
+   including one at 179 bpm. The ${BAND_LO}–${BAND_HI} band is shown as context only. Stage is yours to set — nothing here blocks a session.</div></div>`;}
 
 function wireRuns(){
   const g=document.getElementById("gst");
