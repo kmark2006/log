@@ -1500,6 +1500,8 @@ function load(){
       &&(r.warmup==null||(isFinite(r.warmup)&&r.warmup>=0&&r.warmup<=90))):[];
   o.boulder=Array.isArray(o.boulder)?o.boulder.filter(b=>b&&/^\d{4}-\d{2}-\d{2}$/.test(b.date)
       &&isFinite(b.mins)&&b.mins>0&&b.mins<=600):[];
+  o.activity=Array.isArray(o.activity)?o.activity.filter(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)
+      &&isFinite(x.mins)&&x.mins>0&&x.mins<=1440):[];
   o.sauna=Array.isArray(o.sauna)?o.sauna.filter(x=>x&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)
       &&isFinite(x.mins)&&x.mins>0&&x.mins<=180&&(x.temp==null||(isFinite(x.temp)&&x.temp>0&&x.temp<=130))):[];
   o.medPlan=Array.isArray(o.medPlan)?o.medPlan.filter(r=>r&&MEDS[r.m]&&Array.isArray(r.days)&&isFinite(r.qty)):[];
@@ -1549,10 +1551,10 @@ function mergeStored(mine){
   const wipe=Math.max(out._wipe||0, theirs._wipe||0);
   out._wipe=wipe;
   // if this copy wiped, drop anything older than the wipe
-  ["sessions","food","sleep","weight","bp","runs","boulder","sauna"].forEach(k=>{
+  ["sessions","food","sleep","weight","bp","runs","boulder","sauna","activity"].forEach(k=>{
     out[k]=(out[k]||[]).filter(x=>x && !dead.has(x._id) && !(wipe && (x._t||0)<wipe));
   });
-  ["sessions","food","bp","runs","boulder","sauna"].forEach(k=>{
+  ["sessions","food","bp","runs","boulder","sauna","activity"].forEach(k=>{
     const seen=new Set(out[k].map(x=>x._id).filter(Boolean));
     (theirs[k]||[]).forEach(x=>{
       if(!x||!x._id) return;
@@ -1578,7 +1580,7 @@ function mergeStored(mine){
 }
 function stampAll(){
   const now=Date.now();
-  ["sessions","food","sleep","weight","bp","runs","boulder","sauna"].forEach(k=>(DB[k]||[]).forEach(x=>{
+  ["sessions","food","sleep","weight","bp","runs","boulder","sauna","activity"].forEach(k=>(DB[k]||[]).forEach(x=>{
     if(x&&!x._id)x._id=uid(); if(x&&!x._t)x._t=now; }));
 }
 function save(){
@@ -1608,7 +1610,7 @@ function lastFor(n){for(let i=DB.sessions.length-1;i>=0;i--){const h=DB.sessions
 function bestFor(n){let b=0;DB.sessions.forEach(s=>s.sets.forEach(x=>{if(x.n===n){const v=e1rm(x.w,x.r);if(v>b)b=v;}}));return b;}
 document.getElementById("dt").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
 
-const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["runs","Runs"],["boulder","Boulder"],["sauna","Sauna"],["meds","Meds"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
+const TABS=[["home","Home"],["W1","Train · W1"],["W2","W2"],["W3","W3"],["sleep","Sleep"],["food","Food"],["weight","Weight"],["bp","BP"],["runs","Runs"],["boulder","Boulder"],["sauna","Sauna"],["activity","Activity"],["meds","Meds"],["metrics","Metrics"],["arch","Archive"],["time","Timeline"],["prog","Progress"]];
 function nav(){document.getElementById("nav").innerHTML=TABS.map(([k,l])=>
   `<button class="nb ${tab===k?'on':''}" data-k="${k}">${l}</button>`).join("");
   document.querySelectorAll(".nb").forEach(b=>b.onclick=()=>{tab=b.dataset.k;if(["W1","W2","W3"].includes(tab))day=tab;render();});}
@@ -1617,7 +1619,7 @@ function render(){nav();
   const v=document.getElementById("view"),bar=document.getElementById("bar");
   if(tab==="home"){v.innerHTML=homeV();bar.innerHTML="";bar.style.display="none";document.getElementById("hm").classList.add("hide");
     const go=(id,t)=>{const el=document.getElementById(id);if(el)el.onclick=()=>{tab=t;if(["W1","W2","W3"].includes(t))day=t;render();};};
-    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goB","bp");go("goA","arch");go("goR","runs");go("goBo","boulder");go("goSa","sauna");go("goMd","meds");go("goM","metrics");go("goP","prog");go("goT","time");return;}
+    go("goS",window.__next||day);go("goZ","sleep");go("goF","food");go("goW","weight");go("goB","bp");go("goA","arch");go("goR","runs");go("goBo","boulder");go("goSa","sauna");go("goAc","activity");go("goMd","meds");go("goM","metrics");go("goP","prog");go("goT","time");return;}
   bar.style.display="flex";document.getElementById("hm").classList.remove("hide");
   if(tab==="arch"){v.innerHTML=archiveV();bar.innerHTML=`<button class="btn" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};return;}
@@ -1631,6 +1633,10 @@ function render(){nav();
   if(tab==="runs"){v.innerHTML=runsV();bar.innerHTML=`<button class="btn gh2" id="bk">Back</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
     wireRuns();wireCal();return;}
+  if(tab==="activity"){v.innerHTML=activityV();
+    bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="asv">Save activity</button>`;
+    document.getElementById("bk").onclick=()=>{tab="home";render();};
+    wireActivity();return;}
   if(tab==="sauna"){v.innerHTML=saunaV();
     bar.innerHTML=`<button class="btn gh2" id="bk">Back</button><button class="btn" id="sasv">Save session</button>`;
     document.getElementById("bk").onclick=()=>{tab="home";render();};
@@ -1867,6 +1873,9 @@ function homeV(){
        <span class="lbl">Runs</span><span class="cap">${(DB.runs||[]).length?((DB.runs||[]).filter(x=>x.date>=daysAgo(6)).reduce((a,b)=>a+(b.km||0),0)).toFixed(1)+" km this week":"import Garmin"}</span></button>
      <button class="sq c4" id="goBo"><svg viewBox="0 0 24 24"><path d="M12 3v7M8 6l4-3 4 3"/><circle cx="7" cy="14" r="1.6"/><circle cx="17" cy="12" r="1.6"/><circle cx="11" cy="19" r="1.6"/><path d="M7 14l4 5 6-7"/></svg>
        <span class="lbl">Boulder</span><span class="cap">${(DB.boulder||[]).length?(DB.boulder||[]).filter(x=>x.date>=daysAgo(6)).length+" this week":"time and grades"}</span></button>
+     <button class="sq c3" id="goAc"><svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 20V9l4-3 4 3v11"/><path d="M14 20v-6l4-2v8"/><path d="M9 13h2"/></svg>
+       <span class="lbl">Activity</span><span class="cap">${(()=>{const A=(DB.activity||[]).filter(x=>x.date>=daysAgo(6));
+         return A.length?(A.reduce((a,b)=>a+b.mins,0)/60).toFixed(1)+" h this week":"labour · ski · hike";})()}</span></button>
      <button class="sq c4" id="goSa"><svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M6 20V9a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v11"/><path d="M9 4.5c0 1-1 1.2-1 2.2M12 3.5c0 1.2-1 1.4-1 2.4M15 4.5c0 1-1 1.2-1 2.2"/><path d="M6 13h12"/></svg>
        <span class="lbl">Sauna</span><span class="cap">${(()=>{const S=(DB.sauna||[]);if(!S.length)return "15 min at 85°C";
          const l=S.slice().sort((a,b)=>a.date<b.date?-1:1).pop();
@@ -2604,6 +2613,96 @@ function wireSauna(){
       note:(document.getElementById("sanote").value||"").trim()||null});
     DB.sauna.sort((a,b)=>a.date<b.date?-1:1);
     save(); render(); toast(m+" min"+(isFinite(t)?" at "+t+"°C":"")+" logged");};
+}
+
+
+/* ---------- ACTIVITY (kmlog-v17-22) ----------
+   Load that is real training but is neither a gym session nor a run: manual
+   labour, skiing, hiking, long walks. The transcription surfaced a whole winter
+   of skiing and a "Drive Work" annotation with nowhere to live, plus a knee that
+   swelled after one of those ski days. These displace sessions, not add to them. */
+
+const ACTS=[
+  {k:"labour", n:"Manual labour", c:"#b08968", legs:true},
+  {k:"ski",    n:"Skiing",        c:"#7dd3fc", legs:true},
+  {k:"hike",   n:"Hiking",        c:"#63a882", legs:true},
+  {k:"walk",   n:"Walking",       c:"#8d939c", legs:false},
+  {k:"other",  n:"Other",         c:"#9b87dc", legs:false}
+];
+const ACT_INT=[{k:1,n:"Easy"},{k:2,n:"Moderate"},{k:3,n:"Hard"}];
+const actMeta=k=>ACTS.find(a=>a.k===k)||ACTS[4];
+
+/* coarse net cost above resting, per hour — directional only, never a measurement */
+const ACT_KCAL={labour:{1:250,2:330,3:420}, ski:{1:300,2:420,3:520},
+                hike:{1:280,2:380,3:480}, walk:{1:180,2:240,3:300},
+                other:{1:220,2:300,3:400}};
+const actKcal=a=>Math.round(((ACT_KCAL[a.kind]||ACT_KCAL.other)[a.hard||2])*(a.mins/60));
+
+function activityV(){
+  const A=(DB.activity||[]).slice().sort((x,y)=>x.date<y.date?-1:1);
+  const wk=A.filter(x=>x.date>=daysAgo(6)), mo=A.filter(x=>x.date>=daysAgo(29));
+  const mins=l=>l.reduce((a,b)=>a+(b.mins||0),0);
+  const legWk=wk.filter(x=>actMeta(x.kind).legs);
+
+  const rows=A.slice(-40).reverse().map((x,i)=>{
+    const m=actMeta(x.kind), h=x.mins/60;
+    return `<div class="dl" style="display:block">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <span class="a" style="color:${m.c}">${nice(x.date)}
+          <u>${m.n}${x.hard?" · "+ACT_INT.find(z=>z.k===x.hard).n:""}</u></span>
+        <span class="b">${h>=1?(h%1?h.toFixed(1):h.toFixed(0))+" h":x.mins+" min"}<u>~${actKcal(x)} kcal</u></span></div>
+      ${m.legs?`<div style="font-family:var(--mono);font-size:10px;color:var(--brass);margin-top:3px">counts as leg load</div>`:""}
+      ${x.note?`<div style="font-size:10px;color:var(--dimmer);margin-top:3px">${esc(x.note)}</div>`:""}
+      <button class="xdel" data-adel="${A.length-1-i}">×</button></div>`;}).join("")
+    || `<div class="empty">Nothing logged yet.<br>Skiing, manual labour, hiking, long walks &mdash; load that is neither a gym session nor a run.</div>`;
+
+  return `<div class="wrap">
+   ${A.length?`<div class="scards">
+     <div class="sc"><div class="v">${(mins(wk)/60).toFixed(1)}<u>h</u></div><div class="k">last 7 days · ${wk.length} session${wk.length===1?"":"s"}</div></div>
+     <div class="sc"><div class="v">${(mins(mo)/60).toFixed(0)}<u>h</u></div><div class="k">last 30 days</div></div>
+     <div class="sc"><div class="v">${(mins(legWk)/60).toFixed(1)}<u>h</u></div><div class="k">leg load this week</div></div>
+   </div>`:""}
+   ${legWk.length?`<div class="cue" style="margin:2px 2px 10px">
+     <b>${(mins(legWk)/60).toFixed(1)} h of leg load in the last 7 days.</b> Manual labour, skiing and hiking are
+     high-volume quad, glute and lumbar work. Treat them as displacing a leg day rather than adding to one, and
+     avoid hard intervals within 24 h either side &mdash; sustained hip-hinging under accumulating fatigue is the
+     same pattern that produced the four hamstring strains.</div>`:""}
+   ${A.length>1?chartCard("Session length","hours",A.map(x=>({v:+(x.mins/60).toFixed(2),
+      l:new Date(x.date+"T12:00").toLocaleDateString(undefined,{day:"numeric",month:"short"})})),
+      {color:"#b08968",color2:"#d9c2a8",id:20,dp:1}):""}
+   <div class="card open"><div class="chead" style="cursor:default"><div class="cn"><b>Log activity</b>
+     <i>${new Date().toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"})}</i></div></div>
+     <div class="cbody" style="display:block">
+       <div class="srow">
+         <div class="fg"><span class="fl">What</span><select class="n" id="akind" style="font-size:14px">${ACTS.map(a=>`<option value="${a.k}">${a.n}</option>`).join("")}</select></div>
+         <div class="fg"><span class="fl">Hours</span><input class="n" id="ahrs" inputmode="decimal" placeholder="8"></div>
+         <div class="fg"><span class="fl">Effort</span><select class="n" id="ahard" style="font-size:14px">${ACT_INT.map(a=>`<option value="${a.k}"${a.k===2?" selected":""}>${a.n}</option>`).join("")}</select></div>
+       </div>
+       <div class="srow" style="border-bottom:0"><div class="fg"><span class="fl">Note — optional</span>
+         <input class="n" id="anote" placeholder="cobblestones, squatting and digging"></div></div>
+     </div></div>
+   <h2 class="sec">History${A.length?" · "+A.length:""}</h2>${rows}
+   <div class="note">Calorie figures are coarse estimates from duration and effort, not measurements &mdash;
+   directional only. The point of this tab is load accounting: eight hours of digging is a leg day whether or not
+   it happened in a gym, and the record previously had nowhere to put a winter of skiing.</div></div>`;}
+
+function wireActivity(){
+  const b=document.getElementById("asv");
+  if(b) b.onclick=()=>{
+    const h=parseFloat((document.getElementById("ahrs")||{}).value);
+    if(!isFinite(h)||h<=0||h>24){toast("Enter the hours");return;}
+    const kind=(document.getElementById("akind")||{}).value||"other";
+    DB.activity=DB.activity||[];
+    DB.activity.push({date:dkey(), kind:kind, mins:Math.round(h*60),
+      hard:+((document.getElementById("ahard")||{}).value||2),
+      note:((document.getElementById("anote")||{}).value||"").trim()||null});
+    DB.activity.sort((x,y)=>x.date<y.date?-1:1);
+    ["ahrs","anote"].forEach(i=>{const e=document.getElementById(i); if(e) e.value="";});
+    save(); render();
+    toast(h+" h logged"+(actMeta(kind).legs?" · counts as leg load":""));};
+  document.querySelectorAll("[data-adel]").forEach(el=>el.onclick=()=>{
+    const a=(DB.activity||[])[+el.dataset.adel];
+    if(a){ tomb(a._id); DB.activity=DB.activity.filter(x=>x!==a); save(); render(); toast("Removed"); }});
 }
 
 /* ---------- RUN CALENDAR ---------- */
