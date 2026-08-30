@@ -15,7 +15,7 @@
 <style>
 :root{
   --bg:#131518; --bg-2:#181b1f; --panel:#1c2025; --panel-2:#22262c; --line:#2b3037; --line-2:#363c45;
-  --chalk:#ece7dd; --dim:#8d939c; --dimmer:#7c8592;
+  --chalk:#f4f0e8; --dim:#aeb4be; --dimmer:#9aa2ae;
   --brass:#c9973f; --brass-2:#e0b565; --brass-dk:#a67d32;
   --amber:#f0a938; --cyan:#38bdf8;
   --go:#63a882; --hot:#c9603f; --ice:#6f96b8;
@@ -51,7 +51,7 @@ nav::-webkit-scrollbar{display:none}
 .nb.on{color:#fff;border-bottom-color:var(--amber)}
 
 .wrap{padding:16px 14px 0}
-h2.sec{font-family:var(--sans);font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;
+h2.sec{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;
   color:var(--dimmer);font-weight:600;margin:26px 4px 9px;display:flex;align-items:center;gap:10px}
 h2.sec:first-child{margin-top:6px}
 h2.sec:after{content:"";flex:1;height:1px;background:var(--line)}
@@ -63,7 +63,7 @@ h2.sec:after{content:"";flex:1;height:1px;background:var(--line)}
 .chead{display:flex;align-items:center;gap:12px;padding:14px 15px;cursor:pointer}
 .cn{flex:1;min-width:0}
 .cn b{display:block;font-size:15px;font-weight:600;letter-spacing:-.012em}
-.cn i{display:block;font-style:normal;font-size:9.5px;color:var(--dimmer);letter-spacing:.11em;text-transform:uppercase;margin-top:4px}
+.cn i{display:block;font-style:normal;font-size:11px;color:var(--dimmer);letter-spacing:.11em;text-transform:uppercase;margin-top:4px}
 .cl{font-family:var(--mono);font-size:12px;color:var(--dim);text-align:right;white-space:nowrap;line-height:1.5}
 .cl b{color:var(--chalk);font-weight:600;font-size:13px}
 .cl span{display:block;font-size:9px;color:var(--dimmer);letter-spacing:.09em;text-transform:uppercase}
@@ -76,7 +76,7 @@ h2.sec:after{content:"";flex:1;height:1px;background:var(--line)}
 .srow:last-of-type{border-bottom:0}
 .sn{width:19px;padding-top:17px;font-family:var(--mono);font-size:10px;color:var(--dimmer)}
 .fg{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
-.fl{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer)}
+.fl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer)}
 .gh{font-family:var(--mono);font-size:9.5px;color:var(--brass-dk);height:11px;letter-spacing:.03em}
 input.n{width:100%;background:var(--panel-2);border:1px solid var(--line-2);border-radius:9px;color:var(--chalk);
   font-family:var(--mono);font-size:17px;font-weight:600;text-align:center;padding:10px 2px;-moz-appearance:textfield}
@@ -107,9 +107,9 @@ input.n[type=time]{font-size:18px}
 .dl{display:flex;justify-content:space-between;align-items:baseline;padding:11px 2px;border-bottom:1px solid var(--line);gap:12px}
 .dl:last-child{border-bottom:0}
 .dl .a{font-size:13px;color:var(--chalk)}
-.dl .a u{text-decoration:none;display:block;font-size:9.5px;color:var(--dimmer);margin-top:3px;letter-spacing:.04em}
+.dl .a u{text-decoration:none;display:block;font-size:11px;color:var(--dimmer);margin-top:3px;letter-spacing:.04em}
 .dl .b{font-family:var(--mono);font-size:13px;color:var(--chalk);text-align:right;white-space:nowrap}
-.dl .b u{text-decoration:none;display:block;font-size:9px;color:var(--dimmer);margin-top:3px}
+.dl .b u{text-decoration:none;display:block;font-size:10.5px;color:var(--dimmer);margin-top:3px}
 .hi{color:var(--brass)!important} .lo{color:var(--ice)!important} .ok{color:var(--go)!important} .bad{color:var(--hot)!important}
 .fig.hi{color:var(--amber)!important} .fig.ok{color:#7ee0a6!important} .fig.bad{color:#ff8f6b!important}
 
@@ -167,7 +167,7 @@ input.n[type=time]{font-size:18px}
 .big .fig u{text-decoration:none;font-family:var(--sans);font-size:19px;color:rgba(255,255,255,.7);font-weight:400}
 .big .lbl{font-size:20px;font-weight:800;color:#fff;margin-top:10px;letter-spacing:-.02em;line-height:1.08;
   text-shadow:0 2px 14px rgba(0,0,0,.45);max-width:100%;overflow-wrap:break-word}
-.big .cap{max-width:100%;font-size:11px;color:rgba(255,255,255,.68);line-height:1.4;margin-top:7px}
+.big .cap{max-width:100%;font-size:12px;color:rgba(255,255,255,.80);line-height:1.4;margin-top:7px}
 .big .cap b{color:#fff;font-weight:700}
 
 .wide{position:relative;min-width:0;background:rgba(99,168,130,.22);border:4px solid var(--go);
@@ -193,7 +193,7 @@ input.n[type=time]{font-size:18px}
 .say textarea{width:100%;background:var(--panel-2);border:1.5px solid var(--line);border-radius:10px;
   color:var(--chalk);font:400 15px/1.5 var(--sans);padding:12px;resize:none;min-height:76px}
 .say textarea:focus{outline:none;border-color:var(--go)}
-.say .hintl{font-size:10.5px;color:var(--dimmer);margin:9px 2px 0;line-height:1.5}
+.say .hintl{font-size:12px;color:var(--dimmer);margin:9px 2px 0;line-height:1.5}
 .say .row{display:flex;gap:8px;margin-top:10px}
 .say .go2{flex:1;background:linear-gradient(180deg,#7dbd95,var(--go));border:0;border-radius:10px;color:#0d1712;
   font:700 14px var(--sans);padding:13px 0;cursor:pointer}
@@ -329,7 +329,7 @@ input.n[type=time]{font-size:18px}
 .sc{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 6px;text-align:center}
 .sc .v{font-family:var(--serif);font-size:25px;font-weight:600;line-height:1}
 .sc .v u{text-decoration:none;font-size:11px;color:var(--dim);font-family:var(--sans)}
-.sc .k{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);margin-top:7px}
+.sc .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);margin-top:7px}
 
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(19,21,24,.97);backdrop-filter:blur(10px);
   border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));
@@ -342,11 +342,11 @@ input.n[type=time]{font-size:18px}
 .addf input{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:11px;color:var(--chalk);font-size:14px;padding:13px 13px}
 .addf input:focus{outline:none;border-color:var(--brass)}
 .addf button{background:var(--panel-2);border:1px solid var(--line-2);border-radius:11px;color:var(--chalk);font-size:19px;padding:0 17px}
-.empty{padding:44px 18px;text-align:center;color:var(--dimmer);font-size:13px;line-height:1.8}
+.empty{padding:44px 18px;text-align:center;color:var(--dimmer);font-size:14px;line-height:1.8}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:var(--go);color:#0e1611;
   font:600 13px var(--sans);padding:11px 21px;border-radius:22px;z-index:60;opacity:0;transition:opacity .25s;pointer-events:none}
 .toast.on{opacity:1}
-.note{font-size:10.5px;color:var(--dimmer);line-height:1.65;padding:10px 4px 0}
+.note{font-size:12px;color:var(--dimmer);line-height:1.65;padding:10px 4px 0}
 .del{background:none;border:0;color:var(--dimmer);font-size:11px;padding:8px;cursor:pointer}
 
 /* Runs & Boulder — kmlog-v17-4 */
@@ -425,6 +425,16 @@ input.n[type=time]{font-size:18px}
 .msmv label{font-size:10px;color:var(--dimmer);letter-spacing:.05em;text-transform:uppercase}
 .msmv input{flex:1;height:38px;border-radius:8px;border:1px solid var(--line);background:transparent;
   color:var(--ink);padding:0 9px;font-size:13px}
+
+/* Training calendar — kmlog-v17-26 */
+.tgrid .td0{aspect-ratio:1;border-radius:8px;border:1.5px solid var(--line);background:transparent;
+  color:var(--dimmer);font-family:var(--mono);font-size:12px;padding:0;position:relative;line-height:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+.tgrid .td0.off{border:0}
+.tgrid .td0.tdt{border-style:dashed;border-color:var(--dim)}
+.tgrid .td0.on{color:#14110b;font-weight:700;border-width:2.5px}
+.tgrid .ttag{font-size:8.5px;margin-top:2px;font-weight:700;letter-spacing:.02em}
+.tgrid .tau{position:absolute;right:3px;top:3px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.55}
 </style>
 </head>
 <body>
@@ -2133,6 +2143,7 @@ function load(){
   o.medPlan=Array.isArray(o.medPlan)?o.medPlan.filter(r=>r&&MEDS[r.m]&&Array.isArray(r.days)&&isFinite(r.qty)):[];
   o.medLog=(o.medLog&&typeof o.medLog==="object"&&!Array.isArray(o.medLog))?o.medLog:{};
   o.medExtra=(o.medExtra&&typeof o.medExtra==="object"&&!Array.isArray(o.medExtra))?o.medExtra:{};
+  o.trainCal=(o.trainCal&&typeof o.trainCal==="object"&&!Array.isArray(o.trainCal))?o.trainCal:{};
   o.runCal=(o.runCal&&typeof o.runCal==="object"&&!Array.isArray(o.runCal))?o.runCal:{};
   o.runPolicyFrom=/^\d{4}-\d{2}-\d{2}$/.test(o.runPolicyFrom)?o.runPolicyFrom:"2026-05-15";
   o.runStage=isFinite(o.runStage)?Math.max(0,Math.min(4,o.runStage)):2;
@@ -2308,10 +2319,11 @@ function render(){nav();
       <div class="row"><button class="clr" id="tsayc">Clear</button><button class="go2" id="tsayg" style="background:linear-gradient(180deg,#f5c56b,#f0a938);color:#20170a">Read it</button></div>
       <div id="tconf"></div>
     </div>
-    ${Object.keys(draftFor(day)).length?`<div class="cue" style="margin:0 2px 12px">Unsaved ${day} entries from earlier today were restored. Tap <b>Save session</b> when you're done.</div>`:""}
+    ${trainCalHTML()}${Object.keys(draftFor(day)).length?`<div class="cue" style="margin:0 2px 12px">Unsaved ${day} entries from earlier today were restored. Tap <b>Save session</b> when you're done.</div>`:""}
     <h2 class="sec">${DB.plan[day].sub}</h2>`+DB.plan[day].ex.map(cardV).join("")+
     `<div class="addf"><input id="nx" placeholder="Add exercise to ${day}"><button id="ab">+</button></div>
      <div class="note">Three sets. Aim RIR 2–3 · 1–2 · 0–1 — not every set to failure. When all three reach 10 reps, add 5 lbs.</div></div>`;
+  wireTrainCal();
   bar.innerHTML=`<button class="btn gh2" id="cl">Clear</button><button class="btn" id="sv">Save session</button>`;wire();wireTrainSay();}
 
 function cardV(x){const L=lastFor(x.n),d=draftFor(day)[x.n]||[{},{},{}];
@@ -3329,6 +3341,90 @@ function wireActivity(){
   document.querySelectorAll("[data-adel]").forEach(el=>el.onclick=()=>{
     const a=(DB.activity||[])[+el.dataset.adel];
     if(a){ tomb(a._id); DB.activity=DB.activity.filter(x=>x!==a); save(); render(); toast("Removed"); }});
+}
+
+
+/* ---------- TRAINING CALENDAR (kmlog-v17-26) ----------
+   Month grid on the Train tabs. Auto-fills from saved sessions (a saved W1 turns
+   that day brass) and is tappable to plan ahead. A day carrying two sessions —
+   e.g. a partial W3 on a W1 day — renders as a diagonal split rather than
+   picking a winner: leg exposure is the flagged bottleneck and must not vanish. */
+const WK={W1:{c:"#c9973f"},W2:{c:"#6f96b8"},W3:{c:"#63a882"}};
+const WK_ORDER=["W1","W2","W3"];
+let trainM=null;
+
+/* every session type saved on a date, newest logic first */
+function trainedOn(d){
+  const out=[];
+  (DB.sessions||[]).forEach(s=>{ if(String(s.date).slice(0,10)===d && WK[s.day] && out.indexOf(s.day)<0) out.push(s.day); });
+  return out;
+}
+function trainMark(d){
+  const man=(DB.trainCal||{})[d];
+  if(man) return {days:[man], manual:true};
+  const t=trainedOn(d);
+  return t.length?{days:t, manual:false}:null;
+}
+function cycleTrain(d){
+  DB.trainCal=DB.trainCal||{};
+  const cur=DB.trainCal[d]||null;
+  const i=cur?WK_ORDER.indexOf(cur):-1;
+  if(i<0) DB.trainCal[d]=WK_ORDER[0];
+  else if(i<WK_ORDER.length-1) DB.trainCal[d]=WK_ORDER[i+1];
+  else delete DB.trainCal[d];
+  save(); render();
+}
+function lastTrained(k){
+  const days=new Set(Object.keys(DB.trainCal||{}).filter(d=>DB.trainCal[d]===k));
+  (DB.sessions||[]).forEach(s=>{ const d=String(s.date).slice(0,10);
+    if(!(DB.trainCal||{})[d] && s.day===k) days.add(d); });
+  const l=[...days].sort();
+  if(!l.length) return null;
+  const d=l[l.length-1];
+  return {date:d, ago:Math.round((new Date(dkey()+"T12:00")-new Date(d+"T12:00"))/864e5)};
+}
+function trainCalHTML(){
+  const now=new Date();
+  if(!trainM) trainM={y:now.getFullYear(),m:now.getMonth()};
+  const {y,m}=trainM;
+  const first=new Date(y,m,1), lead=first.getDay(), len=new Date(y,m+1,0).getDate();
+  const pad=n=>String(n).padStart(2,"0"), key=dd=>y+"-"+pad(m+1)+"-"+pad(dd), today=dkey();
+  let cells="", count=0;
+  for(let i=0;i<lead;i++) cells+=`<div class="td0 off"></div>`;
+  for(let d=1;d<=len;d++){
+    const k=key(d), mk=trainMark(k);
+    if(mk) count++;
+    let style="", tag="";
+    if(mk){
+      const cs=mk.days.map(x=>WK[x].c);
+      style = cs.length>1
+        ? `background:linear-gradient(135deg,${cs[0]} 0 50%,${cs[1]} 50% 100%);border-color:${cs[0]}`
+        : `background:${cs[0]};border-color:${cs[0]}`;
+      tag = mk.days.length>1
+        ? mk.days.map(x=>x.replace("W","")).join("·").replace(/^/,"W")
+        : mk.days[0];
+      if(mk.days.length>2) tag="W"+mk.days.slice(0,2).map(x=>x.replace("W","")).join("·")+"+";
+    }
+    cells+=`<button class="td0${mk?" on":""}${k===today?" tdt":""}" data-td="${k}" ${style?`style="${style}"`:""}>
+      ${d}${tag?`<span class="ttag">${tag}</span>`:""}${mk&&!mk.manual?`<i class="tau"></i>`:""}</button>`;
+  }
+  const label=new Date(y,m,1).toLocaleDateString(undefined,{month:"long",year:"numeric"});
+  const legend=WK_ORDER.map(k=>`<span class="lg"><i style="background:${WK[k].c}"></i>${k}</span>`).join("")
+    +`<span class="lg"><i style="background:linear-gradient(135deg,${WK.W1.c} 0 50%,${WK.W3.c} 50% 100%)"></i>two sessions</span>`;
+  const l3=lastTrained("W3");
+  return `<div class="cal">
+    <div class="calh"><button class="cnav" id="tprev">‹</button><b>${label}</b><button class="cnav" id="tnext">›</button></div>
+    <div class="cdow">${["S","M","T","W","T","F","S"].map(x=>`<span>${x}</span>`).join("")}</div>
+    <div class="cgrid tgrid">${cells}</div>
+    <div class="calf">${legend}<span class="lg" style="opacity:.8">blank = rest · dot = from a saved session</span></div>
+    <div class="calsince">${l3?`Last W3 <b>${l3.ago===0?"today":l3.ago===1?"yesterday":l3.ago+" days ago"}</b> · ${nice(l3.date)}`:"No W3 logged yet"}
+      &nbsp;·&nbsp; ${count} session${count===1?"":"s"} this month</div>
+  </div>`;}
+function wireTrainCal(){
+  const p=document.getElementById("tprev"), n=document.getElementById("tnext");
+  if(p) p.onclick=()=>{trainM.m--;if(trainM.m<0){trainM.m=11;trainM.y--;}render();};
+  if(n) n.onclick=()=>{trainM.m++;if(trainM.m>11){trainM.m=0;trainM.y++;}render();};
+  document.querySelectorAll(".tgrid .td0[data-td]").forEach(b=>b.onclick=()=>cycleTrain(b.dataset.td));
 }
 
 /* ---------- RUN CALENDAR ---------- */
