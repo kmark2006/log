@@ -435,6 +435,12 @@ input.n[type=time]{font-size:18px}
 .tgrid .td0.on{color:#14110b;font-weight:700;border-width:2.5px}
 .tgrid .ttag{font-size:8.5px;margin-top:2px;font-weight:700;letter-spacing:.02em}
 .tgrid .tau{position:absolute;right:3px;top:3px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.55}
+/* Sheet-derived marks — hollow and dashed, because day placement is ±1 and the
+   paper history must never be mistaken for something logged in the app. */
+.tgrid .td0.shon{border-width:2px;border-style:dashed;font-weight:700;background:transparent}
+.calf .lg i.lgsh{width:11px;height:11px;border:1.5px dashed var(--dim);border-radius:3px;background:transparent}
+.shtog{margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:6px;
+  color:var(--dim);font-family:var(--mono);font-size:9px;padding:3px 7px;letter-spacing:.04em}
 </style>
 </head>
 <body>
@@ -2205,6 +2211,7 @@ function load(){
   o.medExtra=(o.medExtra&&typeof o.medExtra==="object"&&!Array.isArray(o.medExtra))?o.medExtra:{};
   o.trainCal=(o.trainCal&&typeof o.trainCal==="object"&&!Array.isArray(o.trainCal))?o.trainCal:{};
   o.runCal=(o.runCal&&typeof o.runCal==="object"&&!Array.isArray(o.runCal))?o.runCal:{};
+  o.hideSheet=!!o.hideSheet;
   o.runPolicyFrom=/^\d{4}-\d{2}-\d{2}$/.test(o.runPolicyFrom)?o.runPolicyFrom:"2026-05-15";
   o.runStage=isFinite(o.runStage)?Math.max(0,Math.min(4,o.runStage)):2;
   o._del=Array.isArray(o._del)?o._del.filter(x=>typeof x==="string"):[];
@@ -3409,9 +3416,27 @@ function wireActivity(){
    that day brass) and is tappable to plan ahead. A day carrying two sessions —
    e.g. a partial W3 on a W1 day — renders as a diagonal split rather than
    picking a winner: leg exposure is the flagged bottleneck and must not vanish. */
-const WK={W1:{c:"#c9973f"},W2:{c:"#6f96b8"},W3:{c:"#63a882"}};
+const WK={W1:{c:"#c9973f"},W2:{c:"#6f96b8"},W3:{c:"#63a882"},W:{c:"#8d7fa8"}};
+/* WK_ORDER is the TAP cycle. Plain W is deliberately absent: it is a historical
+   artifact off the paper sheets, not something to plan or log going forward. */
 const WK_ORDER=["W1","W2","W3"];
 let trainM=null;
+
+/* ---------- SHEET HISTORY (seed) ----------
+   Transcribed from Ken's 8 handwritten sheets at 300 dpi, 30 Aug 2026.
+   SHEET_SPLIT : W1/W2/W3, 18 Nov 2025 - 22 Aug 2026 (sheets 5-8). 134 dates, 145 marks.
+   SHEET_PLAIN : plain W, Aug 2024 - Sep 2025 (sheets 1-4). 88 dates.
+                 Pre-GoodLife full-body SUB-FAILURE work - "heavy to lift and fun,
+                 but not to failure." A DIFFERENT TRAINING UNIT. Own colour, never
+                 charted or summed with W1/W2/W3.
+   Day placement is +/-1 (Ken: "close enough"); session COUNTS are reliable, a
+   specific date may be off by one. Rendered hollow and dashed for that reason.
+   Real gaps, not transcription holes: 20 May - 15 Jun 2026 (cold, then the
+   hamstring window) and 12 - 17 Aug 2026. Sep-Nov 2025 is genuinely thin -
+   GoodLife signup was 14 Oct 2025 but Brazil intervened and continuous training
+   did not start until 28 Nov 2025. */
+const SHEET_SPLIT={"2025-11-18":["W1"],"2025-11-19":["W2"],"2025-11-22":["W1","W2"],"2025-11-25":["W3"],"2025-11-28":["W1"],"2025-11-29":["W2"],"2025-12-01":["W1"],"2025-12-02":["W2"],"2025-12-05":["W1"],"2025-12-06":["W2"],"2025-12-30":["W2","W3"],"2025-12-31":["W1"],"2026-01-02":["W1"],"2026-01-05":["W1","W2"],"2026-01-08":["W1"],"2026-01-10":["W1"],"2026-01-11":["W3"],"2026-01-12":["W2"],"2026-01-13":["W3"],"2026-01-14":["W1"],"2026-01-15":["W2"],"2026-01-16":["W1","W3"],"2026-01-18":["W2"],"2026-01-20":["W1"],"2026-01-21":["W2"],"2026-01-24":["W1"],"2026-01-25":["W2"],"2026-01-27":["W1"],"2026-01-28":["W2"],"2026-01-29":["W3"],"2026-01-31":["W1"],"2026-02-03":["W1"],"2026-02-04":["W2"],"2026-02-05":["W3"],"2026-02-06":["W1"],"2026-02-07":["W2"],"2026-02-08":["W3"],"2026-02-09":["W1"],"2026-02-10":["W2"],"2026-02-11":["W1"],"2026-02-13":["W2"],"2026-02-15":["W1"],"2026-02-17":["W2"],"2026-02-18":["W1"],"2026-02-20":["W2"],"2026-02-22":["W1"],"2026-02-24":["W2"],"2026-02-26":["W1"],"2026-02-28":["W2"],"2026-03-03":["W1"],"2026-03-04":["W2"],"2026-03-06":["W1"],"2026-03-07":["W2"],"2026-03-10":["W1"],"2026-03-12":["W2"],"2026-03-13":["W3"],"2026-03-15":["W1"],"2026-03-17":["W1"],"2026-03-18":["W2"],"2026-03-20":["W1"],"2026-03-22":["W2"],"2026-03-24":["W1","W2"],"2026-03-27":["W1"],"2026-03-29":["W2","W3"],"2026-03-31":["W1","W2"],"2026-04-02":["W1"],"2026-04-06":["W1","W2"],"2026-04-09":["W3"],"2026-04-10":["W1"],"2026-04-11":["W2"],"2026-04-12":["W1"],"2026-04-13":["W2"],"2026-04-14":["W1"],"2026-04-16":["W2"],"2026-04-18":["W1"],"2026-04-20":["W2"],"2026-04-22":["W1"],"2026-04-23":["W2"],"2026-04-24":["W3"],"2026-04-25":["W1"],"2026-04-26":["W2"],"2026-04-28":["W1"],"2026-04-29":["W2"],"2026-04-30":["W3"],"2026-05-01":["W1"],"2026-05-02":["W2"],"2026-05-04":["W1"],"2026-05-05":["W2"],"2026-05-06":["W1","W3"],"2026-05-08":["W2"],"2026-05-10":["W1"],"2026-05-11":["W2"],"2026-05-12":["W3"],"2026-05-15":["W1"],"2026-05-18":["W1"],"2026-05-19":["W2"],"2026-06-16":["W1"],"2026-06-17":["W2"],"2026-06-19":["W1"],"2026-06-20":["W2"],"2026-06-22":["W1"],"2026-06-23":["W2"],"2026-06-26":["W1"],"2026-06-27":["W2"],"2026-06-30":["W1"],"2026-07-01":["W2"],"2026-07-03":["W1"],"2026-07-05":["W2"],"2026-07-07":["W1"],"2026-07-08":["W2","W3"],"2026-07-10":["W1"],"2026-07-11":["W2"],"2026-07-14":["W1"],"2026-07-15":["W2"],"2026-07-19":["W1"],"2026-07-21":["W2"],"2026-07-23":["W1"],"2026-07-24":["W2"],"2026-07-25":["W3"],"2026-07-27":["W2"],"2026-07-28":["W1"],"2026-07-30":["W2"],"2026-08-01":["W1"],"2026-08-02":["W2"],"2026-08-04":["W1"],"2026-08-05":["W2"],"2026-08-07":["W1"],"2026-08-08":["W2","W3"],"2026-08-10":["W1"],"2026-08-11":["W2"],"2026-08-18":["W1"],"2026-08-19":["W2"],"2026-08-21":["W1"],"2026-08-22":["W3"]};
+const SHEET_PLAIN=new Set(["2024-08-07","2024-08-10","2024-08-13","2024-08-16","2024-08-19","2024-08-22","2024-08-25","2024-08-28","2024-08-31","2024-09-03","2024-09-06","2024-09-09","2024-09-12","2024-09-15","2024-09-18","2024-09-21","2024-09-24","2024-09-27","2024-09-30","2024-11-05","2024-11-09","2024-11-13","2024-11-17","2024-11-21","2024-11-25","2024-11-29","2024-12-03","2024-12-07","2024-12-11","2024-12-15","2024-12-19","2024-12-23","2024-12-27","2024-12-31","2025-01-04","2025-01-08","2025-01-12","2025-01-16","2025-01-20","2025-01-24","2025-01-28","2025-02-01","2025-02-05","2025-02-09","2025-02-13","2025-02-17","2025-02-18","2025-02-23","2025-02-28","2025-03-05","2025-03-10","2025-03-15","2025-03-20","2025-03-25","2025-03-30","2025-04-04","2025-04-09","2025-04-14","2025-04-19","2025-04-24","2025-04-29","2025-05-04","2025-05-09","2025-05-14","2025-05-19","2025-05-24","2025-05-29","2025-06-03","2025-06-08","2025-06-13","2025-06-18","2025-06-23","2025-06-28","2025-07-03","2025-07-08","2025-07-13","2025-07-18","2025-07-23","2025-07-28","2025-08-02","2025-08-07","2025-08-12","2025-08-17","2025-08-22","2025-08-27","2025-09-01","2025-09-06","2025-09-11"]);
 
 /* every session type saved on a date, newest logic first */
 function trainedOn(d){
@@ -3419,11 +3444,19 @@ function trainedOn(d){
   (DB.sessions||[]).forEach(s=>{ if(String(s.date).slice(0,10)===d && WK[s.day] && out.indexOf(s.day)<0) out.push(s.day); });
   return out;
 }
+/* Precedence, highest first: a manual tap, then a session saved in the app, then
+   the paper sheets. The sheets are the floor - they only ever fill a day that is
+   otherwise silent, so nothing transcribed can overwrite something real. */
 function trainMark(d){
   const man=(DB.trainCal||{})[d];
-  if(man) return {days:[man], manual:true};
+  if(man) return {days:[man], manual:true, sheet:false};
   const t=trainedOn(d);
-  return t.length?{days:t, manual:false}:null;
+  if(t.length) return {days:t, manual:false, sheet:false};
+  if(DB.hideSheet) return null;
+  const s=SHEET_SPLIT[d];
+  if(s&&s.length) return {days:s.slice(), manual:false, sheet:true};
+  if(SHEET_PLAIN.has(d)) return {days:["W"], manual:false, sheet:true};
+  return null;
 }
 function cycleTrain(d){
   DB.trainCal=DB.trainCal||{};
@@ -3435,13 +3468,18 @@ function cycleTrain(d){
   save(); render();
 }
 function lastTrained(k){
-  const days=new Set(Object.keys(DB.trainCal||{}).filter(d=>DB.trainCal[d]===k));
+  const real=new Set(Object.keys(DB.trainCal||{}).filter(d=>DB.trainCal[d]===k));
   (DB.sessions||[]).forEach(s=>{ const d=String(s.date).slice(0,10);
-    if(!(DB.trainCal||{})[d] && s.day===k) days.add(d); });
+    if(!(DB.trainCal||{})[d] && s.day===k) real.add(d); });
+  const days=new Set(real);
+  /* same precedence as trainMark - the sheets only fill days nothing else claims */
+  if(!DB.hideSheet) Object.keys(SHEET_SPLIT).forEach(d=>{
+    if(!(DB.trainCal||{})[d] && !trainedOn(d).length && SHEET_SPLIT[d].indexOf(k)>=0) days.add(d); });
   const l=[...days].sort();
   if(!l.length) return null;
   const d=l[l.length-1];
-  return {date:d, ago:Math.round((new Date(dkey()+"T12:00")-new Date(d+"T12:00"))/864e5)};
+  return {date:d, ago:Math.round((new Date(dkey()+"T12:00")-new Date(d+"T12:00"))/864e5),
+          sheet:!real.has(d)};
 }
 function trainCalHTML(){
   const now=new Date();
@@ -3449,41 +3487,51 @@ function trainCalHTML(){
   const {y,m}=trainM;
   const first=new Date(y,m,1), lead=first.getDay(), len=new Date(y,m+1,0).getDate();
   const pad=n=>String(n).padStart(2,"0"), key=dd=>y+"-"+pad(m+1)+"-"+pad(dd), today=dkey();
-  let cells="", count=0;
+  let cells="", count=0, sheetCount=0;
   for(let i=0;i<lead;i++) cells+=`<div class="td0 off"></div>`;
   for(let d=1;d<=len;d++){
     const k=key(d), mk=trainMark(k);
-    if(mk) count++;
+    if(mk){ if(mk.sheet) sheetCount++; else count++; }
     let style="", tag="";
     if(mk){
       const cs=mk.days.map(x=>WK[x].c);
-      style = cs.length>1
-        ? `background:linear-gradient(135deg,${cs[0]} 0 50%,${cs[1]} 50% 100%);border-color:${cs[0]}`
-        : `background:${cs[0]};border-color:${cs[0]}`;
+      /* A hollow cell cannot carry a two-tone fill, so a two-session sheet day
+         takes the first colour on the border and says so in the tag. */
+      style = mk.sheet
+        ? `border-color:${cs[0]};color:${cs[0]}`
+        : cs.length>1
+          ? `background:linear-gradient(135deg,${cs[0]} 0 50%,${cs[1]} 50% 100%);border-color:${cs[0]}`
+          : `background:${cs[0]};border-color:${cs[0]}`;
       tag = mk.days.length>1
         ? mk.days.map(x=>x.replace("W","")).join("·").replace(/^/,"W")
         : mk.days[0];
       if(mk.days.length>2) tag="W"+mk.days.slice(0,2).map(x=>x.replace("W","")).join("·")+"+";
     }
-    cells+=`<button class="td0${mk?" on":""}${k===today?" tdt":""}" data-td="${k}" ${style?`style="${style}"`:""}>
-      ${d}${tag?`<span class="ttag">${tag}</span>`:""}${mk&&!mk.manual?`<i class="tau"></i>`:""}</button>`;
+    cells+=`<button class="td0${mk?(mk.sheet?" shon":" on"):""}${k===today?" tdt":""}" data-td="${k}" ${style?`style="${style}"`:""}>
+      ${d}${tag?`<span class="ttag">${tag}</span>`:""}${mk&&!mk.manual&&!mk.sheet?`<i class="tau"></i>`:""}</button>`;
   }
   const label=new Date(y,m,1).toLocaleDateString(undefined,{month:"long",year:"numeric"});
   const legend=WK_ORDER.map(k=>`<span class="lg"><i style="background:${WK[k].c}"></i>${k}</span>`).join("")
-    +`<span class="lg"><i style="background:linear-gradient(135deg,${WK.W1.c} 0 50%,${WK.W3.c} 50% 100%)"></i>two sessions</span>`;
+    +`<span class="lg"><i style="background:linear-gradient(135deg,${WK.W1.c} 0 50%,${WK.W3.c} 50% 100%)"></i>two sessions</span>`
+    +(DB.hideSheet?"":`<span class="lg"><i class="lgsh"></i>from the sheets</span>`
+      +`<span class="lg"><i style="background:${WK.W.c}"></i>plain W · sub-failure, home gym</span>`)
+    +`<button class="shtog" id="shtog">${DB.hideSheet?"show":"hide"} sheets</button>`;
   const l3=lastTrained("W3");
   return `<div class="cal">
     <div class="calh"><button class="cnav" id="tprev">‹</button><b>${label}</b><button class="cnav" id="tnext">›</button></div>
     <div class="cdow">${["S","M","T","W","T","F","S"].map(x=>`<span>${x}</span>`).join("")}</div>
     <div class="cgrid tgrid">${cells}</div>
-    <div class="calf">${legend}<span class="lg" style="opacity:.8">blank = rest · dot = from a saved session</span></div>
-    <div class="calsince">${l3?`Last W3 <b>${l3.ago===0?"today":l3.ago===1?"yesterday":l3.ago+" days ago"}</b> · ${nice(l3.date)}`:"No W3 logged yet"}
-      &nbsp;·&nbsp; ${count} session${count===1?"":"s"} this month</div>
+    <div class="calf">${legend}<span class="lg" style="opacity:.8">blank = rest · dot = from a saved session · dashed = paper, ±1 day</span></div>
+    <div class="calsince">${l3?`Last W3 <b>${l3.ago===0?"today":l3.ago===1?"yesterday":l3.ago+" days ago"}</b> · ${nice(l3.date)}${l3.sheet?" <u>from the sheets</u>":""}`:"No W3 logged yet"}
+      &nbsp;·&nbsp; ${count} logged this month${sheetCount?` · ${sheetCount} from the sheets`:""}</div>
   </div>`;}
 function wireTrainCal(){
   const p=document.getElementById("tprev"), n=document.getElementById("tnext");
   if(p) p.onclick=()=>{trainM.m--;if(trainM.m<0){trainM.m=11;trainM.y--;}render();};
   if(n) n.onclick=()=>{trainM.m++;if(trainM.m>11){trainM.m=0;trainM.y++;}render();};
+  const sh=document.getElementById("shtog");
+  if(sh) sh.onclick=()=>{DB.hideSheet=!DB.hideSheet; save(); render();
+    toast(DB.hideSheet?"Sheet history hidden":"Sheet history shown");};
   document.querySelectorAll(".tgrid .td0[data-td]").forEach(b=>b.onclick=()=>cycleTrain(b.dataset.td));
 }
 
