@@ -3386,12 +3386,14 @@ function activityV(){
        <div class="srow" style="border-bottom:0"><div class="fg"><span class="fl">Note — optional</span>
          <input class="n" id="anote" placeholder="cobblestones, squatting and digging"></div></div>
      </div></div>
+   ${impPanel("activity")}
    <h2 class="sec">History${A.length?" · "+A.length:""}</h2>${rows}
    <div class="note">Calorie figures are coarse estimates from duration and effort, not measurements &mdash;
    directional only. The point of this tab is load accounting: eight hours of digging is a leg day whether or not
    it happened in a gym, and the record previously had nowhere to put a winter of skiing.</div></div>`;}
 
 function wireActivity(){
+  wireImp("activity");
   const b=document.getElementById("asv");
   if(b) b.onclick=()=>{
     const h=parseFloat((document.getElementById("ahrs")||{}).value);
@@ -3890,7 +3892,8 @@ const FMT={bp:"date, slot(am/pm), systolic, diastolic, pulse",
            sleep:"date, bedtime, wake, hours, quality",
            weight:"date, weight_lb, bodyfat_pct",
            strength:"date, day, exercise, set, weight, reps, rir",
-           food:"date, food, qty, unit, kcal, protein, carbs, fat, sugar"};
+           food:"date, food, qty, unit, kcal, protein, carbs, fat, sugar",
+           activity:"date, kind(labour/ski/hike/walk/other), hours, intensity(1-3), note"};
 function impPanel(kind){
   const F=FMT[kind]||"";
   return `<div class="imp" id="imp">
@@ -3972,8 +3975,16 @@ function runImport(kind,txt,stat,F){
       const c=line.split(DELIM).map(x=>x.trim().replace(/^"|"$/g,""));
       const d=normDate(c[0]);
       if(d && d>today){ skipped++; return; }
-      if(kind==="sleep"&&d&&c[1]&&c[2]){ const hh=+c[3]||hrs(c[1],c[2]);
-        if(hh>0&&hh<=16) push({date:d,bed:c[1],wake:c[2],hrs:hh,q:c[4]?+c[4]:null}); else skipped++; return; }
+      /* Sleep accepts EITHER bed+wake OR a duration on its own, because a ring
+         or a written log often gives total sleep and no clock times. The hours
+         column takes 7.5 or 7:30 alike. */
+      if(kind==="sleep"&&d){
+        const dur=(v)=>{ if(!v) return null; const s=String(v).trim();
+          const m=s.match(/^(\d{1,2}):(\d{2})$/); if(m) return +m[1]+ +m[2]/60;
+          const n=parseFloat(s); return isFinite(n)?n:null; };
+        const hh = dur(c[3]) ?? ((c[1]&&c[2])?hrs(c[1],c[2]):null);
+        if(hh>0&&hh<=16) push({date:d,bed:c[1]||null,wake:c[2]||null,hrs:hh,q:c[4]?+c[4]:null});
+        else skipped++; return; }
       if(kind==="bp"&&d&&c[2]){ const S=+c[2],D=+c[3];
         if(S>=70&&S<=250&&D>=40&&D<=150&&D<S) push({date:d,slot:(c[1]||"am").toLowerCase().startsWith("p")?"pm":"am",
           sys:S,dia:D,pulse:c[4]?+c[4]:null});
@@ -3981,6 +3992,18 @@ function runImport(kind,txt,stat,F){
       if(kind==="weight"&&d&&c[1]){ const lb=+c[1]; if(lb>=80&&lb<=400) push({date:d,lb:lb,bf:c[2]?+c[2]:null}); else skipped++; return; }
       if(kind==="strength"&&d&&c[2]){ const W=+c[4],R=+c[5];
         if(W>0&&W<=2000&&R>0&&R<=100) push({date:d,day:c[1]||"W1",n:c[2],set:+c[3]||1,w:W,r:R,rir:c[6]===""?null:+c[6]});
+        else skipped++; return; }
+      /* Activity takes back-dated rows: the tab itself only logs to today, so a
+         trip or a work stretch could not be entered after the fact. Hours accept
+         1.5 or 1:30. Unknown kinds fall back to "other" rather than being dropped. */
+      if(kind==="activity"&&d&&c[2]!==undefined&&c[2]!==""){
+        const hr=(v)=>{const s=String(v).trim(); const m=s.match(/^(\d{1,2}):(\d{2})$/);
+          if(m) return +m[1]+ +m[2]/60; const n=parseFloat(s); return isFinite(n)?n:null;};
+        const h=hr(c[2]);
+        const k=(c[1]||"other").toLowerCase().trim();
+        const kind2=ACTS.some(a=>a.k===k)?k:"other";
+        let hard=+c[3]; if(!(hard>=1&&hard<=3)) hard=2;
+        if(h>0&&h<=24) push({date:d,kind:kind2,mins:Math.round(h*60),hard:hard,note:(c[4]||"").trim()||null});
         else skipped++; return; }
       if(kind==="food"&&d&&c[1]){ push({date:d,n:c[1],q:+c[2]||1,unit:c[3]||"serving",
         kcal:+c[4]||0,p:+c[5]||0,c:+c[6]||0,f:+c[7]||0,s:+c[8]||0}); return; }
@@ -4019,6 +4042,8 @@ function runImport(kind,txt,stat,F){
       out.forEach(r=>{const i=DB.weight.findIndex(x=>x.date===r.date); if(i>=0)DB.weight[i]=r;else DB.weight.push(r);});
       DB.weight.sort((a,b)=>a.date<b.date?-1:1);}
     if(kind==="food"){DB.food=(DB.food||[]).concat(out);}
+    if(kind==="activity"){DB.activity=(DB.activity||[]).concat(out);
+      DB.activity.sort((a,b)=>a.date<b.date?-1:1);}
     if(kind==="bp"){DB.bp=(DB.bp||[]).concat(out);DB.bp.sort((a,b)=>a.date<b.date?-1:1);}
     if(kind==="strength"){DB.sessions=DB.sessions||[];
       const byDate={}; out.forEach(r=>{const k=r.date+"|"+r.day; (byDate[k]=byDate[k]||[]).push(r);});
@@ -4157,7 +4182,7 @@ function sleepV(){const S=DB.sleep,t=dkey(),ex=S.find(x=>x.date===t);
     <div class="sc"><div class="v">${a7?a7.toFixed(1):"—"}<u>h</u></div><div class="k">last 7 days${w7?` · ${w7.n} logged`:""}</div></div>
     <div class="sc"><div class="v">${a14?a14.toFixed(1):"—"}<u>h</u></div><div class="k">last 14 days${w14?` · ${w14.n} logged`:""}</div></div>
     <div class="sc"><div class="v">${st}</div><div class="k">night streak${st&&!loggedToday?" · to yesterday":""}</div></div></div>`:"";
-  const list=S.slice(-14).reverse().map(x=>`<div class="dl"><span class="a">${new Date(x.date+"T12:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}<u>${x.bed} – ${x.wake}</u></span>
+  const list=S.slice(-14).reverse().map(x=>`<div class="dl"><span class="a">${new Date(x.date+"T12:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}<u>${x.bed&&x.wake?`${x.bed} – ${x.wake}`:"duration only"}</u></span>
     <span class="b ${x.hrs<6.5?'bad':x.hrs>=7.5?'ok':''}">${x.hrs.toFixed(1)}h${x.q?`<u>quality ${x.q}/5</u>`:""}</span></div>`).join("")
     ||`<div class="empty">No nights logged yet.<br>Two numbers a night is all this takes.</div>`;
   return `<div class="wrap">${cards}
@@ -4287,7 +4312,7 @@ function progV(){if(!DB.sessions.length)return `<div class="wrap">${impPanel("st
 function csv(){const rows=[["date","day","exercise","set","weight","reps","rir","est1rm"]];
   DB.sessions.forEach(s=>s.sets.forEach(x=>rows.push([dkey(new Date(s.date)),s.day,x.n,x.set,x.w,x.r,x.rir??"",e1rm(x.w,x.r).toFixed(1)])));
   let out=rows.map(r=>r.join(",")).join("\n");
-  if(DB.sleep.length)out+="\n\ndate,bedtime,wake,hours,quality\n"+DB.sleep.map(s=>[s.date,s.bed,s.wake,s.hrs.toFixed(2),s.q??""].join(",")).join("\n");
+  if(DB.sleep.length)out+="\n\ndate,bedtime,wake,hours,quality\n"+DB.sleep.map(s=>[s.date,s.bed??"",s.wake??"",s.hrs.toFixed(2),s.q??""].join(",")).join("\n");
   if((DB.food||[]).length)out+="\n\ndate,food,qty,unit,kcal,protein,carbs,fat,sugar\n"+DB.food.map(f=>[f.date,'"'+f.n+'"',f.q,f.unit,f.kcal.toFixed(0),f.p.toFixed(1),f.c.toFixed(1),f.f.toFixed(1),f.s.toFixed(1)].join(",")).join("\n");
   if((DB.bp||[]).length)out+="\n\ndate,slot,systolic,diastolic,pulse\n"+DB.bp.map(b=>[b.date,b.slot,b.sys,b.dia,b.pulse??""].join(",")).join("\n");
   if((DB.weight||[]).length)out+="\n\ndate,weight_lb,bodyfat_pct\n"+DB.weight.map(w=>[w.date,w.lb,w.bf??""].join(",")).join("\n");
